@@ -1,7 +1,7 @@
 # Group Project - Shadowmaze
 ### Team Member
-* Tracy Hua
 * [Justin Wang](https://github.com/DroitXenon)  
+* Tracy Hua
 * Kevin Zhu
 
 ### Tools
