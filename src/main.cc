@@ -6,10 +6,10 @@ int main(int argc, char *argv[]) {
         start();
     } else if (argc == 2) {
         std::string map = argv[--argc];
-        start_w_map(map);
+        start(map);
     } else if (argc == 3) {
         std::string seed = argv[--argc];
         std::string map = argv[--argc];
-        start_w_seed(map, seed);
+        start(map, seed);
     }
 }

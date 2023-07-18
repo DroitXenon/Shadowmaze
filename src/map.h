@@ -3,6 +3,10 @@
 #include <memory>
 #include <iostream>
 #include "player/player_character.h"
+#include "pos.h"
+#include "cell.h"
+#include <fstream>
+#include <iostream>
 
 const int NUM_COL = 79;
 const int NUM_ROW = 25;
@@ -15,17 +19,22 @@ class map {
     int num_posion = 0;
     int num_gold = 0;
     int num_enemy = 0;
-
+    cell map_cell[NUM_COL][NUM_ROW];
 
  public:
-    void change_player(std::shared_ptr<player_character> pc);
+    void set_player(std::shared_ptr<player_character> pc);
     void set_map();
-    void set_player();
-    void set_stair();
-    void set_posion();
-    void set_gold();
-    void set_enemy();
-
+    void generate_player(int chamber_id);
+    void generate_stair(int chamber_id);
+    void generate_posion();
+    void generate_gold();
+    void generate_enemy();
+    void read_map(std::string& filename);
+    void print_map();
+    void move_player();
+    void move_enemy();
+    bool is_adjacent();
+    
 
 };
 

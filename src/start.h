@@ -3,8 +3,6 @@
 #include <iostream>
 #include <memory.h>
 
-    void start();
-    void start_w_map(std::string& map);
-    void start_w_seed(std::string& map, std::string& seed);
+    void start(std::string map_file = "cc3k-emptySingleFloor.txt", std::string seed = "0");
 
 #endif
