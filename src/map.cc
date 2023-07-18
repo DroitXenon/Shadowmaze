@@ -12,10 +12,12 @@ void map::set_map(){
         chamber_id_player = rand() % 5 + 1;
        chamber_id_stair = rand() % 5 + 1;
     }
-    std::cout << "chamber id generated " << chamber_id_player << std::endl;
+    std::cout << "player chamber id generated " << chamber_id_player << std::endl;
+    std::cout << "stair chamber id generated " << chamber_id_stair << std::endl;
     generate_player(chamber_id_player);
-    //std::cout << "player generated" << std::endl;
+    std::cout << "player generated" << std::endl;
     //generate_stair(chamber_id);
+    //std::cout << "stair generated" << std::endl;
     //generate_posion();
     //generate_gold();
     //generate_enemy();
@@ -39,7 +41,7 @@ void map::generate_player(int chamber_id) {
 }
 
 void map::generate_stair(int chamber_id) {
-
+    
 }
 
 void map::generate_posion() {

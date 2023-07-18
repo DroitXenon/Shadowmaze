@@ -10,6 +10,9 @@ int main(int argc, char *argv[]) {
     } else if (argc == 3) {
         std::string seed = argv[--argc];
         std::string map = argv[--argc];
-        start(map, seed);
+        std::istringstream iss(seed);
+        unsigned int seed_int = 0;
+        iss >> seed_int;
+        start(map, seed_int);
     }
 }

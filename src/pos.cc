@@ -6,18 +6,22 @@ pos::pos(int x, int y, int floor):
     floor{floor} {}
 
 void pos::randomize_pos(int chamber_id) {
-    x = 13;
-    y = 4;
-    // if (chamber_id == 1) {
-    //     x = rand() % 26 + 4;
-    //     y = rand() % 4 + 4;
-    // } else if (chamber_id == 2) {
-    //     x = rand() % 37 + 40;
-    //     y = rand() % 10 + 4;
-    // } else if (chamber_id == 3) {
-    // } else if (chamber_id == 4) {
-    // } else {
-    // } 
+    if (chamber_id == 1) {
+        x = rand() % 26 + 3;
+        y = rand() % 4 + 3;
+    } else if (chamber_id == 2) {
+        x = rand() % 37 + 39;
+        y = rand() % 10 + 3;
+    } else if (chamber_id == 3) {
+        x = rand() % 12 + 38;
+        y = rand() % 3 + 10;
+    } else if (chamber_id == 4) {
+        x = rand() % 21 + 4;
+        y = rand() % 7 + 15;
+    } else {
+        x = rand() % 39 + 37;
+        y = rand() % 6 + 16;
+    } 
     
 }
 
