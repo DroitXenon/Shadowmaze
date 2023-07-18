@@ -10,7 +10,8 @@
 
 const int NUM_COL = 79;
 const int NUM_ROW = 25;
-
+#include <iostream>
+#include <cstdlib>
 class map {
     std::shared_ptr<player_character> player;
     //enemy

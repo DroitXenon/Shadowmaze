@@ -16,4 +16,8 @@ int character::get_atk() const{
     return atk;
 }
 
+void character::set_pos(pos position) {
+    this->position = position;
+}
+
 character::~character() {}

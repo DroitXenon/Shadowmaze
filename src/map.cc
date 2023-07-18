@@ -6,15 +6,15 @@ void map::set_player(std::shared_ptr<player_character> character){
 }
 
 void map::set_map(){
-    int chamber_id_player = rand() % 5;
-    //int chamber_id_stair = rand() % 5;
-    //while (chamber_id_stair == chamber_id_player) {
-    //    chamber_id_player = rand() % 5;
-    //    chamber_id_stair = rand() % 5;
-    //}
+    int chamber_id_player = rand() % 5 + 1;
+    int chamber_id_stair = rand() % 5 + 1;
+    while (chamber_id_stair == chamber_id_player) {
+        chamber_id_player = rand() % 5 + 1;
+       chamber_id_stair = rand() % 5 + 1;
+    }
     std::cout << "chamber id generated " << chamber_id_player << std::endl;
     generate_player(chamber_id_player);
-    std::cout << "player generated" << std::endl;
+    //std::cout << "player generated" << std::endl;
     //generate_stair(chamber_id);
     //generate_posion();
     //generate_gold();
@@ -28,7 +28,7 @@ void map::generate_player(int chamber_id) {
     std::cout << map_cell[p.get_x()][p.get_y()].get_cell_type() << std::endl;
     while (true) {
         if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
-        //player->position = p;
+        player->set_pos(p);
         map_cell[p.get_x()][p.get_y()].set_cell_type('@');
         map_cell[p.get_x()][p.get_y()].set_cell_name("player");
         break;

@@ -12,7 +12,8 @@ class player_character: public character {
     player_character(int hp, int atk, int def, std::string race, char symbol, int max_hp);
     //int get_max_hp() const;
     //int get_gold() const;
-    // void use();
+    //void set_gold(int gold);
+    // virtual void use() = 0;
     virtual void attack() = 0;
     // virtual void attacked() = 0;
     
