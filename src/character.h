@@ -15,8 +15,8 @@ class character {
     character(int hp, int atk, int def, std::string race, char symbol);
     int get_hp() const;
     int get_atk() const;
-    // int get_def() const;
-    // std::string get_race() const;
+    int get_def() const;
+    std::string get_race() const;
     // bool get_dead() const;
     // pos get_pos() const;
     // void set_hp(int hp);

@@ -10,7 +10,7 @@ void start(std::string map_file, unsigned int seed_int) {
     char cmd;
     map game_map;
     game_map.read_map(map_file);
-    game_map.print_map();
+    //game_map.print_map();
 
     std::cout << "Your seed is " << seed_int << std::endl; // print seed
     std::cout << "Welcome to cc 3k, please enter your race" << std:: endl; // welcome

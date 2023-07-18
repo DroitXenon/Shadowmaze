@@ -16,6 +16,15 @@ int character::get_atk() const{
     return atk;
 }
 
+int character::get_def() const
+{
+    return def;
+}
+
+std::string character::get_race() const{
+    return race;
+}
+
 void character::set_pos(pos position) {
     this->position = position;
 }

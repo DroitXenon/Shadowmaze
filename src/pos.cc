@@ -21,8 +21,11 @@ void pos::randomize_pos(int chamber_id) {
     } else {
         x = rand() % 39 + 37;
         y = rand() % 6 + 16;
-    } 
-    
+        while (x < 64 && y < 18) {
+            x = rand() % 39 + 37;
+            y = rand() % 6 + 16;
+        }
+    }   
 }
 
 int pos::get_x() {

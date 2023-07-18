@@ -7,6 +7,7 @@
 #include "cell.h"
 #include <fstream>
 #include <iostream>
+#include <vector>
 
 const int NUM_COL = 79;
 const int NUM_ROW = 25;
@@ -21,6 +22,7 @@ class map {
     int num_gold = 0;
     int num_enemy = 0;
     cell map_cell[NUM_COL][NUM_ROW];
+    std::vector<std::string> actions;
 
  public:
     void set_player(std::shared_ptr<player_character> pc);
@@ -35,7 +37,7 @@ class map {
     void move_player();
     void move_enemy();
     bool is_adjacent();
-    
+    void add_action(std::string action);
 
 };
 
