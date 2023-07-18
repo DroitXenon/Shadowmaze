@@ -25,6 +25,11 @@ std::string character::get_race() const{
     return race;
 }
 
+pos character::get_pos() const
+{
+    return position;
+}
+
 void character::set_pos(pos position) {
     this->position = position;
 }

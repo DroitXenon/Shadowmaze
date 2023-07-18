@@ -34,8 +34,9 @@ class map {
     void generate_enemy();
     void read_map(std::string& filename);
     void print_map();
-    void move_player();
+    void move_player(std::string direction);
     void move_enemy();
+    void use_potion(std::string direction);
     bool is_adjacent();
     void add_action(std::string action);
 
