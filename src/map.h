@@ -13,6 +13,8 @@ const int NUM_COL = 79;
 const int NUM_ROW = 25;
 #include <iostream>
 #include <cstdlib>
+#include <ctime>
+
 class map {
     std::shared_ptr<player_character> player;
     //enemy
@@ -36,9 +38,9 @@ class map {
     void print_map();
     void move_player(std::string direction);
     void move_enemy();
-    void use_potion(std::string direction);
+    void use_potion(std::string& direction);
     bool is_adjacent();
-    void add_action(std::string action);
+    void add_action(std::string& action);
 
 };
 
