@@ -27,7 +27,7 @@ void start(std::string map_file, unsigned int seed_int) {
         }
     }
     game_map.print_map();
-
+    
     while (true) {
         std::cout << "Please enter your command" << std::endl;
         std::cin >> cmd;
@@ -35,26 +35,27 @@ void start(std::string map_file, unsigned int seed_int) {
             game_map.move_player(cmd);
             //game_map.move_enemy();
             game_map.print_map();
-        } else if (cmd == "u") {
-            std::cin >> cmd;
-            //game_map.use_potion(cmd);
-            //game_map.move_enemy();
-            game_map.print_map();
-        } else if (cmd == "a") {
-            std::cin >> cmd;
+        //} else if (cmd == "u") {
+        //     std::cin >> cmd;
+        //     //game_map.use_potion(cmd);
+        //     //game_map.move_enemy();
+        //     //game_map.print_map();
+        // } else if (cmd == "a") {
+        //     std::cin >> cmd;
             
-            //game_map.move_enemy();
-            game_map.print_map();
-        } else if (cmd == "r") {
-            std::cout << "Restarting" << std::endl;
-            break;
-        } else if (cmd == "q") {
-            std::cout << "Quitting" << std::endl;
-            break;
+        //     //game_map.move_enemy();
+        //     //game_map.print_map();
+        // } else if (cmd == "r") {
+        //     std::cout << "Restarting" << std::endl;
+        //     break;
+        // } else if (cmd == "q") {
+        //     std::cout << "Quitting" << std::endl;
+        //     break;
         } else {
             std::cerr << "Not Valid Input, please enter your command" << std::endl;
         }
     }
+    
 }
 
 

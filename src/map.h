@@ -17,13 +17,15 @@ const int NUM_ROW = 25;
 
 class map {
     std::shared_ptr<player_character> player;
-    //enemy
-    //gold
-    //posion
+    // std::vector<std::shared_ptr<enemy>> enemies;
+    // std::vector<std::shared_ptr<posion>> posions;
+    // std::vector<std::shared_ptr<gold>> golds;
+  
     int num_posion = 0;
     int num_gold = 0;
     int num_enemy = 0;
     cell map_cell[NUM_COL][NUM_ROW];
+    cell origin_map_cell[NUM_COL][NUM_ROW];
     std::vector<std::string> actions;
 
  public:
