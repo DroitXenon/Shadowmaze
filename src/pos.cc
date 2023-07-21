@@ -12,6 +12,10 @@ void pos::randomize_pos(int chamber_id) {
     } else if (chamber_id == 2) {
         x = rand() % 37 + 39;
         y = rand() % 10 + 3;
+        while (x < 61 && y > 8) {
+            x = rand() % 37 + 39;
+            y = rand() % 10 + 3;
+        }
     } else if (chamber_id == 3) {
         x = rand() % 12 + 38;
         y = rand() % 3 + 10;
@@ -21,10 +25,6 @@ void pos::randomize_pos(int chamber_id) {
     } else {
         x = rand() % 39 + 37;
         y = rand() % 6 + 16;
-        while (x < 64 && y < 18) {
-            x = rand() % 39 + 37;
-            y = rand() % 6 + 16;
-        }
     }   
 }
 

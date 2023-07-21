@@ -11,7 +11,7 @@ void map::set_map(){
     int chamber_id_stair = rand() % 5 + 1;
     while (chamber_id_stair == chamber_id_player) {
         chamber_id_player = rand() % 5 + 1;
-       chamber_id_stair = rand() % 5 + 1;
+        chamber_id_stair = rand() % 5 + 1;
     }
     std::cout << "player chamber id generated " << chamber_id_player << std::endl;
     std::cout << "stair chamber id generated " << chamber_id_stair << std::endl;
@@ -64,6 +64,7 @@ void map::generate_posion() {
             if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
                 map_cell[p.get_x()][p.get_y()].set_cell_type('P');
                 map_cell[p.get_x()][p.get_y()].set_cell_name("potion");
+                map_cell[p.get_x()][p.get_y()].set_step(false);
                 break;
             } else {
                 p.randomize_pos();
@@ -100,6 +101,7 @@ void map::generate_enemy() {
             if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
                 map_cell[p.get_x()][p.get_y()].set_cell_type('E');
                 map_cell[p.get_x()][p.get_y()].set_cell_name("enemy");
+                map_cell[p.get_x()][p.get_y()].set_step(false);
                 break;
             } else {
                 p.randomize_pos();
@@ -117,6 +119,38 @@ void map::read_map(std::string& filename) {
     while (getline(map_file, line)) {
         for (int i = 0; i < NUM_COL; ++i) {
             map_cell[i][row].set_cell_type(line[i]);
+            origin_map_cell[i][row].set_cell_type(line[i]);
+            if (line[i] == '-') {
+                map_cell[i][row].set_cell_name("wall");
+                map_cell[i][row].set_step(false);
+                origin_map_cell[i][row].set_cell_name("wall");
+                origin_map_cell[i][row].set_step(false);
+            } else if (line[i] == '|') {
+                map_cell[i][row].set_cell_name("wall");
+                map_cell[i][row].set_step(false);
+                origin_map_cell[i][row].set_cell_name("wall");
+                origin_map_cell[i][row].set_step(false);
+            } else if (line[i] == '.') {
+                map_cell[i][row].set_cell_name("tile");
+                map_cell[i][row].set_step(true);
+                origin_map_cell[i][row].set_cell_name("tile");
+                origin_map_cell[i][row].set_step(true);
+            } else if (line[i] == '+') {
+                map_cell[i][row].set_cell_name("door");
+                map_cell[i][row].set_step(true);
+                origin_map_cell[i][row].set_cell_name("door");
+                origin_map_cell[i][row].set_step(true);
+            } else if (line[i] == '#') {
+                map_cell[i][row].set_cell_name("passage");
+                map_cell[i][row].set_step(true);
+                origin_map_cell[i][row].set_cell_name("passage");
+                origin_map_cell[i][row].set_step(true);
+            } else if (line[i] == ' ') {
+                map_cell[i][row].set_cell_name("empty");
+                map_cell[i][row].set_step(false);
+                origin_map_cell[i][row].set_cell_name("empty");
+                origin_map_cell[i][row].set_step(false);
+            }
         }
         ++row;
     }
@@ -141,56 +175,103 @@ void map::print_map() {
     actions.clear();
 }
 
-void map::move_player(string& direction) {
-    switch (direction) {
-        case no:
-            if (map_cell[player->get_pos().get_x()][player->get_pos().get_y() - 1].get_cell_type() == '.') {
-                map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('.');
-                map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("empty");
-                player->set_pos(player->get_pos().get_x(), player->get_pos().get_y() - 1);
-                map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
-                map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
-                actions.emplace_back("PC moves North.");
-            } else {
-                actions.emplace_back("PC cannot move North.");
-            }
-            break;
-        case so:
-            if (map_cell[player->get_pos().get_x()][player->get_pos().get_y() + 1].get_cell_type() == '.') {
-                map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('.');
-                map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("empty");
-                player->set_pos(player->get_pos().get_x(), player->get_pos().get_y() + 1);
-                map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
-                map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
-                actions.emplace_back("PC moves South.");
-            } else {
-                actions.emplace_back("PC cannot move South.");
-            }
-            break;
-        case ea:
-            if (map_cell[player->get_pos().get_x() + 1][player->get_pos().get_y()].get_cell_type() == '.') {
-                map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('.');
-                map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("empty");
-                player->set_pos(player->get_pos().get_x() + 1, player->get_pos().get_y());
-                map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
-                map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
-                actions.emplace_back("PC moves East.");
-            } else {
-                actions.emplace_back("PC cannot move East.");
-            }
-            break;
-        case we:
-            if (map_cell[player->get_pos().get_x() - 1][player->get_pos().get_y()].get_cell_type() == '.') {
-                map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('.');
-                map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("empty");
-                player->set_pos(player->get_pos().get_x() - 1, player->get_pos().get_y());
-                map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
-                map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
-                actions.emplace_back("PC moves West.");
-            } else {
-                actions.emplace_back("PC cannot move West.");
-            }
-            break;
-    
-    }   
+void map::move_player(std::string direction) {
+    if (direction == "no") {
+        if (map_cell[player->get_pos().get_x()][player->get_pos().get_y() - 1].get_step()) {
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_name());
+            pos p{player->get_pos().get_x(), player->get_pos().get_y() - 1, player->get_pos().get_floor()};
+            player->set_pos(p);
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
+            actions.emplace_back("PC moves North.");
+        } else {
+            actions.emplace_back("PC cannot move North.");
+        }
+    } else if (direction == "so") {
+        if (map_cell[player->get_pos().get_x()][player->get_pos().get_y() + 1].get_step()) {
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_name());
+            pos p{player->get_pos().get_x(), player->get_pos().get_y() + 1, player->get_pos().get_floor()};
+            player->set_pos(p);
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
+            actions.emplace_back("PC moves South.");
+        } else {
+            actions.emplace_back("PC cannot move South.");
+        }
+    } else if (direction == "ea") {
+        if (map_cell[player->get_pos().get_x() + 1][player->get_pos().get_y()].get_step()) {
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_name());
+            pos p{player->get_pos().get_x() + 1, player->get_pos().get_y(), player->get_pos().get_floor()};
+            player->set_pos(p);
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
+            actions.emplace_back("PC moves South.");
+        } else {
+            actions.emplace_back("PC cannot move South.");
+        }
+    } else if (direction == "we") {
+        if (map_cell[player->get_pos().get_x() - 1][player->get_pos().get_y()].get_step()) {
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_name());
+            pos p{player->get_pos().get_x() - 1, player->get_pos().get_y(), player->get_pos().get_floor()};
+            player->set_pos(p);
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
+            actions.emplace_back("PC moves South.");
+        } else {
+            actions.emplace_back("PC cannot move South.");
+        }
+    } else if (direction == "ne") {
+        if (map_cell[player->get_pos().get_x() + 1][player->get_pos().get_y() - 1].get_step()) {
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_name());
+            pos p{player->get_pos().get_x() + 1, player->get_pos().get_y() - 1, player->get_pos().get_floor()};
+            player->set_pos(p);
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
+            actions.emplace_back("PC moves South.");
+        } else {
+            actions.emplace_back("PC cannot move South.");
+        }
+    } else if (direction == "nw") {
+        if (map_cell[player->get_pos().get_x() - 1][player->get_pos().get_y() - 1].get_step()) {
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_name());
+            pos p{player->get_pos().get_x() - 1, player->get_pos().get_y() - 1, player->get_pos().get_floor()};
+            player->set_pos(p);
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
+            actions.emplace_back("PC moves South.");
+        } else {
+            actions.emplace_back("PC cannot move South.");
+        }
+    } else if (direction == "se") {
+        if (map_cell[player->get_pos().get_x() + 1][player->get_pos().get_y() + 1].get_step()) {
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_name());
+            pos p{player->get_pos().get_x() + 1, player->get_pos().get_y() + 1, player->get_pos().get_floor()};
+            player->set_pos(p);
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
+            actions.emplace_back("PC moves South.");
+        } else {
+            actions.emplace_back("PC cannot move South.");
+        }
+    } else {
+        if (map_cell[player->get_pos().get_x() - 1][player->get_pos().get_y() + 1].get_step()) {
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_name());
+            pos p{player->get_pos().get_x() - 1, player->get_pos().get_y() + 1, player->get_pos().get_floor()};
+            player->set_pos(p);
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
+            actions.emplace_back("PC moves South.");
+        } else {
+            actions.emplace_back("PC cannot move South.");
+        }
+    }
+
 }
