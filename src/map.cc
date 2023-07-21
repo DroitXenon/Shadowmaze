@@ -112,7 +112,7 @@ void map::generate_enemy() {
     std::cout << "enemy generated" << std::endl;
 }
 
-void map::read_map(std::string& filename) {
+void map::read_empty_map(std::string& filename) {
     std::ifstream map_file{filename};
     std::string line;
     int row = 0;
@@ -150,10 +150,156 @@ void map::read_map(std::string& filename) {
                 map_cell[i][row].set_step(false);
                 origin_map_cell[i][row].set_cell_name("empty");
                 origin_map_cell[i][row].set_step(false);
-            }
+            } 
         }
         ++row;
     }
+}
+
+void map::read_map_file(std::string& filename, int floor) {
+    std::ifstream map_file{filename};
+    std::string line;
+    int row = 0;
+    int line_num = 0;
+    int start_line = 0;
+    int end_line = 0;
+
+    if (floor == 1) {
+        start_line = 0;
+        end_line = 25;
+    } else if (floor == 2) {
+        start_line = 26;
+        end_line = 50;
+    } else if (floor == 3) {
+        start_line = 51;
+        end_line = 75;
+    } else if (floor == 4) {
+        start_line = 76;
+        end_line = 100;
+    } else {
+        start_line = 101;
+        end_line = 125;
+    }
+
+    while (getline(map_file, line)) {
+        line_num++;
+        if (line_num >= start_line && line_num <= end_line) {
+            for (int i = 0; i < NUM_COL; ++i) {
+                map_cell[i][row].set_cell_type(line[i]);
+                origin_map_cell[i][row].set_cell_type(line[i]);
+                if (line[i] == '-') {
+                    map_cell[i][row].set_cell_name("wall");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_name("wall");
+                    origin_map_cell[i][row].set_step(false);
+                } else if (line[i] == '|') {
+                    map_cell[i][row].set_cell_name("wall");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_name("wall");
+                    origin_map_cell[i][row].set_step(false);
+                } else if (line[i] == '.') {
+                    map_cell[i][row].set_cell_name("tile");
+                    map_cell[i][row].set_step(true);
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                } else if (line[i] == '+') {
+                    map_cell[i][row].set_cell_name("door");
+                    map_cell[i][row].set_step(true);
+                    origin_map_cell[i][row].set_cell_name("door");
+                    origin_map_cell[i][row].set_step(true);
+                } else if (line[i] == '#') {
+                    map_cell[i][row].set_cell_name("passage");
+                    map_cell[i][row].set_step(true);
+                    origin_map_cell[i][row].set_cell_name("passage");
+                    origin_map_cell[i][row].set_step(true);
+                } else if (line[i] == ' ') {
+                    map_cell[i][row].set_cell_name("empty");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_name("empty");
+                    origin_map_cell[i][row].set_step(false);
+                } else if (line[i] == '0') {
+                    map_cell[i][row].set_cell_type('P');
+                    map_cell[i][row].set_cell_name("potion");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    //
+                } else if (line[i] == '1') {
+                    map_cell[i][row].set_cell_type('P');
+                    map_cell[i][row].set_cell_name("potion");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    //
+                } else if (line[i] == '2') {
+                    map_cell[i][row].set_cell_type('P');
+                    map_cell[i][row].set_cell_name("potion");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    //
+                } else if (line[i] == '3') {
+                    map_cell[i][row].set_cell_type('P');
+                    map_cell[i][row].set_cell_name("potion");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    //
+                } else if (line[i] == '4') {
+                    map_cell[i][row].set_cell_type('P');
+                    map_cell[i][row].set_cell_name("potion");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    //
+                } else if (line[i] == '5') {
+                    map_cell[i][row].set_cell_type('P');
+                    map_cell[i][row].set_cell_name("potion");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    //
+                } else if (line[i] == '6') {
+                    map_cell[i][row].set_cell_type('G');
+                    map_cell[i][row].set_cell_name("gold");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    //
+                } else if (line[i] == '7') {
+                    map_cell[i][row].set_cell_type('G');
+                    map_cell[i][row].set_cell_name("gold");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    //
+                } else if (line[i] == '8') {
+                    map_cell[i][row].set_cell_type('G');
+                    map_cell[i][row].set_cell_name("gold");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    //
+                } else if (line[i] == '9') {
+                    map_cell[i][row].set_cell_type('G');
+                    map_cell[i][row].set_cell_name("gold");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    //
+                } else if (line[i] == '@') {
+                    map_cell[i][row].set_cell_type('@');
+                    map_cell[i][row].set_cell_name("player");
+                    map_cell[i][row].set_step(true);
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                }
+            }
+            ++row;
+        }
+    }
+
+
 }
 
 void map::print_map() {
@@ -273,5 +419,9 @@ void map::move_player(std::string direction) {
             actions.emplace_back("PC cannot move South.");
         }
     }
+
+}
+
+void map::move_enemy() {
 
 }

@@ -5,11 +5,15 @@
 #include "map.h"
 
 
-void start(std::string map_file, unsigned int seed_int) {
+void start(std::string map_file, bool with_map, unsigned int seed_int, bool with_seed) {
     srand(seed_int);
     std::string cmd;
     map game_map;
-    game_map.read_map(map_file);
+    if (with_map) {
+        game_map.read_map_file(map_file, 1);
+    } else {
+        game_map.read_empty_map(map_file);
+    }
     //game_map.print_map();
     std::cout << "Your seed is " << seed_int << std::endl; // print seed
     std::cout << "Welcome to cc 3k, please enter your race" << std:: endl; // welcome
@@ -19,7 +23,9 @@ void start(std::string map_file, unsigned int seed_int) {
         if (cmd == "s") {
             auto pc = std::make_shared<shade>();
             game_map.set_player(pc);
-            game_map.set_map();
+            if (!with_map) {
+                 game_map.set_map();
+            }
             std::cout << "You chose shade" << std::endl;
             break;
         } else {
@@ -45,12 +51,12 @@ void start(std::string map_file, unsigned int seed_int) {
             
         //     //game_map.move_enemy();
         //     //game_map.print_map();
-        // } else if (cmd == "r") {
-        //     std::cout << "Restarting" << std::endl;
-        //     break;
-        // } else if (cmd == "q") {
-        //     std::cout << "Quitting" << std::endl;
-        //     break;
+        } else if (cmd == "r") {
+            std::cout << "Restarting" << std::endl;
+            break;
+        } else if (cmd == "q") {
+            std::cout << "Quitting" << std::endl;
+            return;
         } else {
             std::cerr << "Not Valid Input, please enter your command" << std::endl;
         }

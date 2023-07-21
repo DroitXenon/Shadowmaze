@@ -36,13 +36,13 @@ class map {
     void generate_posion();
     void generate_gold();
     void generate_enemy();
-    void read_map(std::string& filename);
+    void read_empty_map(std::string& filename);
+    void read_map_file(std::string& filename, int floor);
     void print_map();
     void move_player(std::string direction);
     void move_enemy();
     void use_potion(std::string& direction);
     bool is_adjacent();
-    void add_action(std::string& action);
 
 };
 
