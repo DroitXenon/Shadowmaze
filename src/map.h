@@ -3,6 +3,8 @@
 #include <memory>
 #include <iostream>
 #include "player/player_character.h"
+#include "enemy/enemy_character.h"
+#include "enemy/human.h"
 #include "pos.h"
 #include "cell.h"
 #include <fstream>
@@ -15,9 +17,10 @@ const int NUM_ROW = 25;
 #include <cstdlib>
 #include <ctime>
 
+
 class map {
     std::shared_ptr<player_character> player;
-    // std::vector<std::shared_ptr<enemy>> enemies;
+    std::vector<std::shared_ptr<enemy_character>> enemies;
     // std::vector<std::shared_ptr<posion>> posions;
     // std::vector<std::shared_ptr<gold>> golds;
   
@@ -43,7 +46,8 @@ class map {
     void move_enemy();
     void use_potion(std::string& direction);
     bool is_adjacent();
-
+    int which_enemy(int x, int y);
+    int which_potion();
 };
 
 

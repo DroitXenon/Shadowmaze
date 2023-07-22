@@ -293,13 +293,33 @@ void map::read_map_file(std::string& filename, int floor) {
                     map_cell[i][row].set_step(true);
                     origin_map_cell[i][row].set_cell_name("tile");
                     origin_map_cell[i][row].set_step(true);
+                } else if (line[i] == 'H') {
+                    map_cell[i][row].set_cell_type('H');
+                    map_cell[i][row].set_cell_name("enemy");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_name("enemy");
+                    origin_map_cell[i][row].set_step(false);
+                    auto enemy = std::make_shared<human>();
+                    enemy->set_pos(pos{i, row, floor});
+                    enemies.emplace_back(enemy);
+                    num_enemy++;
+                } else if (line[i] == 'W') {
+                    
+                } else if (line[i] == 'E') {
+
+                } else if (line[i] == 'O') {
+
+                } else if (line[i] == 'M') {
+
+                } else if (line[i] == 'D') {
+
+                } else if (line[i] == 'L') {
+
                 }
             }
             ++row;
         }
     }
-
-
 }
 
 void map::print_map() {
@@ -354,9 +374,9 @@ void map::move_player(std::string direction) {
             player->set_pos(p);
             map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
             map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
-            actions.emplace_back("PC moves South.");
+            actions.emplace_back("PC moves East.");
         } else {
-            actions.emplace_back("PC cannot move South.");
+            actions.emplace_back("PC cannot move East.");
         }
     } else if (direction == "we") {
         if (map_cell[player->get_pos().get_x() - 1][player->get_pos().get_y()].get_step()) {
@@ -366,9 +386,9 @@ void map::move_player(std::string direction) {
             player->set_pos(p);
             map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
             map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
-            actions.emplace_back("PC moves South.");
+            actions.emplace_back("PC moves West.");
         } else {
-            actions.emplace_back("PC cannot move South.");
+            actions.emplace_back("PC cannot move West.");
         }
     } else if (direction == "ne") {
         if (map_cell[player->get_pos().get_x() + 1][player->get_pos().get_y() - 1].get_step()) {
@@ -378,9 +398,9 @@ void map::move_player(std::string direction) {
             player->set_pos(p);
             map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
             map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
-            actions.emplace_back("PC moves South.");
+            actions.emplace_back("PC moves Northeast.");
         } else {
-            actions.emplace_back("PC cannot move South.");
+            actions.emplace_back("PC cannot move Northeast.");
         }
     } else if (direction == "nw") {
         if (map_cell[player->get_pos().get_x() - 1][player->get_pos().get_y() - 1].get_step()) {
@@ -390,9 +410,9 @@ void map::move_player(std::string direction) {
             player->set_pos(p);
             map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
             map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
-            actions.emplace_back("PC moves South.");
+            actions.emplace_back("PC moves Northwest.");
         } else {
-            actions.emplace_back("PC cannot move South.");
+            actions.emplace_back("PC cannot move Northwest.");
         }
     } else if (direction == "se") {
         if (map_cell[player->get_pos().get_x() + 1][player->get_pos().get_y() + 1].get_step()) {
@@ -402,9 +422,9 @@ void map::move_player(std::string direction) {
             player->set_pos(p);
             map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
             map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
-            actions.emplace_back("PC moves South.");
+            actions.emplace_back("PC moves Southeast.");
         } else {
-            actions.emplace_back("PC cannot move South.");
+            actions.emplace_back("PC cannot move Southeast.");
         }
     } else {
         if (map_cell[player->get_pos().get_x() - 1][player->get_pos().get_y() + 1].get_step()) {
@@ -414,14 +434,114 @@ void map::move_player(std::string direction) {
             player->set_pos(p);
             map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
             map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
-            actions.emplace_back("PC moves South.");
+            actions.emplace_back("PC moves Southwest.");
         } else {
-            actions.emplace_back("PC cannot move South.");
+            actions.emplace_back("PC cannot move Southwest.");
         }
     }
 
 }
 
 void map::move_enemy() {
+    for (int i = 0; i < NUM_ROW; ++i) {  
+        for (int j = 0; j < NUM_COL; ++j) {
+            int enemy_id = which_enemy(j, i);
+            if (enemy_id != -1) { //if found enemy
+                std::cout << "enemy found" << std::endl;
+                int random_direction = 0;
+                if (random_direction == 0) {
+                    if (map_cell[j][i - 1].get_cell_type() == '.') {
+                        map_cell[j][i].set_cell_type(origin_map_cell[i][j].get_cell_type());
+                        map_cell[j][i].set_cell_name(origin_map_cell[i][j].get_cell_name());
+                        pos p{j, i - 1, enemies[enemy_id]->get_pos().get_floor()};
+                        enemies[enemy_id]->set_pos(p);
+                        map_cell[j][i].set_cell_type('E');
+                        map_cell[j][i].set_cell_name("enemy");
+                    }
+                } else if (random_direction == 1) {
+                    if (map_cell[i][j + 1].get_step()) {
+                        map_cell[i][j].set_cell_type(origin_map_cell[i][j].get_cell_type());
+                        map_cell[i][j].set_cell_name(origin_map_cell[i][j].get_cell_name());
+                        pos p{i, j + 1, enemies[enemy_id]->get_pos().get_floor()};
+                        enemies[enemy_id]->set_pos(p);
+                        map_cell[i][j].set_cell_type('E');
+                        map_cell[i][j].set_cell_name("enemy");
+                    }
+                } else if (random_direction == 2) {
+                    if (map_cell[i + 1][j].get_step()) {
+                        map_cell[i][j].set_cell_type(origin_map_cell[i][j].get_cell_type());
+                        map_cell[i][j].set_cell_name(origin_map_cell[i][j].get_cell_name());
+                        pos p{i + 1, j, enemies[enemy_id]->get_pos().get_floor()};
+                        enemies[enemy_id]->set_pos(p);
+                        map_cell[i][j].set_cell_type('E');
+                        map_cell[i][j].set_cell_name("enemy");
+                    }
+                } else if (random_direction == 3) {
+                    if (map_cell[i - 1][j].get_step()) {
+                        map_cell[i][j].set_cell_type(origin_map_cell[i][j].get_cell_type());
+                        map_cell[i][j].set_cell_name(origin_map_cell[i][j].get_cell_name());
+                        pos p{i - 1, j, enemies[enemy_id]->get_pos().get_floor()};
+                        enemies[enemy_id]->set_pos(p);
+                        map_cell[i][j].set_cell_type('E');
+                        map_cell[i][j].set_cell_name("enemy"); 
+                    }
+                } else if (random_direction == 4) {
+                    if (map_cell[i - 1][j - 1].get_step()) {
+                        map_cell[i][j].set_cell_type(origin_map_cell[i][j].get_cell_type());
+                        map_cell[i][j].set_cell_name(origin_map_cell[i][j].get_cell_name());
+                        pos p{i + 1, j, enemies[enemy_id]->get_pos().get_floor()};
+                        enemies[enemy_id]->set_pos(p);
+                        map_cell[i][j].set_cell_type('E');
+                        map_cell[i][j].set_cell_name("enemy"); 
+                    }
+                } else if (random_direction == 5) {
+                    if (map_cell[i - 1][j + 1].get_step()) {
+                        map_cell[i][j].set_cell_type(origin_map_cell[i][j].get_cell_type());
+                        map_cell[i][j].set_cell_name(origin_map_cell[i][j].get_cell_name());
+                        pos p{i - 1, j + 1, enemies[enemy_id]->get_pos().get_floor()};
+                        enemies[enemy_id]->set_pos(p);
+                        map_cell[i][j].set_cell_type('E');
+                        map_cell[i][j].set_cell_name("enemy"); 
+                    }
+                } else if (random_direction == 6) {
+                    if (map_cell[i + 1][j - 1].get_step()) {
+                        map_cell[i][j].set_cell_type(origin_map_cell[i][j].get_cell_type());
+                        map_cell[i][j].set_cell_name(origin_map_cell[i][j].get_cell_name());
+                        pos p{i + 1, j - 1, enemies[enemy_id]->get_pos().get_floor()};
+                        enemies[enemy_id]->set_pos(p);
+                        map_cell[i][j].set_cell_type('E');
+                        map_cell[i][j].set_cell_name("enemy"); 
+                    }
+                } else {
+                    if (map_cell[i + 1][j + 1].get_step()) {
+                        map_cell[i][j].set_cell_type(origin_map_cell[i][j].get_cell_type());
+                        map_cell[i][j].set_cell_name(origin_map_cell[i][j].get_cell_name());
+                        pos p{i + 1, j + 1, enemies[enemy_id]->get_pos().get_floor()};
+                        enemies[enemy_id]->set_pos(p);
+                        map_cell[i][j].set_cell_type('E');
+                        map_cell[i][j].set_cell_name("enemy"); 
+                    }
+                }
+            }
+        }
+    }
+}
 
+void map::use_potion(std::string &direction) {
+}
+
+bool map::is_adjacent() {
+    
+}
+
+int map::which_enemy(int x, int y) {
+    for (int i = 0; i < num_enemy; ++i) {
+        if (enemies[i]->get_pos().get_x() == x && enemies[i]->get_pos().get_y() == y) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+int map::which_potion() {
 }

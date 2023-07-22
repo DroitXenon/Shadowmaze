@@ -10,7 +10,7 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
     std::string cmd;
     map game_map;
     if (with_map) {
-        game_map.read_map_file(map_file, 1);
+        game_map.read_map_file(map_file, 3);
     } else {
         game_map.read_empty_map(map_file);
     }
@@ -33,7 +33,7 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
         }
     }
     game_map.print_map();
-    
+
     while (true) {
         std::cout << "Please enter your command" << std::endl;
         std::cin >> cmd;
@@ -61,7 +61,7 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
             std::cerr << "Not Valid Input, please enter your command" << std::endl;
         }
     }
-    
+
 }
 
 

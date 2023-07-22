@@ -6,7 +6,6 @@
 class shade: public player_character {
  public:
     shade();
-    ~shade();
     void attack() override;
     // void attacked() override;
 };
