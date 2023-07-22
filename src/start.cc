@@ -9,12 +9,7 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
     srand(seed_int);
     std::string cmd;
     map game_map;
-    if (with_map) {
-        game_map.read_map_file(map_file, 3);
-    } else {
-        game_map.read_empty_map(map_file);
-    }
-    //game_map.print_map();
+    
     std::cout << "Your seed is " << seed_int << std::endl; // print seed
     std::cout << "Welcome to cc 3k, please enter your race" << std:: endl; // welcome
     
@@ -23,14 +18,18 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
         if (cmd == "s") {
             auto pc = std::make_shared<shade>();
             game_map.set_player(pc);
-            if (!with_map) {
-                 game_map.set_map();
-            }
             std::cout << "You chose shade" << std::endl;
             break;
         } else {
             std::cerr << "Not Valid Input, please enter your race" << std::endl;
         }
+    }
+
+    if (with_map) {
+        game_map.read_map_file(map_file, 1);
+    } else {
+        game_map.read_empty_map(map_file);
+        game_map.set_map();
     }
     game_map.print_map();
 
@@ -39,7 +38,8 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
         std::cin >> cmd;
         if (cmd == "no" || cmd == "so" || cmd == "ea" || cmd == "we" || cmd == "ne" || cmd == "nw" || cmd == "se" || cmd == "sw") {
             game_map.move_player(cmd);
-            //game_map.move_enemy();
+            game_map.move_enemy();
+            game_map.enemy_attack();
             game_map.print_map();
         //} else if (cmd == "u") {
         //     std::cin >> cmd;

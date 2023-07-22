@@ -43,7 +43,9 @@ class map {
     void read_map_file(std::string& filename, int floor);
     void print_map();
     void move_player(std::string direction);
+    void player_attack(std::string direction);
     void move_enemy();
+    void enemy_attack();
     void use_potion(std::string& direction);
     bool is_adjacent();
     int which_enemy(int x, int y);

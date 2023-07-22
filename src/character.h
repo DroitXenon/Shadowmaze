@@ -17,6 +17,7 @@ class character {
     int get_atk() const;
     int get_def() const;
     std::string get_race() const;
+    char get_symbol() const;
     // bool get_dead() const;
     pos get_pos() const;
     // void set_hp(int hp);

@@ -9,6 +9,7 @@ class enemy_character: public character {
     std::string drop_item;
     bool active = true;
     bool hostile;
+    bool moved;
  public:
     enemy_character(int hp, int atk, int def, std::string race, char symbol, bool hostile);
     std::string get_drop_item() const;
@@ -18,6 +19,8 @@ class enemy_character: public character {
     void set_active(bool active);
     void set_hostile(bool hostile);
     virtual void attack() = 0;
+    void set_moved(bool moved);
+    bool is_moved();
     // virtual void attacked() = 0;
     
 };

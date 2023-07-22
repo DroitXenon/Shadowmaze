@@ -25,6 +25,10 @@ std::string character::get_race() const{
     return race;
 }
 
+char character::get_symbol() const{
+    return symbol;
+}
+
 pos character::get_pos() const
 {
     return position;

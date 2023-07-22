@@ -31,3 +31,11 @@ void enemy_character::set_hostile(bool hostile) {
 void enemy_character::attack() {
     std::cout << "Enemy attacks!" << std::endl;
 }
+
+void enemy_character::set_moved(bool moved) {
+    this->moved = moved;
+}
+
+bool enemy_character::is_moved() {
+    return moved;
+}
