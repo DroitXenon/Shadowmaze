@@ -471,46 +471,11 @@ void map::move_player(std::string direction) {
 }
 
 void map::player_attack(std::string direction) {
-    if (direction == "so") {
-        int enemy_id = which_enemy(player->get_pos().get_x(), player->get_pos().get_y() + 1);
-        if (enemy_id != -1) {
+    int enemy_id = which_enemy(direction_pos(direction, player->get_pos()).get_x(), direction_pos(direction, player->get_pos()).get_y());
+    if (enemy_id != -1) {
             player->attack(enemies[enemy_id]);
-        }
-    } else if (direction == "no") {
-        int enemy_id = which_enemy(player->get_pos().get_x(), player->get_pos().get_y() - 1);
-        if (enemy_id != -1) {
-            player->attack(enemies[enemy_id]);
-        }
-    } else if (direction == "ea") {
-        int enemy_id = which_enemy(player->get_pos().get_x() + 1, player->get_pos().get_y());
-        if (enemy_id != -1) {
-            player->attack(enemies[enemy_id]);
-        }
-    } else if (direction == "we") {
-        int enemy_id = which_enemy(player->get_pos().get_x() - 1, player->get_pos().get_y());
-        if (enemy_id != -1) {
-            player->attack(enemies[enemy_id]);
-        }
-    } else if (direction == "ne") {
-        int enemy_id = which_enemy(player->get_pos().get_x() + 1, player->get_pos().get_y() - 1);
-        if (enemy_id != -1) {
-            player->attack(enemies[enemy_id]);
-        }
-    } else if (direction == "nw") {
-        int enemy_id = which_enemy(player->get_pos().get_x() - 1, player->get_pos().get_y() - 1);
-        if (enemy_id != -1) {
-            player->attack(enemies[enemy_id]);
-        }
-    } else if (direction == "se") {
-        int enemy_id = which_enemy(player->get_pos().get_x() + 1, player->get_pos().get_y() + 1);
-        if (enemy_id != -1) {
-            player->attack(enemies[enemy_id]);
-        }
     } else {
-        int enemy_id = which_enemy(player->get_pos().get_x() - 1, player->get_pos().get_y() + 1);
-        if (enemy_id != -1) {
-            player->attack(enemies[enemy_id]);
-        }
+        actions.emplace_back("No enemy in this direction. You wasted a turn.");
     }
 }
 
@@ -689,4 +654,33 @@ int map::which_enemy(int x, int y) {
 }
 
 int map::which_potion() {
+    return -1;
+}
+
+pos map::direction_pos(std::string direction, pos current_pos) {
+    if (direction == "so") {
+        pos p{current_pos.get_x(), current_pos.get_y() + 1, current_pos.get_floor()};
+        return p;
+    } else if (direction == "no") {
+        pos p{current_pos.get_x(), current_pos.get_y() - 1, current_pos.get_floor()};
+        return p;
+    } else if (direction == "ea") {
+        pos p{current_pos.get_x() + 1, current_pos.get_y(), current_pos.get_floor()};
+        return p;
+    } else if (direction == "we") {
+        pos p{current_pos.get_x() - 1, current_pos.get_y(), current_pos.get_floor()};
+        return p;
+    } else if (direction == "ne") {
+        pos p{current_pos.get_x() + 1, current_pos.get_y() - 1, current_pos.get_floor()};
+        return p;
+    } else if (direction == "nw") {
+        pos p{current_pos.get_x() - 1, current_pos.get_y() - 1, current_pos.get_floor()};
+        return p;
+    } else if (direction == "se") {
+        pos p{current_pos.get_x() + 1, current_pos.get_y() + 1, current_pos.get_floor()};
+        return p;
+    } else {
+        pos p{current_pos.get_x() - 1, current_pos.get_y() + 1, current_pos.get_floor()};
+        return p;
+    }
 }
