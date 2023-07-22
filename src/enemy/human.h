@@ -6,7 +6,7 @@
 class human: public enemy_character {
  public:
     human();
-    void attack() override;
+    void attack(std::shared_ptr<player_character> player) override;
     // void attacked() override;
 };
 

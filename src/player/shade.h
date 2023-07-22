@@ -6,7 +6,7 @@
 class shade: public player_character {
  public:
     shade();
-    void attack() override;
+    void attack(std::shared_ptr<enemy_character> enemy) override;
     // void attacked() override;
 };
 

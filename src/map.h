@@ -47,7 +47,7 @@ class map {
     void move_enemy();
     void enemy_attack();
     void use_potion(std::string& direction);
-    bool is_adjacent();
+    bool is_adjacent(pos p1, pos p2);
     int which_enemy(int x, int y);
     int which_potion();
 };

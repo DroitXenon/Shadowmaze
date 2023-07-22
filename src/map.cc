@@ -471,8 +471,60 @@ void map::move_player(std::string direction) {
 }
 
 void map::player_attack(std::string direction) {
-
+    if (direction == "so") {
+        int enemy_id = which_enemy(player->get_pos().get_x(), player->get_pos().get_y() + 1);
+        if (enemy_id != -1) {
+            player->attack(enemies[enemy_id]);
+        }
+    } else if (direction == "no") {
+        int enemy_id = which_enemy(player->get_pos().get_x(), player->get_pos().get_y() - 1);
+        if (enemy_id != -1) {
+            player->attack(enemies[enemy_id]);
+        }
+    } else if (direction == "ea") {
+        int enemy_id = which_enemy(player->get_pos().get_x() + 1, player->get_pos().get_y());
+        if (enemy_id != -1) {
+            player->attack(enemies[enemy_id]);
+        }
+    } else if (direction == "we") {
+        int enemy_id = which_enemy(player->get_pos().get_x() - 1, player->get_pos().get_y());
+        if (enemy_id != -1) {
+            player->attack(enemies[enemy_id]);
+        }
+    } else if (direction == "ne") {
+        int enemy_id = which_enemy(player->get_pos().get_x() + 1, player->get_pos().get_y() - 1);
+        if (enemy_id != -1) {
+            player->attack(enemies[enemy_id]);
+        }
+    } else if (direction == "nw") {
+        int enemy_id = which_enemy(player->get_pos().get_x() - 1, player->get_pos().get_y() - 1);
+        if (enemy_id != -1) {
+            player->attack(enemies[enemy_id]);
+        }
+    } else if (direction == "se") {
+        int enemy_id = which_enemy(player->get_pos().get_x() + 1, player->get_pos().get_y() + 1);
+        if (enemy_id != -1) {
+            player->attack(enemies[enemy_id]);
+        }
+    } else {
+        int enemy_id = which_enemy(player->get_pos().get_x() - 1, player->get_pos().get_y() + 1);
+        if (enemy_id != -1) {
+            player->attack(enemies[enemy_id]);
+        }
+    }
 }
+
+// void map::move_enemy_from_to(int enemy_id, int x1, int y1, int x2, int y2) {
+//     map_cell[x1][y1].set_cell_type(origin_map_cell[x1][y1].get_cell_type());
+//     map_cell[x1][y1].set_cell_name(origin_map_cell[x1][y1].get_cell_name());
+//     map_cell[x1][y1].set_step(origin_map_cell[x1][y1].get_step());
+//     pos p{x2, y2, enemies[enemy_id]->get_pos().get_floor()};
+//     enemies[enemy_id]->set_pos(p);
+//     enemies[enemy_id]->set_moved(true);
+//     map_cell[x2][y2].set_cell_type(enemies[enemy_id]->get_symbol());
+//     map_cell[x2][y2].set_cell_name(enemies[enemy_id]->get_race());
+//     map_cell[x2][y2].set_step(false);
+// }
 
 void map::move_enemy() {
     for (int i = 0; i < NUM_ROW; ++i) {  
@@ -606,15 +658,25 @@ void map::move_enemy() {
 }
 
 void map::enemy_attack() {
-    
+    for (int i = 0; i < num_enemy; ++i) {
+        if (is_adjacent(enemies[i]->get_pos(), player->get_pos())) {
+            if (enemies[i]->is_hostile()) {
+                enemies[i]->attack(player);
+            }
+        }
+    }
 }
 
 
 void map::use_potion(std::string &direction) {
 }
 
-bool map::is_adjacent() {
-    
+bool map::is_adjacent(pos p1, pos p2) {
+    if (abs(p1.get_x() - p2.get_x()) <= 1 && abs(p1.get_y() - p2.get_y()) <= 1) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 int map::which_enemy(int x, int y) {

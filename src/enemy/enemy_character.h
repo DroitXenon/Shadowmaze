@@ -4,7 +4,9 @@
 #include <iostream>
 #include "../character.h"
 #include "../pos.h"
+#include "../player/player_character.h"
 
+class player_character;
 class enemy_character: public character {
     std::string drop_item;
     bool active = true;
@@ -18,9 +20,10 @@ class enemy_character: public character {
     void set_drop_item(std::string drop_item);
     void set_active(bool active);
     void set_hostile(bool hostile);
-    virtual void attack() = 0;
+    
     void set_moved(bool moved);
     bool is_moved();
+    virtual void attack(std::shared_ptr<player_character> player) = 0;
     // virtual void attacked() = 0;
     
 };

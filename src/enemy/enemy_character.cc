@@ -28,9 +28,6 @@ void enemy_character::set_hostile(bool hostile) {
     this->hostile = hostile;
 }
 
-void enemy_character::attack() {
-    std::cout << "Enemy attacks!" << std::endl;
-}
 
 void enemy_character::set_moved(bool moved) {
     this->moved = moved;

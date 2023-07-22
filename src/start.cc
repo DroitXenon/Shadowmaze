@@ -46,11 +46,11 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
         //     //game_map.use_potion(cmd);
         //     //game_map.move_enemy();
         //     //game_map.print_map();
-        // } else if (cmd == "a") {
-        //     std::cin >> cmd;
-            
-        //     //game_map.move_enemy();
-        //     //game_map.print_map();
+        } else if (cmd == "a") {
+            std::cin >> cmd;
+            game_map.player_attack(cmd);
+            game_map.enemy_attack();
+            game_map.print_map();
         } else if (cmd == "r") {
             std::cout << "Restarting" << std::endl;
             break;

@@ -4,7 +4,9 @@
 #include <iostream>
 #include "../character.h"
 #include "../pos.h"
+#include "../enemy/enemy_character.h"
 
+class enemy_character;
 class player_character: public character {
     int max_hp;
     int gold = 0;
@@ -14,7 +16,7 @@ class player_character: public character {
     int get_gold() const;
     //void set_gold(int gold);
     // virtual void use() = 0;
-    virtual void attack() = 0;
+    virtual void attack(std::shared_ptr<enemy_character> enemy) = 0;
     // virtual void attacked() = 0;
     
 };
