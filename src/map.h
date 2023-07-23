@@ -73,6 +73,7 @@ class map {
     bool is_gameover();
     void set_gameover();
     void check_state();
+    void add_action(std::string action);
 };
 
 

@@ -571,3 +571,7 @@ void map::set_gameover() {
 
 void map::check_state() {
 }
+
+void map::add_action(std::string action) {
+    actions.emplace_back(action);
+}
