@@ -10,5 +10,4 @@ class dwarf: public enemy_character {
     // void attacked() override;
 };
 
-
 #endif
