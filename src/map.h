@@ -35,6 +35,8 @@ class map {
     int num_posion = 0;
     int num_gold = 0;
     int num_enemy = 0;
+    int floor = 1;
+    bool floor_change = false;
     cell map_cell[NUM_COL][NUM_ROW];
     cell origin_map_cell[NUM_COL][NUM_ROW];
     std::vector<std::string> actions;
@@ -73,7 +75,8 @@ class map {
     bool is_gameover();
     void set_gameover();
     void check_state();
-    void add_action(std::string action);
+    bool get_floor_change();
+    int get_floor();
 };
 
 

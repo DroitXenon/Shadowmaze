@@ -7,6 +7,7 @@
 #include "../pos.h"
 #include "../player/player_character.h"
 
+
 class player_character;
 class enemy_character: public character {
     std::vector<int> drop_item;

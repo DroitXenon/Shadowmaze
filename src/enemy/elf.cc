@@ -8,17 +8,17 @@ int elf::attack(std::shared_ptr<player_character> player) {
     int miss = rand() % 2;
     if (miss) {
         damage = 0;
-        //map::add_action("Elf missed!");
+        //add_action("Elf missed!");
     }
     player->set_hp(player->get_hp() - damage);
     if (player->get_race() != "drow") {
         miss = rand() % 2;
         if (!miss) {
-            //map::add_action("Elf attacks again!");
+            //add_action("Elf attacks again!");
             damage = (int) ceil((100.0 / (100 + player->get_def())) * get_atk());
             player->set_hp(player->get_hp() - damage);
         } else {
-            //map::add_action("Elf missed, again!");
+            //add_action("Elf missed, again!");
         }
     }
     return damage; 

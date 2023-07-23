@@ -2,7 +2,9 @@
 #define CHARACTER_H
 #include <iostream>
 #include "pos.h"
+//#include "map.h"
 
+//class map;
 class character {
     int hp;
     int atk;
