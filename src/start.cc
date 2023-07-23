@@ -1,6 +1,10 @@
 #include "start.h"
 #include "character.h"
 #include "player/shade.h"
+#include "player/drow.h"
+#include "player/vampire.h"
+#include "player/troll.h"
+#include "player/goblin.h"
 #include "pos.h"
 #include "map.h"
 
@@ -20,6 +24,29 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
             game_map.set_player(pc);
             std::cout << "You chose shade" << std::endl;
             break;
+        } else if (cmd == "d") {
+            auto pc = std::make_shared<drow>();
+            game_map.set_player(pc);
+            std::cout << "You chose drow" << std::endl;
+            break;
+        } else if (cmd == "v") {
+            auto pc = std::make_shared<vampire>();
+            game_map.set_player(pc);
+            std::cout << "You chose vampire" << std::endl;
+            break;
+        } else if (cmd == "t") {
+            auto pc = std::make_shared<troll>();
+            game_map.set_player(pc);
+            std::cout << "You chose troll" << std::endl;
+            break;
+        } else if (cmd == "g") {
+            auto pc = std::make_shared<goblin>();
+            game_map.set_player(pc);
+            std::cout << "You chose goblin" << std::endl;
+            break;
+        } else if (cmd == "q") {
+            std::cout << "Quitting" << std::endl;
+            return;
         } else {
             std::cerr << "Not Valid Input, please enter your race" << std::endl;
         }
@@ -43,14 +70,25 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
             game_map.print_map();
         //} else if (cmd == "u") {
         //     std::cin >> cmd;
-        //     //game_map.use_potion(cmd);
-        //     //game_map.move_enemy();
-        //     //game_map.print_map();
+        //     game_map.use_potion(cmd);
+        //     game_map.move_enemy();
+        //     if (game_map.is_gameover()) {
+            //     std::cout << "Game Over" << std::endl;
+            //     return;
+            // } else {
+            //     game_map.print_map();
+            // }
         } else if (cmd == "a") {
             std::cin >> cmd;
             game_map.player_attack(cmd);
             game_map.enemy_attack();
-            game_map.print_map();
+            game_map.check_state();
+            if (game_map.is_gameover()) {
+                std::cout << "Game Over" << std::endl;
+                return;
+            } else {
+                game_map.print_map();
+            }
         } else if (cmd == "r") {
             std::cout << "Restarting" << std::endl;
             break;

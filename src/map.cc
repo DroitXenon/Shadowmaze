@@ -305,13 +305,6 @@ void map::read_map_file(std::string& filename, int floor) {
                     origin_map_cell[i][row].set_cell_name("tile");
                     origin_map_cell[i][row].set_step(true);
                     //
-                } else if (line[i] == '@') {
-                    map_cell[i][row].set_cell_type('@');
-                    map_cell[i][row].set_cell_name("player");
-                    map_cell[i][row].set_step(true);
-                    origin_map_cell[i][row].set_cell_type('.');
-                    origin_map_cell[i][row].set_cell_name("tile");
-                    origin_map_cell[i][row].set_step(true);
                 } else if (line[i] == 'H') {
                     map_cell[i][row].set_cell_type('H');
                     map_cell[i][row].set_cell_name("enemy");
@@ -324,17 +317,71 @@ void map::read_map_file(std::string& filename, int floor) {
                     enemies.emplace_back(enemy);
                     num_enemy++;
                 } else if (line[i] == 'W') {
-                    
+                    map_cell[i][row].set_cell_type('H');
+                    map_cell[i][row].set_cell_name("enemy");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_type('.');
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    auto enemy = std::make_shared<dwarf>();
+                    enemy->set_pos(pos{i, row, floor});
+                    enemies.emplace_back(enemy);
+                    num_enemy++;
                 } else if (line[i] == 'E') {
-
+                    map_cell[i][row].set_cell_type('H');
+                    map_cell[i][row].set_cell_name("enemy");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_type('.');
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    auto enemy = std::make_shared<elf>();
+                    enemy->set_pos(pos{i, row, floor});
+                    enemies.emplace_back(enemy);
+                    num_enemy++;
                 } else if (line[i] == 'O') {
-
+                    map_cell[i][row].set_cell_type('H');
+                    map_cell[i][row].set_cell_name("enemy");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_type('.');
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    auto enemy = std::make_shared<orc>();
+                    enemy->set_pos(pos{i, row, floor});
+                    enemies.emplace_back(enemy);
+                    num_enemy++;
                 } else if (line[i] == 'M') {
-
+                    map_cell[i][row].set_cell_type('H');
+                    map_cell[i][row].set_cell_name("enemy");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_type('.');
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    auto enemy = std::make_shared<merchant>();
+                    enemy->set_pos(pos{i, row, floor});
+                    enemies.emplace_back(enemy);
+                    num_enemy++;
                 } else if (line[i] == 'D') {
-
+                    map_cell[i][row].set_cell_type('H');
+                    map_cell[i][row].set_cell_name("enemy");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_type('.');
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    auto enemy = std::make_shared<dragon>();
+                    enemy->set_pos(pos{i, row, floor});
+                    enemies.emplace_back(enemy);
+                    num_enemy++;
                 } else if (line[i] == 'L') {
-
+                    map_cell[i][row].set_cell_type('H');
+                    map_cell[i][row].set_cell_name("enemy");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_type('.');
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    auto enemy = std::make_shared<halfling>();
+                    enemy->set_pos(pos{i, row, floor});
+                    enemies.emplace_back(enemy);
+                    num_enemy++;
                 }
             }
             ++row;
@@ -472,8 +519,19 @@ void map::move_player(std::string direction) {
 
 void map::player_attack(std::string direction) {
     int enemy_id = which_enemy(direction_pos(direction, player->get_pos()).get_x(), direction_pos(direction, player->get_pos()).get_y());
-    if (enemy_id != -1) {
-            player->attack(enemies[enemy_id]);
+    if (enemy_id != -1 && !enemies[enemy_id]->get_dead()) {
+        int damage = player->attack(enemies[enemy_id]);
+        actions.emplace_back("PC deals " + std::to_string(damage) + " damage to H (");
+        if (enemies[enemy_id]->get_hp() <= 0) {
+            actions.emplace_back("Dead).");
+            //std::cout << "enemy dead" << std::endl;
+            map_cell[enemies[enemy_id]->get_pos().get_x()][enemies[enemy_id]->get_pos().get_y()].set_cell_type('.');
+            map_cell[enemies[enemy_id]->get_pos().get_x()][enemies[enemy_id]->get_pos().get_y()].set_cell_name("tile");
+            map_cell[enemies[enemy_id]->get_pos().get_x()][enemies[enemy_id]->get_pos().get_y()].set_step(true);
+            enemies[enemy_id]->set_dead(true);
+        } else {
+            actions.emplace_back(std::to_string(enemies[enemy_id]->get_hp()) + "HP).");
+        }
     } else {
         actions.emplace_back("No enemy in this direction. You wasted a turn.");
     }
@@ -495,7 +553,7 @@ void map::move_enemy() {
     for (int i = 0; i < NUM_ROW; ++i) {  
         for (int j = 0; j < NUM_COL; ++j) {
             int enemy_id = which_enemy(j, i);
-            if (enemy_id != -1 && !enemies[enemy_id]->is_moved()) { //if found enemy
+            if (enemy_id != -1 && !enemies[enemy_id]->is_moved() && !enemies[enemy_id]->get_dead()) { //if found enemy
                 std::cout << "enemy found" << std::endl;
                 while (!enemies[enemy_id]->is_moved()) {
                     int random_direction = rand() % 8;
@@ -624,14 +682,19 @@ void map::move_enemy() {
 
 void map::enemy_attack() {
     for (int i = 0; i < num_enemy; ++i) {
-        if (is_adjacent(enemies[i]->get_pos(), player->get_pos())) {
+        if (!enemies[i]->get_dead() && is_adjacent(enemies[i]->get_pos(), player->get_pos())) {
             if (enemies[i]->is_hostile()) {
-                enemies[i]->attack(player);
+                int damage = enemies[i]->attack(player);
+                actions.emplace_back(enemies[i]->get_race() + " deals " + std::to_string(damage) + " damage to PC. ");
+                if (player->get_hp() <= 0) {
+                    player->set_dead(true);
+                    set_gameover();
+                    return;
+                }
             }
         }
     }
 }
-
 
 void map::use_potion(std::string &direction) {
 }
@@ -683,4 +746,15 @@ pos map::direction_pos(std::string direction, pos current_pos) {
         pos p{current_pos.get_x() - 1, current_pos.get_y() + 1, current_pos.get_floor()};
         return p;
     }
+}
+
+bool map::is_gameover() {
+    return gameover;
+}
+
+void map::set_gameover() {
+    gameover = true;
+}
+
+void map::check_state() {
 }

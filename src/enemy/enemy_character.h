@@ -23,7 +23,7 @@ class enemy_character: public character {
     
     void set_moved(bool moved);
     bool is_moved();
-    virtual void attack(std::shared_ptr<player_character> player) = 0;
+    virtual int attack(std::shared_ptr<player_character> player) = 0;
     // virtual void attacked() = 0;
     
 };

@@ -1,19 +1,21 @@
-#include "shade.h"
+#include "troll.h"
 #include <iostream>
 
-shade::shade(): 
-    player_character{125, 25, 25, "shade", 's', 125} {}
+troll::troll(): 
+    player_character{120, 25, 15, "troll", 't', 120} {}
 
-int shade::attack(std::shared_ptr<enemy_character> enemy) {
-    //std::cout << "Player Attack!" <<std::endl;
+int troll::attack(std::shared_ptr<enemy_character> enemy) {
     int damage = (int) ceil((100.0 / (100.0 + enemy->get_def())) * get_atk());
-    //std::cout << "Player damage: " << damage << std::endl;
     if (enemy->get_race() == "halfling") {
         int miss = rand() % 2;
         if (miss) {
             damage = 0;
         } 
     }
+    set_hp(get_hp() + 5);
+    if (get_hp() > get_max_hp()) {
+        set_hp(get_max_hp());
+    }
     enemy->set_hp(enemy->get_hp() - damage);
-    return damage;
+    return damage;   
 }

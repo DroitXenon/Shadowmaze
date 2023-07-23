@@ -1,11 +1,11 @@
-#ifndef HUMAN_H
-#define HUMAN_H
+#ifndef DWARF_H
+#define DWARF_H
 #include "enemy_character.h"
 #include <iostream>
 
-class human: public enemy_character {
+class dwarf: public enemy_character {
  public:
-    human();
+    dwarf();
     int attack(std::shared_ptr<player_character> player) override;
     // void attacked() override;
 };

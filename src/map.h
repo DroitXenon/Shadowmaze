@@ -2,14 +2,20 @@
 #define MAP_H
 #include <memory>
 #include <iostream>
+#include <fstream>
+#include <vector>
 #include "player/player_character.h"
 #include "enemy/enemy_character.h"
 #include "enemy/human.h"
+#include "enemy/dwarf.h"
+#include "enemy/elf.h"
+#include "enemy/orc.h"
+#include "enemy/merchant.h"
+#include "enemy/dragon.h"
+#include "enemy/halfling.h"
 #include "pos.h"
 #include "cell.h"
-#include <fstream>
-#include <iostream>
-#include <vector>
+
 
 const int NUM_COL = 79;
 const int NUM_ROW = 25;
@@ -30,6 +36,8 @@ class map {
     cell map_cell[NUM_COL][NUM_ROW];
     cell origin_map_cell[NUM_COL][NUM_ROW];
     std::vector<std::string> actions;
+    bool gameover = false;
+
 
  public:
     void set_player(std::shared_ptr<player_character> pc);
@@ -51,6 +59,9 @@ class map {
     int which_enemy(int x, int y);
     int which_potion();
     pos direction_pos(std::string direction, pos current_pos);
+    bool is_gameover();
+    void set_gameover();
+    void check_state();
 };
 
 

@@ -16,7 +16,7 @@ class player_character: public character {
     int get_gold() const;
     //void set_gold(int gold);
     // virtual void use() = 0;
-    virtual void attack(std::shared_ptr<enemy_character> enemy) = 0;
+    virtual int attack(std::shared_ptr<enemy_character> enemy) = 0;
     // virtual void attacked() = 0;
     
 };

@@ -18,12 +18,12 @@ class character {
     int get_def() const;
     std::string get_race() const;
     char get_symbol() const;
-    // bool get_dead() const;
+    bool get_dead() const;
     pos get_pos() const;
-    // void set_hp(int hp);
+    void set_hp(int hp);
     // void set_atk(int atk);
     // void set_def(int def);
-    // void set_dead(bool is_dead);
+    void set_dead(bool is_dead);
     void set_pos(pos position);
     virtual ~character() = 0;
     
