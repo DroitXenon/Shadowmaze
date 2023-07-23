@@ -4,6 +4,8 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <string>
+#include <map>
 #include "player/player_character.h"
 #include "enemy/enemy_character.h"
 #include "enemy/human.h"
@@ -37,7 +39,16 @@ class map {
     cell origin_map_cell[NUM_COL][NUM_ROW];
     std::vector<std::string> actions;
     bool gameover = false;
-
+    std::map<int, std::string> direction_map { 
+        {0,"so"}, 
+        {1,"no"}, 
+        {2,"ea"}, 
+        {3,"we"}, 
+        {4,"ne"}, 
+        {5,"nw"}, 
+        {6,"se"}, 
+        {7,"sw"} 
+        };
 
  public:
     void set_player(std::shared_ptr<player_character> pc);

@@ -4,7 +4,7 @@ enemy_character::enemy_character(int hp, int atk, int def, std::string race, cha
     character{hp, atk, def, race, symbol},
     hostile{hostile} {}
 
-std::string enemy_character::get_drop_item() const {
+std::vector<int> enemy_character::get_drop_item() const {
     return drop_item;
 }
 
@@ -16,9 +16,9 @@ bool enemy_character::is_hostile() const {
     return hostile;
 }
 
-void enemy_character::set_drop_item(std::string drop_item) {
-    this->drop_item = drop_item;
-}
+// void enemy_character::set_drop_item(std::vector<int> item_index) {
+//     this->drop_item = drop_item;
+// }
 
 void enemy_character::set_active(bool active) {
     this->active = active;

@@ -409,112 +409,20 @@ void map::print_map() {
 }
 
 void map::move_player(std::string direction) {
-    if (direction == "no") {
-        if (map_cell[player->get_pos().get_x()][player->get_pos().get_y() - 1].get_step()) {
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_name());
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_step(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_step());
-            pos p{player->get_pos().get_x(), player->get_pos().get_y() - 1, player->get_pos().get_floor()};
-            player->set_pos(p);
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
-            actions.emplace_back("PC moves North.");
-        } else {
-            actions.emplace_back("PC cannot move North.");
-        }
-    } else if (direction == "so") {
-        if (map_cell[player->get_pos().get_x()][player->get_pos().get_y() + 1].get_step()) {
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_name());
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_step(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_step());
-            pos p{player->get_pos().get_x(), player->get_pos().get_y() + 1, player->get_pos().get_floor()};
-            player->set_pos(p);
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
-            actions.emplace_back("PC moves South.");
-        } else {
-            actions.emplace_back("PC cannot move South.");
-        }
-    } else if (direction == "ea") {
-        if (map_cell[player->get_pos().get_x() + 1][player->get_pos().get_y()].get_step()) {
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_name());
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_step(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_step());
-            pos p{player->get_pos().get_x() + 1, player->get_pos().get_y(), player->get_pos().get_floor()};
-            player->set_pos(p);
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
-            actions.emplace_back("PC moves East.");
-        } else {
-            actions.emplace_back("PC cannot move East.");
-        }
-    } else if (direction == "we") {
-        if (map_cell[player->get_pos().get_x() - 1][player->get_pos().get_y()].get_step()) {
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_name());
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_step(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_step());
-            pos p{player->get_pos().get_x() - 1, player->get_pos().get_y(), player->get_pos().get_floor()};
-            player->set_pos(p);
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
-            actions.emplace_back("PC moves West.");
-        } else {
-            actions.emplace_back("PC cannot move West.");
-        }
-    } else if (direction == "ne") {
-        if (map_cell[player->get_pos().get_x() + 1][player->get_pos().get_y() - 1].get_step()) {
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_name());
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_step(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_step());
-            pos p{player->get_pos().get_x() + 1, player->get_pos().get_y() - 1, player->get_pos().get_floor()};
-            player->set_pos(p);
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
-            actions.emplace_back("PC moves Northeast.");
-        } else {
-            actions.emplace_back("PC cannot move Northeast.");
-        }
-    } else if (direction == "nw") {
-        if (map_cell[player->get_pos().get_x() - 1][player->get_pos().get_y() - 1].get_step()) {
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_name());
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_step(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_step());
-            pos p{player->get_pos().get_x() - 1, player->get_pos().get_y() - 1, player->get_pos().get_floor()};
-            player->set_pos(p);
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
-            actions.emplace_back("PC moves Northwest.");
-        } else {
-            actions.emplace_back("PC cannot move Northwest.");
-        }
-    } else if (direction == "se") {
-        if (map_cell[player->get_pos().get_x() + 1][player->get_pos().get_y() + 1].get_step()) {
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_name());
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_step(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_step());
-            pos p{player->get_pos().get_x() + 1, player->get_pos().get_y() + 1, player->get_pos().get_floor()};
-            player->set_pos(p);
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
-            actions.emplace_back("PC moves Southeast.");
-        } else {
-            actions.emplace_back("PC cannot move Southeast.");
-        }
+    int new_x = direction_pos(direction, player->get_pos()).get_x();
+    int new_y = direction_pos(direction, player->get_pos()).get_y();
+    if (map_cell[new_x][new_y].get_step()) {
+        map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
+        map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_name());
+        map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_step(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_step());
+        pos p{new_x, new_y, player->get_pos().get_floor()};
+        player->set_pos(p);
+        map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
+        map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
+        actions.emplace_back("PC moves " + direction + ".");
     } else {
-        if (map_cell[player->get_pos().get_x() - 1][player->get_pos().get_y() + 1].get_step()) {
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_name());
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_step(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_step());
-            pos p{player->get_pos().get_x() - 1, player->get_pos().get_y() + 1, player->get_pos().get_floor()};
-            player->set_pos(p);
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
-            actions.emplace_back("PC moves Southwest.");
-        } else {
-            actions.emplace_back("PC cannot move Southwest.");
-        }
+        actions.emplace_back("PC cannot moves " + direction + ".");
     }
-
 }
 
 void map::player_attack(std::string direction) {
@@ -528,7 +436,9 @@ void map::player_attack(std::string direction) {
             map_cell[enemies[enemy_id]->get_pos().get_x()][enemies[enemy_id]->get_pos().get_y()].set_cell_type('.');
             map_cell[enemies[enemy_id]->get_pos().get_x()][enemies[enemy_id]->get_pos().get_y()].set_cell_name("tile");
             map_cell[enemies[enemy_id]->get_pos().get_x()][enemies[enemy_id]->get_pos().get_y()].set_step(true);
-            enemies[enemy_id]->set_dead(true);
+            enemies.erase(enemies.begin() + enemy_id);
+            enemies.shrink_to_fit();
+            num_enemy--;
         } else {
             actions.emplace_back(std::to_string(enemies[enemy_id]->get_hp()) + "HP).");
         }
@@ -554,122 +464,26 @@ void map::move_enemy() {
         for (int j = 0; j < NUM_COL; ++j) {
             int enemy_id = which_enemy(j, i);
             if (enemy_id != -1 && !enemies[enemy_id]->is_moved() && !enemies[enemy_id]->get_dead()) { //if found enemy
-                std::cout << "enemy found" << std::endl;
+                //std::cout << "enemy found" << std::endl;
                 while (!enemies[enemy_id]->is_moved()) {
                     int random_direction = rand() % 8;
-                    std::cout << random_direction << std::endl;
-                    if (random_direction == 0) {
-                        if (map_cell[j][i - 1].get_cell_type() == '.') {
-                            map_cell[j][i].set_cell_type(origin_map_cell[j][i].get_cell_type());
-                            map_cell[j][i].set_cell_name(origin_map_cell[j][i].get_cell_name());
-                            map_cell[j][i].set_step(origin_map_cell[j][i].get_step());
-                            pos p{j, i - 1, enemies[enemy_id]->get_pos().get_floor()};
-                            enemies[enemy_id]->set_pos(p);
-                            enemies[enemy_id]->set_moved(true);
-                            map_cell[j][i - 1].set_cell_type(enemies[enemy_id]->get_symbol());
-                            map_cell[j][i - 1].set_cell_name(enemies[enemy_id]->get_race());
-                            map_cell[j][i - 1].set_step(false);
-                        } else {
-                            random_direction = rand() % 8;
-                        }
-                    } else if (random_direction == 1) {
-                        if (map_cell[j][i + 1].get_cell_type() == '.') {
-                            map_cell[j][i].set_cell_type(origin_map_cell[j][i].get_cell_type());
-                            map_cell[j][i].set_cell_name(origin_map_cell[j][i].get_cell_name());
-                            map_cell[j][i].set_step(origin_map_cell[j][i].get_step());
-                            pos p{j, i + 1, enemies[enemy_id]->get_pos().get_floor()};
-                            enemies[enemy_id]->set_pos(p);
-                            enemies[enemy_id]->set_moved(true);
-                            map_cell[j][i + 1].set_cell_type(enemies[enemy_id]->get_symbol());
-                            map_cell[j][i + 1].set_cell_name(enemies[enemy_id]->get_race());
-                            map_cell[j][i + 1].set_step(false);
-                        } else {
-                            random_direction = rand() % 8;
-                        }
-                    } else if (random_direction == 2) {
-                        if (map_cell[j - 1][i].get_cell_type() == '.') {
-                            map_cell[j][i].set_cell_type(origin_map_cell[j][i].get_cell_type());
-                            map_cell[j][i].set_cell_name(origin_map_cell[j][i].get_cell_name());
-                            map_cell[j][i].set_step(origin_map_cell[j][i].get_step());
-                            pos p{j - 1, i, enemies[enemy_id]->get_pos().get_floor()};
-                            enemies[enemy_id]->set_pos(p);
-                            enemies[enemy_id]->set_moved(true);
-                            map_cell[j - 1][i].set_cell_type(enemies[enemy_id]->get_symbol());
-                            map_cell[j - 1][i].set_cell_name(enemies[enemy_id]->get_race());
-                            map_cell[j - 1][i].set_step(false);
-                        } else {
-                            random_direction = rand() % 8;
-                        }
-                    } else if (random_direction == 3) {
-                        if (map_cell[j + 1][i].get_cell_type() == '.') {
-                            map_cell[j][i].set_cell_type(origin_map_cell[j][i].get_cell_type());
-                            map_cell[j][i].set_cell_name(origin_map_cell[j][i].get_cell_name());
-                            map_cell[j][i].set_step(origin_map_cell[j][i].get_step());
-                            pos p{j + 1, i, enemies[enemy_id]->get_pos().get_floor()};
-                            enemies[enemy_id]->set_pos(p);
-                            enemies[enemy_id]->set_moved(true);
-                            map_cell[j + 1][i].set_cell_type(enemies[enemy_id]->get_symbol());
-                            map_cell[j + 1][i].set_cell_name(enemies[enemy_id]->get_race());
-                            map_cell[j + 1][i].set_step(false);
-                        } else {
-                            random_direction = rand() % 8;
-                        }
-                    } else if (random_direction == 4) {
-                        if (map_cell[j + 1][i + 1].get_cell_type() == '.') {
-                            map_cell[j][i].set_cell_type(origin_map_cell[j][i].get_cell_type());
-                            map_cell[j][i].set_cell_name(origin_map_cell[j][i].get_cell_name());
-                            map_cell[j][i].set_step(origin_map_cell[j][i].get_step());
-                            pos p{j + 1, i + 1, enemies[enemy_id]->get_pos().get_floor()};
-                            enemies[enemy_id]->set_pos(p);
-                            enemies[enemy_id]->set_moved(true);
-                            map_cell[j + 1][i + 1].set_cell_type(enemies[enemy_id]->get_symbol());
-                            map_cell[j + 1][i + 1].set_cell_name(enemies[enemy_id]->get_race());
-                            map_cell[j + 1][i + 1].set_step(false);
-                        } else {
-                            random_direction = rand() % 8;
-                        }
-                    } else if (random_direction == 5) {
-                        if (map_cell[j + 1][i - 1].get_cell_type() == '.') {
-                            map_cell[j][i].set_cell_type(origin_map_cell[j][i].get_cell_type());
-                            map_cell[j][i].set_cell_name(origin_map_cell[j][i].get_cell_name());
-                            map_cell[j][i].set_step(origin_map_cell[j][i].get_step());
-                            pos p{j + 1, i - 1, enemies[enemy_id]->get_pos().get_floor()};
-                            enemies[enemy_id]->set_pos(p);
-                            enemies[enemy_id]->set_moved(true);
-                            map_cell[j + 1][i - 1].set_cell_type(enemies[enemy_id]->get_symbol());
-                            map_cell[j + 1][i - 1].set_cell_name(enemies[enemy_id]->get_race());
-                            map_cell[j + 1][i - 1].set_step(false);
-                        } else {
-                            random_direction = rand() % 8;
-                        }
-                    } else if (random_direction == 6) {
-                        if (map_cell[j - 1][i - 1].get_cell_type() == '.') {
-                            map_cell[j][i].set_cell_type(origin_map_cell[j][i].get_cell_type());
-                            map_cell[j][i].set_cell_name(origin_map_cell[j][i].get_cell_name());
-                            map_cell[j][i].set_step(origin_map_cell[j][i].get_step());
-                            pos p{j - 1, i - 1, enemies[enemy_id]->get_pos().get_floor()};
-                            enemies[enemy_id]->set_pos(p);
-                            enemies[enemy_id]->set_moved(true);
-                            map_cell[j - 1][i - 1].set_cell_type(enemies[enemy_id]->get_symbol());
-                            map_cell[j - 1][i - 1].set_cell_name(enemies[enemy_id]->get_race());
-                            map_cell[j - 1][i - 1].set_step(false);
-                        } else {
-                            random_direction = rand() % 8;
-                        }
+                    //std::cout << random_direction << std::endl;
+                    std::string direction = direction_map[random_direction];
+                    //std::cout << direction << std::endl;
+                    int new_x = direction_pos(direction, enemies[enemy_id]->get_pos()).get_x();
+                    int new_y = direction_pos(direction, enemies[enemy_id]->get_pos()).get_y();
+                    if (map_cell[new_x][new_y].get_cell_type() == '.') {
+                        map_cell[j][i].set_cell_type(origin_map_cell[j][i].get_cell_type());
+                        map_cell[j][i].set_cell_name(origin_map_cell[j][i].get_cell_name());
+                        map_cell[j][i].set_step(origin_map_cell[j][i].get_step());
+                        pos p{new_x, new_y, enemies[enemy_id]->get_pos().get_floor()};
+                        enemies[enemy_id]->set_pos(p);
+                        enemies[enemy_id]->set_moved(true);
+                        map_cell[new_x][new_y].set_cell_type(enemies[enemy_id]->get_symbol());
+                        map_cell[new_x][new_y].set_cell_name(enemies[enemy_id]->get_race());
+                        map_cell[new_x][new_y].set_step(false); 
                     } else {
-                        if (map_cell[j - 1][i + 1].get_cell_type() == '.') {
-                            map_cell[j][i].set_cell_type(origin_map_cell[j][i].get_cell_type());
-                            map_cell[j][i].set_cell_name(origin_map_cell[j][i].get_cell_name());
-                            map_cell[j][i].set_step(origin_map_cell[j][i].get_step());
-                            pos p{j - 1, i + 1, enemies[enemy_id]->get_pos().get_floor()};
-                            enemies[enemy_id]->set_pos(p);
-                            enemies[enemy_id]->set_moved(true);
-                            map_cell[j - 1][i + 1].set_cell_type(enemies[enemy_id]->get_symbol());
-                            map_cell[j - 1][i + 1].set_cell_name(enemies[enemy_id]->get_race());
-                            map_cell[j - 1][i + 1].set_step(false);
-                        } else {
-                            random_direction = rand() % 8;
-                        }
+                        random_direction = rand() % 8;
                     }
                 }
             }
@@ -687,7 +501,6 @@ void map::enemy_attack() {
                 int damage = enemies[i]->attack(player);
                 actions.emplace_back(enemies[i]->get_race() + " deals " + std::to_string(damage) + " damage to PC. ");
                 if (player->get_hp() <= 0) {
-                    player->set_dead(true);
                     set_gameover();
                     return;
                 }

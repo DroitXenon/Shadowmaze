@@ -2,7 +2,7 @@
 #include <iostream>
 
 shade::shade(): 
-    player_character{125, 25, 25, "shade", 's', 125} {}
+    player_character{12500, 2500, 25, "shade", 's', 125} {}
 
 int shade::attack(std::shared_ptr<enemy_character> enemy) {
     //std::cout << "Player Attack!" <<std::endl;
