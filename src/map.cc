@@ -184,6 +184,14 @@ void map::read_empty_map(std::string& filename) {
     std::ifstream map_file{filename};
     std::string line;
     int row = 0;
+    num_enemy = 0;
+    num_posion = 0;
+    num_gold = 0;
+    memset(map_cell, 0, sizeof(map_cell));
+    memset(origin_map_cell, 0, sizeof(origin_map_cell));
+    enemies.clear();
+    golds.clear();
+    potions.clear();
     while (getline(map_file, line)) {
         for (int i = 0; i < NUM_COL; ++i) {
             map_cell[i][row].set_cell_type(line[i]);
@@ -237,9 +245,8 @@ void map::read_map_file(std::string& filename, int floor) {
     memset(map_cell, 0, sizeof(map_cell));
     memset(origin_map_cell, 0, sizeof(origin_map_cell));
     enemies.clear();
-    //golds.clear();
-    //posions.clear();
-    actions.clear();
+    golds.clear();
+    potions.clear();
     if (floor == 1) {
         start_line = 0;
         end_line = 25;
@@ -312,6 +319,7 @@ void map::read_map_file(std::string& filename, int floor) {
                     new_potion->set_pos(pos{i, row, floor});
                     new_potion->set_name("RH");
                     potions.emplace_back(new_potion);
+                    num_posion++;
                     
                 } else if (line[i] == '1') {
                     map_cell[i][row].set_cell_type('P');
@@ -324,6 +332,7 @@ void map::read_map_file(std::string& filename, int floor) {
                     new_potion->set_pos(pos{i, row, floor});
                     new_potion->set_name("BA");
                     potions.emplace_back(new_potion);
+                    num_posion++;
                     
                 } else if (line[i] == '2') {
                     map_cell[i][row].set_cell_type('P');
@@ -336,6 +345,7 @@ void map::read_map_file(std::string& filename, int floor) {
                     new_potion->set_pos(pos{i, row, floor});
                     new_potion->set_name("BD");
                     potions.emplace_back(new_potion);
+                    num_posion++;
                     
                 } else if (line[i] == '3') {
                     map_cell[i][row].set_cell_type('P');
@@ -348,6 +358,7 @@ void map::read_map_file(std::string& filename, int floor) {
                     new_potion->set_pos(pos{i, row, floor});
                     new_potion->set_name("PH");
                     potions.emplace_back(new_potion);
+                    num_posion++;
                     
                 } else if (line[i] == '4') {
                     map_cell[i][row].set_cell_type('P');
@@ -360,6 +371,7 @@ void map::read_map_file(std::string& filename, int floor) {
                     new_potion->set_pos(pos{i, row, floor});
                     new_potion->set_name("WA");
                     potions.emplace_back(new_potion);
+                    num_posion++;
                     
                 } else if (line[i] == '5') {
                     map_cell[i][row].set_cell_type('P');
@@ -372,11 +384,12 @@ void map::read_map_file(std::string& filename, int floor) {
                     new_potion->set_pos(pos{i, row, floor});
                     new_potion->set_name("WD");
                     potions.emplace_back(new_potion);
+                    num_posion++;
                     
                 } else if (line[i] == '6') {
                     map_cell[i][row].set_cell_type('G');
                     map_cell[i][row].set_cell_name("gold");
-                    map_cell[i][row].set_step(false);
+                    map_cell[i][row].set_step(true);
                     origin_map_cell[i][row].set_cell_type('.');
                     origin_map_cell[i][row].set_cell_name("tile");
                     origin_map_cell[i][row].set_step(true);
@@ -384,10 +397,12 @@ void map::read_map_file(std::string& filename, int floor) {
                     new_gold->set_pos(pos{i, row, floor});
                     new_gold->set_value(2);
                     golds.emplace_back(new_gold);
+                    num_gold++;
+
                 } else if (line[i] == '7') {
                     map_cell[i][row].set_cell_type('G');
                     map_cell[i][row].set_cell_name("gold");
-                    map_cell[i][row].set_step(false);
+                    map_cell[i][row].set_step(true);
                     origin_map_cell[i][row].set_cell_type('.');
                     origin_map_cell[i][row].set_cell_name("tile");
                     origin_map_cell[i][row].set_step(true);
@@ -395,10 +410,11 @@ void map::read_map_file(std::string& filename, int floor) {
                     new_gold->set_pos(pos{i, row, floor});
                     new_gold->set_value(1);
                     golds.emplace_back(new_gold);
+                    num_gold++;
                 } else if (line[i] == '8') {
                     map_cell[i][row].set_cell_type('G');
                     map_cell[i][row].set_cell_name("gold");
-                    map_cell[i][row].set_step(false);
+                    map_cell[i][row].set_step(true);
                     origin_map_cell[i][row].set_cell_type('.');
                     origin_map_cell[i][row].set_cell_name("tile");
                     origin_map_cell[i][row].set_step(true);
@@ -406,10 +422,11 @@ void map::read_map_file(std::string& filename, int floor) {
                     new_gold->set_pos(pos{i, row, floor});
                     new_gold->set_value(4);
                     golds.emplace_back(new_gold);
+                    num_gold++;
                 } else if (line[i] == '9') {
                     map_cell[i][row].set_cell_type('G');
                     map_cell[i][row].set_cell_name("gold");
-                    map_cell[i][row].set_step(false);
+                    map_cell[i][row].set_step(true);
                     origin_map_cell[i][row].set_cell_type('.');
                     origin_map_cell[i][row].set_cell_name("tile");
                     origin_map_cell[i][row].set_step(true);
@@ -417,6 +434,7 @@ void map::read_map_file(std::string& filename, int floor) {
                     new_gold->set_pos(pos{i, row, floor});
                     new_gold->set_value(6);
                     golds.emplace_back(new_gold);
+                    num_gold++;
                 } else if (line[i] == 'H') {
                     map_cell[i][row].set_cell_type('H');
                     map_cell[i][row].set_cell_name("enemy");
@@ -524,12 +542,20 @@ void map::move_player(std::string direction) {
     int new_x = direction_pos(direction, player->get_pos()).get_x();
     int new_y = direction_pos(direction, player->get_pos()).get_y();
     if (map_cell[new_x][new_y].get_cell_type() == '\\') {
-        actions.emplace_back("PC moves " + direction + ".");
-        actions.emplace_back("PC goes to next floor.");
+        actions.emplace_back("PC moves " + direction + ". ");
+        actions.emplace_back("PC goes to next floor. ");
         floor++;
         floor_change = true;
         return;
     } else if (map_cell[new_x][new_y].get_step()) {
+        if (map_cell[new_x][new_y].get_cell_type() == 'G') {
+            int gold_id = which_gold(new_x, new_y);
+            std::cout << "gold id: " << gold_id << std::endl;
+            player->set_gold(player->get_gold() + golds[gold_id]->get_value());
+            actions.emplace_back("gold picked up, value:" + std::to_string(golds[gold_id]->get_value()) + ". ");
+            golds.erase(golds.begin() + gold_id);
+            num_gold--;
+        }
         map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
         map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_name());
         map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_step(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_step());
@@ -635,6 +661,11 @@ void map::enemy_attack() {
 }
 
 void map::use_potion(std::string &direction) {
+    int potion_id = which_potion(direction_pos(direction, player->get_pos()).get_x(), direction_pos(direction, player->get_pos()).get_y());
+    if (potion_id != -1) {
+
+    }
+        
 }
 
 bool map::is_adjacent(pos p1, pos p2) {
@@ -654,7 +685,21 @@ int map::which_enemy(int x, int y) {
     return -1;
 }
 
-int map::which_potion() {
+int map::which_potion(int x, int y) {
+    for (int i = 0; i < num_posion; ++i) {
+        if (potions[i]->get_pos().get_x() == x && potions[i]->get_pos().get_y() == y) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+int map::which_gold(int x, int y) {
+    for (int i = 0; i < num_gold; ++i) {
+        if (golds[i]->get_pos().get_x() == x && golds[i]->get_pos().get_y() == y) {
+            return i;
+        }
+    }
     return -1;
 }
 

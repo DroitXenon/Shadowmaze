@@ -75,6 +75,7 @@ class map {
     bool is_adjacent(pos p1, pos p2);
     int which_enemy(int x, int y);
     int which_potion();
+    int which_gold(int x, int y);
     pos direction_pos(std::string direction, pos current_pos);
     bool is_gameover();
     void set_gameover();
