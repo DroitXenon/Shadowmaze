@@ -15,6 +15,10 @@
 #include "enemy/merchant.h"
 #include "enemy/dragon.h"
 #include "enemy/halfling.h"
+#include "item.h"
+#include "potion.h"
+#include "gold.h"
+
 #include "pos.h"
 #include "cell.h"
 
@@ -29,8 +33,8 @@ const int NUM_ROW = 25;
 class map {
     std::shared_ptr<player_character> player;
     std::vector<std::shared_ptr<enemy_character>> enemies;
-    // std::vector<std::shared_ptr<posion>> posions;
-    // std::vector<std::shared_ptr<gold>> golds;
+    std::vector<std::shared_ptr<potion>> potions;
+    std::vector<std::shared_ptr<gold>> golds;
   
     int num_posion = 0;
     int num_gold = 0;

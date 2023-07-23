@@ -308,7 +308,11 @@ void map::read_map_file(std::string& filename, int floor) {
                     origin_map_cell[i][row].set_cell_type('.');
                     origin_map_cell[i][row].set_cell_name("tile");
                     origin_map_cell[i][row].set_step(true);
-                    //
+                    auto new_potion = std::make_shared<potion>();
+                    new_potion->set_pos(pos{i, row, floor});
+                    new_potion->set_name("RH");
+                    potions.emplace_back(new_potion);
+                    
                 } else if (line[i] == '1') {
                     map_cell[i][row].set_cell_type('P');
                     map_cell[i][row].set_cell_name("potion");
@@ -316,7 +320,11 @@ void map::read_map_file(std::string& filename, int floor) {
                     origin_map_cell[i][row].set_cell_type('.');
                     origin_map_cell[i][row].set_cell_name("tile");
                     origin_map_cell[i][row].set_step(true);
-                    //
+                    auto new_potion = std::make_shared<potion>();
+                    new_potion->set_pos(pos{i, row, floor});
+                    new_potion->set_name("BA");
+                    potions.emplace_back(new_potion);
+                    
                 } else if (line[i] == '2') {
                     map_cell[i][row].set_cell_type('P');
                     map_cell[i][row].set_cell_name("potion");
@@ -324,7 +332,11 @@ void map::read_map_file(std::string& filename, int floor) {
                     origin_map_cell[i][row].set_cell_type('.');
                     origin_map_cell[i][row].set_cell_name("tile");
                     origin_map_cell[i][row].set_step(true);
-                    //
+                    auto new_potion = std::make_shared<potion>();
+                    new_potion->set_pos(pos{i, row, floor});
+                    new_potion->set_name("BD");
+                    potions.emplace_back(new_potion);
+                    
                 } else if (line[i] == '3') {
                     map_cell[i][row].set_cell_type('P');
                     map_cell[i][row].set_cell_name("potion");
@@ -332,7 +344,11 @@ void map::read_map_file(std::string& filename, int floor) {
                     origin_map_cell[i][row].set_cell_type('.');
                     origin_map_cell[i][row].set_cell_name("tile");
                     origin_map_cell[i][row].set_step(true);
-                    //
+                    auto new_potion = std::make_shared<potion>();
+                    new_potion->set_pos(pos{i, row, floor});
+                    new_potion->set_name("PH");
+                    potions.emplace_back(new_potion);
+                    
                 } else if (line[i] == '4') {
                     map_cell[i][row].set_cell_type('P');
                     map_cell[i][row].set_cell_name("potion");
@@ -340,7 +356,11 @@ void map::read_map_file(std::string& filename, int floor) {
                     origin_map_cell[i][row].set_cell_type('.');
                     origin_map_cell[i][row].set_cell_name("tile");
                     origin_map_cell[i][row].set_step(true);
-                    //
+                    auto new_potion = std::make_shared<potion>();
+                    new_potion->set_pos(pos{i, row, floor});
+                    new_potion->set_name("WA");
+                    potions.emplace_back(new_potion);
+                    
                 } else if (line[i] == '5') {
                     map_cell[i][row].set_cell_type('P');
                     map_cell[i][row].set_cell_name("potion");
@@ -348,7 +368,11 @@ void map::read_map_file(std::string& filename, int floor) {
                     origin_map_cell[i][row].set_cell_type('.');
                     origin_map_cell[i][row].set_cell_name("tile");
                     origin_map_cell[i][row].set_step(true);
-                    //
+                    auto new_potion = std::make_shared<potion>();
+                    new_potion->set_pos(pos{i, row, floor});
+                    new_potion->set_name("WD");
+                    potions.emplace_back(new_potion);
+                    
                 } else if (line[i] == '6') {
                     map_cell[i][row].set_cell_type('G');
                     map_cell[i][row].set_cell_name("gold");
@@ -356,7 +380,10 @@ void map::read_map_file(std::string& filename, int floor) {
                     origin_map_cell[i][row].set_cell_type('.');
                     origin_map_cell[i][row].set_cell_name("tile");
                     origin_map_cell[i][row].set_step(true);
-                    //
+                    auto new_gold = std::make_shared<gold>();
+                    new_gold->set_pos(pos{i, row, floor});
+                    new_gold->set_value(2);
+                    golds.emplace_back(new_gold);
                 } else if (line[i] == '7') {
                     map_cell[i][row].set_cell_type('G');
                     map_cell[i][row].set_cell_name("gold");
@@ -364,7 +391,10 @@ void map::read_map_file(std::string& filename, int floor) {
                     origin_map_cell[i][row].set_cell_type('.');
                     origin_map_cell[i][row].set_cell_name("tile");
                     origin_map_cell[i][row].set_step(true);
-                    //
+                    auto new_gold = std::make_shared<gold>();
+                    new_gold->set_pos(pos{i, row, floor});
+                    new_gold->set_value(1);
+                    golds.emplace_back(new_gold);
                 } else if (line[i] == '8') {
                     map_cell[i][row].set_cell_type('G');
                     map_cell[i][row].set_cell_name("gold");
@@ -372,7 +402,10 @@ void map::read_map_file(std::string& filename, int floor) {
                     origin_map_cell[i][row].set_cell_type('.');
                     origin_map_cell[i][row].set_cell_name("tile");
                     origin_map_cell[i][row].set_step(true);
-                    //
+                    auto new_gold = std::make_shared<gold>();
+                    new_gold->set_pos(pos{i, row, floor});
+                    new_gold->set_value(4);
+                    golds.emplace_back(new_gold);
                 } else if (line[i] == '9') {
                     map_cell[i][row].set_cell_type('G');
                     map_cell[i][row].set_cell_name("gold");
@@ -380,7 +413,10 @@ void map::read_map_file(std::string& filename, int floor) {
                     origin_map_cell[i][row].set_cell_type('.');
                     origin_map_cell[i][row].set_cell_name("tile");
                     origin_map_cell[i][row].set_step(true);
-                    //
+                    auto new_gold = std::make_shared<gold>();
+                    new_gold->set_pos(pos{i, row, floor});
+                    new_gold->set_value(6);
+                    golds.emplace_back(new_gold);
                 } else if (line[i] == 'H') {
                     map_cell[i][row].set_cell_type('H');
                     map_cell[i][row].set_cell_name("enemy");
