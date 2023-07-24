@@ -95,7 +95,4 @@ class map {
     void game_over();
 };
 
-
-
-
 #endif

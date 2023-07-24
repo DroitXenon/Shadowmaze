@@ -57,96 +57,133 @@ void map::generate_stair(int chamber_id) {
     std::cout << "stair pos generated" << " " << p.get_x() << " " << p.get_y() << std::endl;
 }
 
+
 void map::generate_posion() {
     while (num_posion < 10) {
         pos p;
         p.randomize_pos();
         while (true) {
-            int potion_type = rand() % 6;
-            if (potion_type == 0) {
-                if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
-                    map_cell[p.get_x()][p.get_y()].set_cell_type('P');
-                    map_cell[p.get_x()][p.get_y()].set_cell_name("potion");
-                    map_cell[p.get_x()][p.get_y()].set_step(false);
-                    auto new_potion = std::make_shared<potion>();
-                    new_potion->set_pos(p);
+            if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
+                map_cell[p.get_x()][p.get_y()].set_cell_type('P');
+                map_cell[p.get_x()][p.get_y()].set_cell_name("potion");
+                map_cell[p.get_x()][p.get_y()].set_step(false);
+                auto new_potion = std::make_shared<potion>();
+                new_potion->set_pos(p);
+                int potion_type = rand() % 6;
+                if (potion_type == 0) {
                     new_potion->set_name("RH");
-                    potions.emplace_back(new_potion);
-                    break;
-                } else {
-                    p.randomize_pos();
-                }
-            } else if (potion_type == 1) {
-                if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
-                    map_cell[p.get_x()][p.get_y()].set_cell_type('P');
-                    map_cell[p.get_x()][p.get_y()].set_cell_name("potion");
-                    map_cell[p.get_x()][p.get_y()].set_step(false);
-                    auto new_potion = std::make_shared<potion>();
-                    new_potion->set_pos(p);
+                } else if (potion_type == 1) {
                     new_potion->set_name("BA");
-                    potions.emplace_back(new_potion);
-                    break;
-                } else {
-                    p.randomize_pos();
-                }
-            } else if (potion_type == 2) {
-                if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
-                    map_cell[p.get_x()][p.get_y()].set_cell_type('P');
-                    map_cell[p.get_x()][p.get_y()].set_cell_name("potion");
-                    map_cell[p.get_x()][p.get_y()].set_step(false);
-                    auto new_potion = std::make_shared<potion>();
-                    new_potion->set_pos(p);
+                } else if (potion_type == 2) {
                     new_potion->set_name("BD");
-                    potions.emplace_back(new_potion);
-                    break;
-                } else {
-                    p.randomize_pos();
-                }
-            } else if (potion_type == 3) {
-                if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
-                    map_cell[p.get_x()][p.get_y()].set_cell_type('P');
-                    map_cell[p.get_x()][p.get_y()].set_cell_name("potion");
-                    map_cell[p.get_x()][p.get_y()].set_step(false);
-                    auto new_potion = std::make_shared<potion>();
-                    new_potion->set_pos(p);
+                } else if (potion_type == 3) {
                     new_potion->set_name("PH");
-                    potions.emplace_back(new_potion);
-                    break;
-                } else {
-                    p.randomize_pos();
-                }
-            } else if (potion_type == 4) {
-                if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
-                    map_cell[p.get_x()][p.get_y()].set_cell_type('P');
-                    map_cell[p.get_x()][p.get_y()].set_cell_name("potion");
-                    map_cell[p.get_x()][p.get_y()].set_step(false);
-                    auto new_potion = std::make_shared<potion>();
-                    new_potion->set_pos(p);
+                } else if (potion_type == 4) {
                     new_potion->set_name("WA");
-                    potions.emplace_back(new_potion);
-                    break;
                 } else {
-                    p.randomize_pos();
-                }
-            } else if (potion_type == 5) {
-                if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
-                    map_cell[p.get_x()][p.get_y()].set_cell_type('P');
-                    map_cell[p.get_x()][p.get_y()].set_cell_name("potion");
-                    map_cell[p.get_x()][p.get_y()].set_step(false);
-                    auto new_potion = std::make_shared<potion>();
-                    new_potion->set_pos(p);
                     new_potion->set_name("WD");
-                    potions.emplace_back(new_potion);
-                    break;
-                } else {
-                    p.randomize_pos();
                 }
+                potions.emplace_back(new_potion);
+                break;
+            } else {
+                p.randomize_pos();
             }
         }
         ++num_posion;
     }
     std::cout << "potion generated" << std::endl;
 }
+
+// void map::generate_posion() {
+//     while (num_posion < 10) {
+//         pos p;
+//         p.randomize_pos();
+//         while (true) {
+//             int potion_type = rand() % 6;
+//             if (potion_type == 0) {
+//                 if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
+//                     map_cell[p.get_x()][p.get_y()].set_cell_type('P');
+//                     map_cell[p.get_x()][p.get_y()].set_cell_name("potion");
+//                     map_cell[p.get_x()][p.get_y()].set_step(false);
+//                     auto new_potion = std::make_shared<potion>();
+//                     new_potion->set_pos(p);
+//                     new_potion->set_name("RH");
+//                     potions.emplace_back(new_potion);
+//                     break;
+//                 } else {
+//                     p.randomize_pos();
+//                 }
+//             } else if (potion_type == 1) {
+//                 if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
+//                     map_cell[p.get_x()][p.get_y()].set_cell_type('P');
+//                     map_cell[p.get_x()][p.get_y()].set_cell_name("potion");
+//                     map_cell[p.get_x()][p.get_y()].set_step(false);
+//                     auto new_potion = std::make_shared<potion>();
+//                     new_potion->set_pos(p);
+//                     new_potion->set_name("BA");
+//                     potions.emplace_back(new_potion);
+//                     break;
+//                 } else {
+//                     p.randomize_pos();
+//                 }
+//             } else if (potion_type == 2) {
+//                 if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
+//                     map_cell[p.get_x()][p.get_y()].set_cell_type('P');
+//                     map_cell[p.get_x()][p.get_y()].set_cell_name("potion");
+//                     map_cell[p.get_x()][p.get_y()].set_step(false);
+//                     auto new_potion = std::make_shared<potion>();
+//                     new_potion->set_pos(p);
+//                     new_potion->set_name("BD");
+//                     potions.emplace_back(new_potion);
+//                     break;
+//                 } else {
+//                     p.randomize_pos();
+//                 }
+//             } else if (potion_type == 3) {
+//                 if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
+//                     map_cell[p.get_x()][p.get_y()].set_cell_type('P');
+//                     map_cell[p.get_x()][p.get_y()].set_cell_name("potion");
+//                     map_cell[p.get_x()][p.get_y()].set_step(false);
+//                     auto new_potion = std::make_shared<potion>();
+//                     new_potion->set_pos(p);
+//                     new_potion->set_name("PH");
+//                     potions.emplace_back(new_potion);
+//                     break;
+//                 } else {
+//                     p.randomize_pos();
+//                 }
+//             } else if (potion_type == 4) {
+//                 if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
+//                     map_cell[p.get_x()][p.get_y()].set_cell_type('P');
+//                     map_cell[p.get_x()][p.get_y()].set_cell_name("potion");
+//                     map_cell[p.get_x()][p.get_y()].set_step(false);
+//                     auto new_potion = std::make_shared<potion>();
+//                     new_potion->set_pos(p);
+//                     new_potion->set_name("WA");
+//                     potions.emplace_back(new_potion);
+//                     break;
+//                 } else {
+//                     p.randomize_pos();
+//                 }
+//             } else if (potion_type == 5) {
+//                 if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
+//                     map_cell[p.get_x()][p.get_y()].set_cell_type('P');
+//                     map_cell[p.get_x()][p.get_y()].set_cell_name("potion");
+//                     map_cell[p.get_x()][p.get_y()].set_step(false);
+//                     auto new_potion = std::make_shared<potion>();
+//                     new_potion->set_pos(p);
+//                     new_potion->set_name("WD");
+//                     potions.emplace_back(new_potion);
+//                     break;
+//                 } else {
+//                     p.randomize_pos();
+//                 }
+//             }
+//         }
+//         ++num_posion;
+//     }
+//     std::cout << "potion generated" << std::endl;
+// }
 
 void map::generate_gold() {
     while (num_gold < 10) {
@@ -656,7 +693,7 @@ void map::print_map() {
                 std::cout << ESC << ";" << YELLOW_TXT << "m" << cell_type << RESET;
             } else if (cell_type == 'P') {
                 std::cout << ESC << ";" << GREEN_TXT << "m" << cell_type << RESET;
-            } else if (map_cell[j][i].get_cell_name() == "enemy") {
+            } else if (cell_type == 'H' || cell_type == 'W' || cell_type == 'E' || cell_type == 'O' || cell_type == 'M' || cell_type == 'D' || cell_type == 'L') {
                 std::cout << ESC << ";" << RED_TXT << "m" << cell_type << RESET;
             } else {
                 std::cout << cell_type;
@@ -740,17 +777,6 @@ void map::player_attack(std::string direction) {
     }
 }
 
-// void map::move_enemy_from_to(int enemy_id, int x1, int y1, int x2, int y2) {
-//     map_cell[x1][y1].set_cell_type(origin_map_cell[x1][y1].get_cell_type());
-//     map_cell[x1][y1].set_cell_name(origin_map_cell[x1][y1].get_cell_name());
-//     map_cell[x1][y1].set_step(origin_map_cell[x1][y1].get_step());
-//     pos p{x2, y2, enemies[enemy_id]->get_pos().get_floor()};
-//     enemies[enemy_id]->set_pos(p);
-//     enemies[enemy_id]->set_moved(true);
-//     map_cell[x2][y2].set_cell_type(enemies[enemy_id]->get_symbol());
-//     map_cell[x2][y2].set_cell_name(enemies[enemy_id]->get_race());
-//     map_cell[x2][y2].set_step(false);
-// }
 
 void map::move_enemy() {
     for (int i = 0; i < NUM_ROW; ++i) {  
@@ -1007,7 +1033,7 @@ void map::find_around() {
             } else {
                 actions.emplace_back("There is a " + potions[potion_id]->get_name() + " potion in " + direction_map[i] + ". ");
             }
-        } else if (map_cell[direction_x][direction_y].get_cell_name() == "enemy") {
+        } else if (map_cell[direction_x][direction_y].get_cell_type() == 'E' || map_cell[direction_x][direction_y].get_cell_type() == 'H' || map_cell[direction_x][direction_y].get_cell_type() == 'W' || map_cell[direction_x][direction_y].get_cell_type() == 'O' || map_cell[direction_x][direction_y].get_cell_type() == 'M' || map_cell[direction_x][direction_y].get_cell_type() == 'D' || map_cell[direction_x][direction_y].get_cell_type() == 'L') {
             actions.emplace_back("There is an enemy in " + direction_map[i] + ". ");
         }
     }

@@ -96,8 +96,8 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
                         game_map.set_map();
                     }
                 } else {
-                    game_map.find_around();
                     game_map.move_enemy();
+                    game_map.find_around();
                     game_map.enemy_attack();
                     game_map.check_state();
                     if (game_map.is_gameover()) {
