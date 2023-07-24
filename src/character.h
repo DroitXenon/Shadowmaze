@@ -2,7 +2,9 @@
 #define CHARACTER_H
 #include <iostream>
 #include "pos.h"
+//#include "map.h"
 
+//class map;
 class character {
     int hp;
     int atk;
@@ -17,12 +19,13 @@ class character {
     int get_atk() const;
     int get_def() const;
     std::string get_race() const;
-    // bool get_dead() const;
+    char get_symbol() const;
+    bool get_dead() const;
     pos get_pos() const;
-    // void set_hp(int hp);
-    // void set_atk(int atk);
-    // void set_def(int def);
-    // void set_dead(bool is_dead);
+    void set_hp(int hp);
+    void set_atk(int atk);
+    void set_def(int def);
+    void set_dead(bool is_dead);
     void set_pos(pos position);
     virtual ~character() = 0;
     

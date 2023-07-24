@@ -1,5 +1,6 @@
 #include "map.h"
 
+
 void map::set_player(std::shared_ptr<player_character> character){
     player = character;
     actions.emplace_back("Player character has spawned.");
@@ -61,13 +62,85 @@ void map::generate_posion() {
         pos p;
         p.randomize_pos();
         while (true) {
-            if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
-                map_cell[p.get_x()][p.get_y()].set_cell_type('P');
-                map_cell[p.get_x()][p.get_y()].set_cell_name("potion");
-                map_cell[p.get_x()][p.get_y()].set_step(false);
-                break;
-            } else {
-                p.randomize_pos();
+            int potion_type = rand() % 6;
+            if (potion_type == 0) {
+                if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
+                    map_cell[p.get_x()][p.get_y()].set_cell_type('P');
+                    map_cell[p.get_x()][p.get_y()].set_cell_name("potion");
+                    map_cell[p.get_x()][p.get_y()].set_step(false);
+                    auto new_potion = std::make_shared<potion>();
+                    new_potion->set_pos(p);
+                    new_potion->set_name("RH");
+                    potions.emplace_back(new_potion);
+                    break;
+                } else {
+                    p.randomize_pos();
+                }
+            } else if (potion_type == 1) {
+                if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
+                    map_cell[p.get_x()][p.get_y()].set_cell_type('P');
+                    map_cell[p.get_x()][p.get_y()].set_cell_name("potion");
+                    map_cell[p.get_x()][p.get_y()].set_step(false);
+                    auto new_potion = std::make_shared<potion>();
+                    new_potion->set_pos(p);
+                    new_potion->set_name("BA");
+                    potions.emplace_back(new_potion);
+                    break;
+                } else {
+                    p.randomize_pos();
+                }
+            } else if (potion_type == 2) {
+                if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
+                    map_cell[p.get_x()][p.get_y()].set_cell_type('P');
+                    map_cell[p.get_x()][p.get_y()].set_cell_name("potion");
+                    map_cell[p.get_x()][p.get_y()].set_step(false);
+                    auto new_potion = std::make_shared<potion>();
+                    new_potion->set_pos(p);
+                    new_potion->set_name("BD");
+                    potions.emplace_back(new_potion);
+                    break;
+                } else {
+                    p.randomize_pos();
+                }
+            } else if (potion_type == 3) {
+                if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
+                    map_cell[p.get_x()][p.get_y()].set_cell_type('P');
+                    map_cell[p.get_x()][p.get_y()].set_cell_name("potion");
+                    map_cell[p.get_x()][p.get_y()].set_step(false);
+                    auto new_potion = std::make_shared<potion>();
+                    new_potion->set_pos(p);
+                    new_potion->set_name("PH");
+                    potions.emplace_back(new_potion);
+                    break;
+                } else {
+                    p.randomize_pos();
+                }
+            } else if (potion_type == 4) {
+                if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
+                    map_cell[p.get_x()][p.get_y()].set_cell_type('P');
+                    map_cell[p.get_x()][p.get_y()].set_cell_name("potion");
+                    map_cell[p.get_x()][p.get_y()].set_step(false);
+                    auto new_potion = std::make_shared<potion>();
+                    new_potion->set_pos(p);
+                    new_potion->set_name("WA");
+                    potions.emplace_back(new_potion);
+                    break;
+                } else {
+                    p.randomize_pos();
+                }
+            } else if (potion_type == 5) {
+                if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
+                    map_cell[p.get_x()][p.get_y()].set_cell_type('P');
+                    map_cell[p.get_x()][p.get_y()].set_cell_name("potion");
+                    map_cell[p.get_x()][p.get_y()].set_step(false);
+                    auto new_potion = std::make_shared<potion>();
+                    new_potion->set_pos(p);
+                    new_potion->set_name("WD");
+                    potions.emplace_back(new_potion);
+                    break;
+                } else {
+                    p.randomize_pos();
+                }
             }
         }
         ++num_posion;
@@ -80,12 +153,66 @@ void map::generate_gold() {
         pos p;
         p.randomize_pos();
         while (true) {
-            if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
-                map_cell[p.get_x()][p.get_y()].set_cell_type('G');
-                map_cell[p.get_x()][p.get_y()].set_cell_name("gold");
-                break;
+            int gold_type = rand() % 8;
+            if (gold_type < 5) {
+                if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
+                    map_cell[p.get_x()][p.get_y()].set_cell_type('G');
+                    map_cell[p.get_x()][p.get_y()].set_cell_name("gold");
+                    map_cell[p.get_x()][p.get_y()].set_step(true);
+                    auto new_gold = std::make_shared<gold>();
+                    new_gold->set_pos(p);
+                    new_gold->set_value(2);
+                    golds.emplace_back(new_gold);
+                    break;
+                } else {
+                    p.randomize_pos();
+                }
+            } else if (gold_type < 7) {
+                if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
+                    map_cell[p.get_x()][p.get_y()].set_cell_type('G');
+                    map_cell[p.get_x()][p.get_y()].set_cell_name("gold");
+                    auto new_gold = std::make_shared<gold>();
+                    new_gold->set_pos(p);
+                    new_gold->set_value(1);
+                    golds.emplace_back(new_gold);
+                    break;
+                } else {
+                    p.randomize_pos();
+                }
             } else {
-                p.randomize_pos();
+                if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
+                    map_cell[p.get_x()][p.get_y()].set_cell_type('G');
+                    map_cell[p.get_x()][p.get_y()].set_cell_name("gold");
+                    auto new_gold = std::make_shared<gold>();
+                    new_gold->set_pos(p);
+                    new_gold->set_value(6);
+                    new_gold->set_pickable(false);
+                    golds.emplace_back(new_gold);
+                    int direction_id = rand() % 8;
+                    std::string direction = direction_map[direction_id];
+                    pos dragon_pos = direction_pos(direction, p);
+                    while (true) {
+                        if (map_cell[dragon_pos.get_x()][dragon_pos.get_y()].get_cell_type() == '.') {
+                            map_cell[dragon_pos.get_x()][dragon_pos.get_y()].set_cell_type('D');
+                            map_cell[dragon_pos.get_x()][dragon_pos.get_y()].set_cell_name("enemy");
+                            map_cell[dragon_pos.get_x()][dragon_pos.get_y()].set_step(false);
+                            auto new_dragon = std::make_shared<dragon>();
+                            new_dragon->set_dragon_hoard_id(num_gold - 1);
+                            new_dragon->set_pos(dragon_pos);
+                            enemies.emplace_back(new_dragon);
+                            break;
+                        } else {
+                            direction = rand() % 8;
+                            dragon_pos = direction_pos(direction, p);
+                        }
+                    }
+
+
+
+                    break;
+                } else {
+                    p.randomize_pos();
+                }
             }
         }
         ++num_gold;
@@ -98,24 +225,99 @@ void map::generate_enemy() {
         pos p;
         p.randomize_pos();
         while (true) {
-            if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
-                map_cell[p.get_x()][p.get_y()].set_cell_type('E');
-                map_cell[p.get_x()][p.get_y()].set_cell_name("enemy");
-                map_cell[p.get_x()][p.get_y()].set_step(false);
-                break;
+            int enemy_type = rand() % 18;
+            if (enemy_type < 4) {
+                if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
+                    map_cell[p.get_x()][p.get_y()].set_cell_type('H');
+                    map_cell[p.get_x()][p.get_y()].set_cell_name("enemy");
+                    map_cell[p.get_x()][p.get_y()].set_step(false);
+                    auto enemy = std::make_shared<human>();
+                    enemy->set_pos(p);
+                    enemies.emplace_back(enemy);
+                    break;
+                } else {
+                    p.randomize_pos();
+                }
+            } else if (enemy_type < 7) {
+                if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
+                    map_cell[p.get_x()][p.get_y()].set_cell_type('W');
+                    map_cell[p.get_x()][p.get_y()].set_cell_name("enemy");
+                    map_cell[p.get_x()][p.get_y()].set_step(false);
+                    auto enemy = std::make_shared<dwarf>();
+                    enemy->set_pos(p);
+                    enemies.emplace_back(enemy);
+                    break;
+                } else {
+                    p.randomize_pos();
+                }
+            } else if (enemy_type < 12) {
+                if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
+                    map_cell[p.get_x()][p.get_y()].set_cell_type('E');
+                    map_cell[p.get_x()][p.get_y()].set_cell_name("enemy");
+                    map_cell[p.get_x()][p.get_y()].set_step(false);
+                    auto enemy = std::make_shared<elf>();
+                    enemy->set_pos(p);
+                    enemies.emplace_back(enemy);
+                    break;
+                } else {
+                    p.randomize_pos();
+                }
+            } else if (enemy_type < 14) {
+                if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
+                    map_cell[p.get_x()][p.get_y()].set_cell_type('O');
+                    map_cell[p.get_x()][p.get_y()].set_cell_name("enemy");
+                    map_cell[p.get_x()][p.get_y()].set_step(false);
+                    auto enemy = std::make_shared<orc>();
+                    enemy->set_pos(p);
+                    enemies.emplace_back(enemy);
+                    break;
+                } else {
+                    p.randomize_pos();
+                }
+            } else if (enemy_type < 16) {
+                if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
+                    map_cell[p.get_x()][p.get_y()].set_cell_type('M');
+                    map_cell[p.get_x()][p.get_y()].set_cell_name("enemy");
+                    map_cell[p.get_x()][p.get_y()].set_step(false);
+                    auto enemy = std::make_shared<merchant>();
+                    enemy->set_pos(p);
+                    enemies.emplace_back(enemy);
+                    break;
+                } else {
+                    p.randomize_pos();
+                }
             } else {
-                p.randomize_pos();
+                if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
+                    map_cell[p.get_x()][p.get_y()].set_cell_type('L');
+                    map_cell[p.get_x()][p.get_y()].set_cell_name("enemy");
+                    map_cell[p.get_x()][p.get_y()].set_step(false);
+                    auto enemy = std::make_shared<halfling>();
+                    enemy->set_pos(p);
+                    enemies.emplace_back(enemy);
+                    break;
+                } else {
+                    p.randomize_pos();
+                }
             }
+            
         }
         ++num_enemy;
     }
     std::cout << "enemy generated" << std::endl;
 }
 
-void map::read_map(std::string& filename) {
+void map::read_empty_map(std::string& filename) {
     std::ifstream map_file{filename};
     std::string line;
     int row = 0;
+    num_enemy = 0;
+    num_posion = 0;
+    num_gold = 0;
+    memset(map_cell, 0, sizeof(map_cell));
+    memset(origin_map_cell, 0, sizeof(origin_map_cell));
+    enemies.clear();
+    golds.clear();
+    potions.clear();
     while (getline(map_file, line)) {
         for (int i = 0; i < NUM_COL; ++i) {
             map_cell[i][row].set_cell_type(line[i]);
@@ -150,16 +352,315 @@ void map::read_map(std::string& filename) {
                 map_cell[i][row].set_step(false);
                 origin_map_cell[i][row].set_cell_name("empty");
                 origin_map_cell[i][row].set_step(false);
-            }
+            } 
         }
         ++row;
+    }
+}
+
+void map::read_map_file(std::string& filename, int floor) {
+    std::ifstream map_file{filename};
+    std::string line;
+    int row = 0;
+    int line_num = 0;
+    int start_line = 0;
+    int end_line = 0;
+    num_enemy = 0;
+    num_posion = 0;
+    num_gold = 0;
+    memset(map_cell, 0, sizeof(map_cell));
+    memset(origin_map_cell, 0, sizeof(origin_map_cell));
+    enemies.clear();
+    golds.clear();
+    potions.clear();
+    if (floor == 1) {
+        start_line = 0;
+        end_line = 25;
+    } else if (floor == 2) {
+        start_line = 26;
+        end_line = 50;
+    } else if (floor == 3) {
+        start_line = 51;
+        end_line = 75;
+    } else if (floor == 4) {
+        start_line = 76;
+        end_line = 100;
+    } else {
+        start_line = 101;
+        end_line = 125;
+    }
+
+    while (getline(map_file, line)) {
+        line_num++;
+        if (line_num >= start_line && line_num <= end_line) {
+            for (int i = 0; i < NUM_COL; ++i) {
+                map_cell[i][row].set_cell_type(line[i]);
+                origin_map_cell[i][row].set_cell_type(line[i]);
+                if (line[i] == '@') {
+                    map_cell[i][row].set_cell_name("player");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_type('.');
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    player->set_pos(pos{i, row, floor});
+
+                } else if (line[i] == '-') {
+                    map_cell[i][row].set_cell_name("wall");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_name("wall");
+                    origin_map_cell[i][row].set_step(false);
+                } else if (line[i] == '|') {
+                    map_cell[i][row].set_cell_name("wall");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_name("wall");
+                    origin_map_cell[i][row].set_step(false);
+                } else if (line[i] == '.') {
+                    map_cell[i][row].set_cell_name("tile");
+                    map_cell[i][row].set_step(true);
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                } else if (line[i] == '+') {
+                    map_cell[i][row].set_cell_name("door");
+                    map_cell[i][row].set_step(true);
+                    origin_map_cell[i][row].set_cell_name("door");
+                    origin_map_cell[i][row].set_step(true);
+                } else if (line[i] == '#') {
+                    map_cell[i][row].set_cell_name("passage");
+                    map_cell[i][row].set_step(true);
+                    origin_map_cell[i][row].set_cell_name("passage");
+                    origin_map_cell[i][row].set_step(true);
+                } else if (line[i] == ' ') {
+                    map_cell[i][row].set_cell_name("empty");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_name("empty");
+                    origin_map_cell[i][row].set_step(false);
+                } else if (line[i] == '0') {
+                    map_cell[i][row].set_cell_type('P');
+                    map_cell[i][row].set_cell_name("potion");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_type('.');
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    auto new_potion = std::make_shared<potion>();
+                    new_potion->set_pos(pos{i, row, floor});
+                    new_potion->set_name("RH");
+                    potions.emplace_back(new_potion);
+                    num_posion++;
+                    
+                } else if (line[i] == '1') {
+                    map_cell[i][row].set_cell_type('P');
+                    map_cell[i][row].set_cell_name("potion");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_type('.');
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    auto new_potion = std::make_shared<potion>();
+                    new_potion->set_pos(pos{i, row, floor});
+                    new_potion->set_name("BA");
+                    potions.emplace_back(new_potion);
+                    num_posion++;
+                    
+                } else if (line[i] == '2') {
+                    map_cell[i][row].set_cell_type('P');
+                    map_cell[i][row].set_cell_name("potion");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_type('.');
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    auto new_potion = std::make_shared<potion>();
+                    new_potion->set_pos(pos{i, row, floor});
+                    new_potion->set_name("BD");
+                    potions.emplace_back(new_potion);
+                    num_posion++;
+                    
+                } else if (line[i] == '3') {
+                    map_cell[i][row].set_cell_type('P');
+                    map_cell[i][row].set_cell_name("potion");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_type('.');
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    auto new_potion = std::make_shared<potion>();
+                    new_potion->set_pos(pos{i, row, floor});
+                    new_potion->set_name("PH");
+                    potions.emplace_back(new_potion);
+                    num_posion++;
+                    
+                } else if (line[i] == '4') {
+                    map_cell[i][row].set_cell_type('P');
+                    map_cell[i][row].set_cell_name("potion");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_type('.');
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    auto new_potion = std::make_shared<potion>();
+                    new_potion->set_pos(pos{i, row, floor});
+                    new_potion->set_name("WA");
+                    potions.emplace_back(new_potion);
+                    num_posion++;
+                    
+                } else if (line[i] == '5') {
+                    map_cell[i][row].set_cell_type('P');
+                    map_cell[i][row].set_cell_name("potion");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_type('.');
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    auto new_potion = std::make_shared<potion>();
+                    new_potion->set_pos(pos{i, row, floor});
+                    new_potion->set_name("WD");
+                    potions.emplace_back(new_potion);
+                    num_posion++;
+                    
+                } else if (line[i] == '6') {
+                    map_cell[i][row].set_cell_type('G');
+                    map_cell[i][row].set_cell_name("gold");
+                    map_cell[i][row].set_step(true);
+                    origin_map_cell[i][row].set_cell_type('.');
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    auto new_gold = std::make_shared<gold>();
+                    new_gold->set_pos(pos{i, row, floor});
+                    new_gold->set_value(2);
+                    golds.emplace_back(new_gold);
+                    num_gold++;
+
+                } else if (line[i] == '7') {
+                    map_cell[i][row].set_cell_type('G');
+                    map_cell[i][row].set_cell_name("gold");
+                    map_cell[i][row].set_step(true);
+                    origin_map_cell[i][row].set_cell_type('.');
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    auto new_gold = std::make_shared<gold>();
+                    new_gold->set_pos(pos{i, row, floor});
+                    new_gold->set_value(1);
+                    golds.emplace_back(new_gold);
+                    num_gold++;
+                } else if (line[i] == '8') {
+                    map_cell[i][row].set_cell_type('G');
+                    map_cell[i][row].set_cell_name("gold");
+                    map_cell[i][row].set_step(true);
+                    origin_map_cell[i][row].set_cell_type('.');
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    auto new_gold = std::make_shared<gold>();
+                    new_gold->set_pos(pos{i, row, floor});
+                    new_gold->set_value(4);
+                    golds.emplace_back(new_gold);
+                    num_gold++;
+                } else if (line[i] == '9') {
+                    map_cell[i][row].set_cell_type('G');
+                    map_cell[i][row].set_cell_name("gold");
+                    map_cell[i][row].set_step(true);
+                    origin_map_cell[i][row].set_cell_type('.');
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    auto new_gold = std::make_shared<gold>();
+                    new_gold->set_pickable(false);
+                    new_gold->set_pos(pos{i, row, floor});
+                    new_gold->set_value(6);
+                    golds.emplace_back(new_gold);
+                    num_gold++;
+                } else if (line[i] == 'H') {
+                    map_cell[i][row].set_cell_type('H');
+                    map_cell[i][row].set_cell_name("enemy");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_type('.');
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    auto enemy = std::make_shared<human>();
+                    enemy->set_pos(pos{i, row, floor});
+                    enemies.emplace_back(enemy);
+                    num_enemy++;
+                } else if (line[i] == 'W') {
+                    map_cell[i][row].set_cell_type('W');
+                    map_cell[i][row].set_cell_name("enemy");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_type('.');
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    auto enemy = std::make_shared<dwarf>();
+                    enemy->set_pos(pos{i, row, floor});
+                    enemies.emplace_back(enemy);
+                    num_enemy++;
+                } else if (line[i] == 'E') {
+                    map_cell[i][row].set_cell_type('E');
+                    map_cell[i][row].set_cell_name("enemy");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_type('.');
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    auto enemy = std::make_shared<elf>();
+                    enemy->set_pos(pos{i, row, floor});
+                    enemies.emplace_back(enemy);
+                    num_enemy++;
+                } else if (line[i] == 'O') {
+                    map_cell[i][row].set_cell_type('O');
+                    map_cell[i][row].set_cell_name("enemy");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_type('.');
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    auto enemy = std::make_shared<orc>();
+                    enemy->set_pos(pos{i, row, floor});
+                    enemies.emplace_back(enemy);
+                    num_enemy++;
+                } else if (line[i] == 'M') {
+                    map_cell[i][row].set_cell_type('M');
+                    map_cell[i][row].set_cell_name("enemy");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_type('.');
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    auto enemy = std::make_shared<merchant>();
+                    enemy->set_pos(pos{i, row, floor});
+                    enemies.emplace_back(enemy);
+                    num_enemy++;
+                } else if (line[i] == 'D') {
+                    map_cell[i][row].set_cell_type('D');
+                    map_cell[i][row].set_cell_name("enemy");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_type('.');
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    auto enemy = std::make_shared<dragon>();
+                    enemy->set_pos(pos{i, row, floor});
+                    enemies.emplace_back(enemy);
+                    num_enemy++;
+                } else if (line[i] == 'L') {
+                    map_cell[i][row].set_cell_type('L');
+                    map_cell[i][row].set_cell_name("enemy");
+                    map_cell[i][row].set_step(false);
+                    origin_map_cell[i][row].set_cell_type('.');
+                    origin_map_cell[i][row].set_cell_name("tile");
+                    origin_map_cell[i][row].set_step(true);
+                    auto enemy = std::make_shared<halfling>();
+                    enemy->set_pos(pos{i, row, floor});
+                    enemies.emplace_back(enemy);
+                    num_enemy++;
+                }
+            }
+            ++row;
+        }
     }
 }
 
 void map::print_map() {
     for (int i = 0; i < NUM_ROW; ++i) {
         for (int j = 0; j < NUM_COL; ++j) {
-            std::cout << map_cell[j][i].get_cell_type();
+            char cell_type = map_cell[j][i].get_cell_type();
+            if (cell_type == '@' || cell_type == '\\') {
+                std::cout << ESC << ";" << BLUE_TXT << "m" << cell_type << RESET;
+            } else if (cell_type == 'G') {
+                std::cout << ESC << ";" << YELLOW_TXT << "m" << cell_type << RESET;
+            } else if (cell_type == 'P') {
+                std::cout << ESC << ";" << GREEN_TXT << "m" << cell_type << RESET;
+            } else if (map_cell[j][i].get_cell_name() == "enemy") {
+                std::cout << ESC << ";" << RED_TXT << "m" << cell_type << RESET;
+            } else {
+                std::cout << cell_type;
+            } 
         }
         std::cout << std::endl;
     }
@@ -176,102 +677,353 @@ void map::print_map() {
 }
 
 void map::move_player(std::string direction) {
-    if (direction == "no") {
-        if (map_cell[player->get_pos().get_x()][player->get_pos().get_y() - 1].get_step()) {
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_name());
-            pos p{player->get_pos().get_x(), player->get_pos().get_y() - 1, player->get_pos().get_floor()};
-            player->set_pos(p);
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
-            actions.emplace_back("PC moves North.");
-        } else {
-            actions.emplace_back("PC cannot move North.");
+    int new_x = direction_pos(direction, player->get_pos()).get_x();
+    int new_y = direction_pos(direction, player->get_pos()).get_y();
+    if (map_cell[new_x][new_y].get_cell_type() == '\\') {
+        actions.emplace_back("PC moves " + direction + ". ");
+        actions.emplace_back("PC goes to next floor. ");
+        floor++;
+        floor_change = true;
+        return;
+    } else if (map_cell[new_x][new_y].get_step()) {
+        if (map_cell[new_x][new_y].get_cell_type() == 'G') {
+            int gold_id = which_gold(new_x, new_y);
+            if (golds[gold_id]->is_pickable()) {
+                 //std::cout << "gold id: " << gold_id << std::endl;
+                player->set_gold(player->get_gold() + golds[gold_id]->get_value());
+                actions.emplace_back("gold picked up, value:" + std::to_string(golds[gold_id]->get_value()) + ". ");
+                golds.erase(golds.begin() + gold_id);
+                num_gold--;
+            } else {
+                actions.emplace_back("Dragon still alive. Dragon hoard can not be picked up. ");
+                return;
+            }
         }
-    } else if (direction == "so") {
-        if (map_cell[player->get_pos().get_x()][player->get_pos().get_y() + 1].get_step()) {
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_name());
-            pos p{player->get_pos().get_x(), player->get_pos().get_y() + 1, player->get_pos().get_floor()};
-            player->set_pos(p);
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
-            actions.emplace_back("PC moves South.");
+        map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
+        map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_name());
+        map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_step(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_step());
+        pos p{new_x, new_y, player->get_pos().get_floor()};
+        player->set_pos(p);
+        map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
+        map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
+        actions.emplace_back("PC moves " + direction + ".");
+    } else {
+        actions.emplace_back("PC cannot moves " + direction + ".");
+    }
+}
+
+void map::player_attack(std::string direction) {
+    int enemy_id = which_enemy(direction_pos(direction, player->get_pos()).get_x(), direction_pos(direction, player->get_pos()).get_y());
+    if (enemy_id != -1 && !enemies[enemy_id]->get_dead()) {
+        int damage = player->attack(enemies[enemy_id]);
+        actions.emplace_back("PC deals " + std::to_string(damage) + " damage to H (");
+        if (enemies[enemy_id]->get_race() == "Merchant") {
+            enemies[enemy_id]->set_hostile(true);
+            std::cout << "merchant become hostile" << std::endl;
+        } 
+        if (enemies[enemy_id]->get_hp() <= 0) {
+            actions.emplace_back("Dead).");
+            //std::cout << "enemy dead" << std::endl;
+            map_cell[enemies[enemy_id]->get_pos().get_x()][enemies[enemy_id]->get_pos().get_y()].set_cell_type('.');
+            map_cell[enemies[enemy_id]->get_pos().get_x()][enemies[enemy_id]->get_pos().get_y()].set_cell_name("tile");
+            map_cell[enemies[enemy_id]->get_pos().get_x()][enemies[enemy_id]->get_pos().get_y()].set_step(true);
+            drop_gold(enemies[enemy_id]);
+            
+            enemies.erase(enemies.begin() + enemy_id);
+            enemies.shrink_to_fit();
+            num_enemy--;
         } else {
-            actions.emplace_back("PC cannot move South.");
-        }
-    } else if (direction == "ea") {
-        if (map_cell[player->get_pos().get_x() + 1][player->get_pos().get_y()].get_step()) {
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_name());
-            pos p{player->get_pos().get_x() + 1, player->get_pos().get_y(), player->get_pos().get_floor()};
-            player->set_pos(p);
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
-            actions.emplace_back("PC moves South.");
-        } else {
-            actions.emplace_back("PC cannot move South.");
-        }
-    } else if (direction == "we") {
-        if (map_cell[player->get_pos().get_x() - 1][player->get_pos().get_y()].get_step()) {
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_name());
-            pos p{player->get_pos().get_x() - 1, player->get_pos().get_y(), player->get_pos().get_floor()};
-            player->set_pos(p);
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
-            actions.emplace_back("PC moves South.");
-        } else {
-            actions.emplace_back("PC cannot move South.");
-        }
-    } else if (direction == "ne") {
-        if (map_cell[player->get_pos().get_x() + 1][player->get_pos().get_y() - 1].get_step()) {
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_name());
-            pos p{player->get_pos().get_x() + 1, player->get_pos().get_y() - 1, player->get_pos().get_floor()};
-            player->set_pos(p);
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
-            actions.emplace_back("PC moves South.");
-        } else {
-            actions.emplace_back("PC cannot move South.");
-        }
-    } else if (direction == "nw") {
-        if (map_cell[player->get_pos().get_x() - 1][player->get_pos().get_y() - 1].get_step()) {
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_name());
-            pos p{player->get_pos().get_x() - 1, player->get_pos().get_y() - 1, player->get_pos().get_floor()};
-            player->set_pos(p);
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
-            actions.emplace_back("PC moves South.");
-        } else {
-            actions.emplace_back("PC cannot move South.");
-        }
-    } else if (direction == "se") {
-        if (map_cell[player->get_pos().get_x() + 1][player->get_pos().get_y() + 1].get_step()) {
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_name());
-            pos p{player->get_pos().get_x() + 1, player->get_pos().get_y() + 1, player->get_pos().get_floor()};
-            player->set_pos(p);
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
-            actions.emplace_back("PC moves South.");
-        } else {
-            actions.emplace_back("PC cannot move South.");
+            actions.emplace_back(std::to_string(enemies[enemy_id]->get_hp()) + "HP).");
         }
     } else {
-        if (map_cell[player->get_pos().get_x() - 1][player->get_pos().get_y() + 1].get_step()) {
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_name());
-            pos p{player->get_pos().get_x() - 1, player->get_pos().get_y() + 1, player->get_pos().get_floor()};
-            player->set_pos(p);
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
-            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_name("player");
-            actions.emplace_back("PC moves South.");
-        } else {
-            actions.emplace_back("PC cannot move South.");
+        actions.emplace_back("No enemy in this direction. You wasted a turn.");
+    }
+}
+
+// void map::move_enemy_from_to(int enemy_id, int x1, int y1, int x2, int y2) {
+//     map_cell[x1][y1].set_cell_type(origin_map_cell[x1][y1].get_cell_type());
+//     map_cell[x1][y1].set_cell_name(origin_map_cell[x1][y1].get_cell_name());
+//     map_cell[x1][y1].set_step(origin_map_cell[x1][y1].get_step());
+//     pos p{x2, y2, enemies[enemy_id]->get_pos().get_floor()};
+//     enemies[enemy_id]->set_pos(p);
+//     enemies[enemy_id]->set_moved(true);
+//     map_cell[x2][y2].set_cell_type(enemies[enemy_id]->get_symbol());
+//     map_cell[x2][y2].set_cell_name(enemies[enemy_id]->get_race());
+//     map_cell[x2][y2].set_step(false);
+// }
+
+void map::move_enemy() {
+    for (int i = 0; i < NUM_ROW; ++i) {  
+        for (int j = 0; j < NUM_COL; ++j) {
+            int enemy_id = which_enemy(j, i);
+            if (enemy_id != -1 && !enemies[enemy_id]->is_moved() && !enemies[enemy_id]->get_dead() && enemies[enemy_id]->get_race() != "Dragon") { //if found enemy
+                //std::cout << "enemy found" << std::endl;
+                while (!enemies[enemy_id]->is_moved()) {
+                    int random_direction = rand() % 8;
+                    //std::cout << random_direction << std::endl;
+                    std::string direction = direction_map[random_direction];
+                    //std::cout << direction << std::endl;
+                    int new_x = direction_pos(direction, enemies[enemy_id]->get_pos()).get_x();
+                    int new_y = direction_pos(direction, enemies[enemy_id]->get_pos()).get_y();
+                    if (map_cell[new_x][new_y].get_cell_type() == '.') {
+                        map_cell[j][i].set_cell_type(origin_map_cell[j][i].get_cell_type());
+                        map_cell[j][i].set_cell_name(origin_map_cell[j][i].get_cell_name());
+                        map_cell[j][i].set_step(origin_map_cell[j][i].get_step());
+                        pos p{new_x, new_y, enemies[enemy_id]->get_pos().get_floor()};
+                        enemies[enemy_id]->set_pos(p);
+                        enemies[enemy_id]->set_moved(true);
+                        map_cell[new_x][new_y].set_cell_type(enemies[enemy_id]->get_symbol());
+                        map_cell[new_x][new_y].set_cell_name(enemies[enemy_id]->get_race());
+                        map_cell[new_x][new_y].set_step(false); 
+                    } else {
+                        random_direction = rand() % 8;
+                    }
+                }
+            }
         }
     }
+    for (int i = 0; i < num_enemy; ++i) {
+        enemies[i]->set_moved(false);
+    }
+}
 
+void map::enemy_attack() {
+    for (int i = 0; i < num_enemy; ++i) {
+        if (!enemies[i]->get_dead() && is_adjacent(enemies[i]->get_pos(), player->get_pos())) {
+            if (enemies[i]->is_hostile()) {
+                int damage = enemies[i]->attack(player);
+                actions.emplace_back(enemies[i]->get_race() + " deals " + std::to_string(damage) + " damage to PC. ");
+                if (player->get_hp() <= 0) {
+                    set_gameover();
+                    return;
+                }
+            }
+            if (enemies[i]->get_race() == "Dragon") {
+                enemies[i]->set_hostile(true);
+            }
+        }
+    }
+}
+
+void map::use_potion(std::string &direction) {
+    int potion_id = which_potion(direction_pos(direction, player->get_pos()).get_x(), direction_pos(direction, player->get_pos()).get_y());
+    if (potion_id != -1) {
+        if (potions[potion_id]->get_name() == "RH") {
+            if (player->get_race() == "Drow") {
+                player->set_hp(player->get_hp() + 15);
+            } else {
+                player->set_hp(player->get_hp() + 10);
+            }
+            actions.emplace_back("PC uses RH. ");
+            actions.emplace_back("PC gains 10 HP. ");
+        } else if (potions[potion_id]->get_name() == "BA") {
+            if (player->get_race() == "Drow") {
+                player->set_atk(player->get_atk() + 7.5);
+            } else {
+                player->set_atk(player->get_atk() + 5);
+            }
+            actions.emplace_back("PC uses BA. ");
+            actions.emplace_back("PC gains 5 Atk. ");
+        } else if (potions[potion_id]->get_name() == "BD") {
+            if (player->get_race() == "Drow") {
+                player->set_def(player->get_def() + 7.5);
+            } else {
+                player->set_def(player->get_def() + 5);
+            }
+            actions.emplace_back("PC uses BD. ");
+            actions.emplace_back("PC gains 5 Def. ");
+        } else if (potions[potion_id]->get_name() == "PH") {
+            if (player->get_race() == "Drow") {
+                player->set_hp(player->get_hp() - 15);
+            } else {
+                player->set_hp(player->get_hp() - 10);
+            }
+            actions.emplace_back("PC uses PH. ");
+            actions.emplace_back("PC loses 10 HP. ");
+        } else if (potions[potion_id]->get_name() == "WA") {
+            if (player->get_race() == "Drow") {
+                player->set_atk(player->get_atk() - 7.5);
+            } else {
+                player->set_atk(player->get_atk() - 5);
+            }
+            actions.emplace_back("PC uses WA. ");
+            actions.emplace_back("PC loses 5 Atk. ");
+        } else if (potions[potion_id]->get_name() == "WD") {
+            if (player->get_race() == "Drow") {
+                player->set_def(player->get_def() - 7.5);
+            } else {
+                player->set_def(player->get_def() - 5);
+            }
+            actions.emplace_back("PC uses WD. ");
+            actions.emplace_back("PC loses 5 Def. ");
+        }
+        for (int i = 0; i < num_posion; i++) {
+            if (potions[i]->get_name() == potions[potion_id]->get_name()) {
+                potions[i]->set_revealed(true);
+            }
+        }
+        map_cell[potions[potion_id]->get_pos().get_x()][potions[potion_id]->get_pos().get_y()].set_cell_type('.');
+        map_cell[potions[potion_id]->get_pos().get_x()][potions[potion_id]->get_pos().get_y()].set_cell_name("tile");
+        map_cell[potions[potion_id]->get_pos().get_x()][potions[potion_id]->get_pos().get_y()].set_step(true);
+        potions.erase(potions.begin() + potion_id);
+        potions.shrink_to_fit();
+        num_posion--;
+    } else {
+        actions.emplace_back("No potion in this direction. You wasted a turn.");
+    }
+}
+
+bool map::is_adjacent(pos p1, pos p2) {
+    if (abs(p1.get_x() - p2.get_x()) <= 1 && abs(p1.get_y() - p2.get_y()) <= 1) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+int map::which_enemy(int x, int y) {
+    for (int i = 0; i < num_enemy; ++i) {
+        if (enemies[i]->get_pos().get_x() == x && enemies[i]->get_pos().get_y() == y) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+int map::which_potion(int x, int y) {
+    for (int i = 0; i < num_posion; ++i) {
+        if (potions[i]->get_pos().get_x() == x && potions[i]->get_pos().get_y() == y) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+int map::which_gold(int x, int y) {
+    for (int i = 0; i < num_gold; ++i) {
+        if (golds[i]->get_pos().get_x() == x && golds[i]->get_pos().get_y() == y) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+pos map::direction_pos(std::string direction, pos current_pos) {
+    if (direction == "so") {
+        pos p{current_pos.get_x(), current_pos.get_y() + 1, current_pos.get_floor()};
+        return p;
+    } else if (direction == "no") {
+        pos p{current_pos.get_x(), current_pos.get_y() - 1, current_pos.get_floor()};
+        return p;
+    } else if (direction == "ea") {
+        pos p{current_pos.get_x() + 1, current_pos.get_y(), current_pos.get_floor()};
+        return p;
+    } else if (direction == "we") {
+        pos p{current_pos.get_x() - 1, current_pos.get_y(), current_pos.get_floor()};
+        return p;
+    } else if (direction == "ne") {
+        pos p{current_pos.get_x() + 1, current_pos.get_y() - 1, current_pos.get_floor()};
+        return p;
+    } else if (direction == "nw") {
+        pos p{current_pos.get_x() - 1, current_pos.get_y() - 1, current_pos.get_floor()};
+        return p;
+    } else if (direction == "se") {
+        pos p{current_pos.get_x() + 1, current_pos.get_y() + 1, current_pos.get_floor()};
+        return p;
+    } else {
+        pos p{current_pos.get_x() - 1, current_pos.get_y() + 1, current_pos.get_floor()};
+        return p;
+    }
+}
+
+bool map::is_gameover() {
+    
+    return gameover;
+}
+
+void map::set_gameover() {
+    gameover = true;
+}
+
+void map::check_state() {
+}
+
+bool map::get_floor_change() {
+    return floor_change;
+}
+
+int map::get_floor() {
+    floor_change = false;
+    return floor;
+}
+
+void map::drop_gold(std::shared_ptr<enemy_character> enemy) {
+    //std::cout << "drop gold entered" << std::endl;
+    if (enemy->get_race() == "Human") {
+        map_cell[enemy->get_pos().get_x()][enemy->get_pos().get_y()].set_cell_type('G');
+        map_cell[enemy->get_pos().get_x()][enemy->get_pos().get_y()].set_cell_name("gold");
+        map_cell[enemy->get_pos().get_x()][enemy->get_pos().get_y()].set_step(true);
+        auto new_gold = std::make_shared<gold>();
+        new_gold->set_pos(pos{enemy->get_pos().get_x(), enemy->get_pos().get_y(), floor});
+        new_gold->set_value(4);
+        golds.emplace_back(new_gold);
+        num_gold++;
+        actions.emplace_back(enemy->get_race() + " drops 2 normal pile of gold. ");
+    } else if (enemy->get_race() == "Merchant") {
+        map_cell[enemy->get_pos().get_x()][enemy->get_pos().get_y()].set_cell_type('G');
+        map_cell[enemy->get_pos().get_x()][enemy->get_pos().get_y()].set_cell_name("gold");
+        map_cell[enemy->get_pos().get_x()][enemy->get_pos().get_y()].set_step(true);
+        auto new_gold = std::make_shared<gold>();
+        new_gold->set_pos(pos{enemy->get_pos().get_x(), enemy->get_pos().get_y(), floor});
+        new_gold->set_value(4);
+        golds.emplace_back(new_gold);
+        num_gold++;
+        actions.emplace_back(enemy->get_race() + " drops 1 merchant hoard. ");
+    } else if (enemy->get_race() == "Dragon") {
+        golds[enemy->get_dragon_hoard_id()]->set_pickable(true);
+        actions.emplace_back(enemy->get_race() + " dead, you can get dragon hoard now. ");
+    } else {
+        int possibility = rand() % 2;
+        if (possibility) {
+            player->set_gold(player->get_gold() + 1);
+            actions.emplace_back(enemy->get_race() + " drops 1 small pile of gold. (added to wallet) ");
+        } else {
+            player->set_gold(player->get_gold() + 2);
+            actions.emplace_back(enemy->get_race() + " drops 1 normal pile of gold. (added to wallet) ");
+        }
+    }
+}
+
+void map::find_around() {
+    for (int i = 0; i < 8; i++) {
+        int direction_x = direction_pos(direction_map[i], player->get_pos()).get_x();
+        int direction_y = direction_pos(direction_map[i], player->get_pos()).get_y();
+        if (map_cell[direction_x][direction_y].get_cell_type() == 'G') {
+            actions.emplace_back("There is a gold in " + direction_map[i] + ". ");
+        } else if (map_cell[direction_x][direction_y].get_cell_type() == 'P') {
+            int potion_id = which_potion(direction_x, direction_y);
+            if (!potions[potion_id]->is_revealed()) {
+                actions.emplace_back("There is an unknown potion in " + direction_map[i] + ". ");
+            } else {
+                actions.emplace_back("There is a " + potions[potion_id]->get_name() + " potion in " + direction_map[i] + ". ");
+            }
+        } else if (map_cell[direction_x][direction_y].get_cell_name() == "enemy") {
+            actions.emplace_back("There is an enemy in " + direction_map[i] + ". ");
+        }
+    }
+}
+
+void map::game_over() {
+    if (player->get_hp() <= 0) {
+        std::cout << "Game Over" << std::endl;
+    } else if (floor == 6) {
+        std::cout << "You win!" << std::endl;
+    } else {
+        std::cout << "You quit the game." << std::endl;
+    }
+    if (player->get_race() == "Shades") {
+        std::cout << "Your final score is: " << player->get_gold() * 1.5 << std::endl;
+    } else {
+        std::cout << "Your final score is: " << player->get_gold() << std::endl;
+    }
 }
