@@ -43,6 +43,14 @@ void character::set_hp(int hp) {
     this->hp = hp;
 }
 
+void character::set_atk(int atk) {
+    this->atk = atk;
+}
+
+void character::set_def(int def) {
+    this->def = def;
+}
+
 void character::set_dead(bool is_dead){
     this->set_pos(pos{-1, -1, -1});
     this->is_dead = is_dead;

@@ -36,3 +36,11 @@ void enemy_character::set_moved(bool moved) {
 bool enemy_character::is_moved() {
     return moved;
 }
+
+int enemy_character::get_dragon_hoard_id() {
+    return dragon_hoard_id;
+}
+
+void enemy_character::set_dragon_hoard_id(int id) {
+    dragon_hoard_id = id;
+}

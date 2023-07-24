@@ -86,20 +86,30 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
                         game_map.set_map();
                     }
                 } else {
+                    game_map.find_around();
                     game_map.move_enemy();
                     game_map.enemy_attack();
+                    game_map.check_state();
+                    if (game_map.is_gameover()) {
+                        std::cout << "Game Over" << std::endl;
+                        return;
+                    }
                 }
                 game_map.print_map();
-            //} else if (cmd == "u") {
-            //     std::cin >> cmd;
-            //     game_map.use_potion(cmd);
-            //     game_map.move_enemy();
-            //     if (game_map.is_gameover()) {
-                //     std::cout << "Game Over" << std::endl;
-                //     return;
-                // } else {
-                //     game_map.print_map();
-                // }
+            } else if (cmd == "u") {
+                std::cin >> cmd;
+                game_map.use_potion(cmd);
+                game_map.move_enemy();
+                game_map.enemy_attack();
+                game_map.check_state();
+                if (game_map.is_gameover()) {
+                    game_map.game_over();
+                    return;
+                }
+                else {
+                    game_map.find_around();
+                    game_map.print_map();
+                }
             } else if (cmd == "a") {
                 std::cin >> cmd;
                 game_map.player_attack(cmd);
@@ -108,7 +118,8 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
                 if (game_map.is_gameover()) {
                     std::cout << "Game Over" << std::endl;
                     return;
-                } else {
+                }
+                else {
                     game_map.print_map();
                 }
             } else if (cmd == "r") {

@@ -18,6 +18,7 @@ class item {
     pos get_pos();
     void set_pos(pos position);
     void set_name(std::string name);
+    
 };
 
 #endif

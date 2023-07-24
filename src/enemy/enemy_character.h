@@ -14,6 +14,7 @@ class enemy_character: public character {
     bool active = true;
     bool hostile;
     bool moved;
+    int dragon_hoard_id;
  public:
     enemy_character(int hp, int atk, int def, std::string race, char symbol, bool hostile);
     std::vector<int> get_drop_item() const;
@@ -22,6 +23,8 @@ class enemy_character: public character {
     // void set_drop_item(std::vector<int> item_index);
     void set_active(bool active);
     void set_hostile(bool hostile);
+    int get_dragon_hoard_id();
+    void set_dragon_hoard_id(int id);
     
     void set_moved(bool moved);
     bool is_moved();

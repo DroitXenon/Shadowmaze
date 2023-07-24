@@ -23,8 +23,8 @@ class character {
     bool get_dead() const;
     pos get_pos() const;
     void set_hp(int hp);
-    // void set_atk(int atk);
-    // void set_def(int def);
+    void set_atk(int atk);
+    void set_def(int def);
     void set_dead(bool is_dead);
     void set_pos(pos position);
     virtual ~character() = 0;

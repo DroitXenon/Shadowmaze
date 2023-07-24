@@ -32,4 +32,3 @@ void item::set_pos(pos position) {
 void item::set_name(std::string name) {
     this->name = name;
 }
-

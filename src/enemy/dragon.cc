@@ -8,3 +8,4 @@ int dragon::attack(std::shared_ptr<player_character> player) {
     player->set_hp(player->get_hp() - damage);
     return damage; 
 }
+

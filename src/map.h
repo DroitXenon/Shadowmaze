@@ -74,7 +74,7 @@ class map {
     void use_potion(std::string& direction);
     bool is_adjacent(pos p1, pos p2);
     int which_enemy(int x, int y);
-    int which_potion();
+    int which_potion(int x, int y);
     int which_gold(int x, int y);
     pos direction_pos(std::string direction, pos current_pos);
     bool is_gameover();
@@ -82,6 +82,9 @@ class map {
     void check_state();
     bool get_floor_change();
     int get_floor();
+    void drop_gold(std::shared_ptr<enemy_character> enemy);
+    void find_around();
+    void game_over();
 };
 
 
