@@ -5,6 +5,8 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <cstdlib>
+#include <ctime>
 #include <map>
 #include "player/player_character.h"
 #include "enemy/enemy_character.h"
@@ -25,9 +27,15 @@
 
 const int NUM_COL = 79;
 const int NUM_ROW = 25;
-#include <iostream>
-#include <cstdlib>
-#include <ctime>
+
+#define ESC "\033["
+#define LIGHT_BLUE_BKG "106"
+#define RED_TXT "31"
+#define GREEN_TXT "32"
+#define YELLOW_TXT "33"
+#define BLUE_TXT "34"
+#define PURPLE_TXT "35"
+#define RESET "\033[m"
 
 
 class map {

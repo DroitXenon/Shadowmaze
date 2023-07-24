@@ -1,5 +1,6 @@
 #include "map.h"
 
+
 void map::set_player(std::shared_ptr<player_character> character){
     player = character;
     actions.emplace_back("Player character has spawned.");
@@ -648,7 +649,18 @@ void map::read_map_file(std::string& filename, int floor) {
 void map::print_map() {
     for (int i = 0; i < NUM_ROW; ++i) {
         for (int j = 0; j < NUM_COL; ++j) {
-            std::cout << map_cell[j][i].get_cell_type();
+            char cell_type = map_cell[j][i].get_cell_type();
+            if (cell_type == '@' || cell_type == '\\') {
+                std::cout << ESC << ";" << BLUE_TXT << "m" << cell_type << RESET;
+            } else if (cell_type == 'G') {
+                std::cout << ESC << ";" << YELLOW_TXT << "m" << cell_type << RESET;
+            } else if (cell_type == 'P') {
+                std::cout << ESC << ";" << GREEN_TXT << "m" << cell_type << RESET;
+            } else if (map_cell[j][i].get_cell_name() == "enemy") {
+                std::cout << ESC << ";" << RED_TXT << "m" << cell_type << RESET;
+            } else {
+                std::cout << cell_type;
+            } 
         }
         std::cout << std::endl;
     }
@@ -1002,7 +1014,13 @@ void map::find_around() {
 }
 
 void map::game_over() {
-    std::cout << "Game Over" << std::endl;
+    if (player->get_hp() <= 0) {
+        std::cout << "Game Over" << std::endl;
+    } else if (floor == 6) {
+        std::cout << "You win!" << std::endl;
+    } else {
+        std::cout << "You quit the game." << std::endl;
+    }
     if (player->get_race() == "Shades") {
         std::cout << "Your final score is: " << player->get_gold() * 1.5 << std::endl;
     } else {

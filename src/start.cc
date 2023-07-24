@@ -8,6 +8,15 @@
 #include "pos.h"
 #include "map.h"
 
+#define ESC "\033["
+#define LIGHT_BLUE_BKG "106"
+#define RED_TXT "31"
+#define GREEN_TXT "32"
+#define YELLOW_TXT "33"
+#define BLUE_TXT "34"
+#define PURPLE_TXT "35"
+#define RESET "\033[m"
+
 
 void start(std::string map_file, bool with_map, unsigned int seed_int, bool with_seed) {
     srand(seed_int);
@@ -19,6 +28,7 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
     while (restart) {
         restart = false;
         std::cout << "Welcome to cc 3k, please enter your race" << std:: endl; // welcome
+        //   cout << ESC << LIGHT_BLUE_BKG << ";" << PURPLE_TXT <<"m"<< "Hello, world!" << RESET;
         while (true) {
             std::cin >> cmd;
             if (cmd == "s") {
@@ -77,7 +87,7 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
                 game_map.move_player(cmd);
                 if (game_map.get_floor_change()) {
                     if (game_map.get_floor() == 6) {
-                        std::cout << "You Win" << std::endl;
+                        game_map.game_over();
                         return;
                     } else if (with_map) {
                         game_map.read_map_file(map_file, game_map.get_floor());
@@ -91,7 +101,7 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
                     game_map.enemy_attack();
                     game_map.check_state();
                     if (game_map.is_gameover()) {
-                        std::cout << "Game Over" << std::endl;
+                        game_map.game_over();
                         return;
                     }
                 }
@@ -127,7 +137,8 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
                 std::cout << "Restarting" << std::endl;
                 break;
             } else if (cmd == "q") {
-                std::cout << "Quitting" << std::endl;
+                //std::cout << "Quitting" << std::endl;
+                game_map.game_over();
                 return;
             } else {
                 std::cerr << "Not Valid Input, please enter your command" << std::endl;
