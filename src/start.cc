@@ -26,6 +26,7 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
     std::cout << "Your seed is " << seed_int << std::endl;
     
     while (restart) {
+        game_map.initialize();
         restart = false;
         // Welcome message
         std::cout << "Welcome to cc 3k, please enter your race" << std:: endl;
@@ -89,7 +90,7 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
             if (cmd == "no" || cmd == "so" || cmd == "ea" || cmd == "we" || cmd == "ne" || cmd == "nw" || cmd == "se" || cmd == "sw") {
                 game_map.move_player(cmd);
                 if (game_map.get_floor_change()) {
-                    if (game_map.get_floor() == 6) {
+                    if (game_map.get_floor() == MAX_FLOOR) {
                         game_map.game_over();
                         return;
                     } else if (with_map) {
@@ -104,7 +105,16 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
                     game_map.enemy_attack();
                     if (game_map.is_gameover()) {
                         game_map.game_over();
-                        return;
+                        std::cout << "Do you want to restart? (y/n)" << std::endl;
+                        std::cin >> cmd;
+                        if (cmd == "y") {
+                            restart = true;
+                            std::cout << "Restarting" << std::endl;
+                            break;
+                        } else {
+                            std::cout << "Quitting" << std::endl;
+                            return;
+                        }
                     }
                 }
                 game_map.print_map();
@@ -115,7 +125,16 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
                 game_map.enemy_attack();
                 if (game_map.is_gameover()) {
                     game_map.game_over();
-                    return;
+                    std::cout << "Do you want to restart? (y/n)" << std::endl;
+                    std::cin >> cmd;
+                    if (cmd == "y") {
+                        restart = true;
+                        std::cout << "Restarting" << std::endl;
+                        break;
+                    } else {
+                        std::cout << "Quitting" << std::endl;
+                        return;
+                    }
                 }
                 else {
                     game_map.find_around();
@@ -126,8 +145,17 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
                 game_map.player_attack(cmd);
                 game_map.enemy_attack();
                 if (game_map.is_gameover()) {
-                    game_map_game_over();
-                    return;
+                    game_map.game_over();
+                    std::cout << "Do you want to restart? (y/n)" << std::endl;
+                    std::cin >> cmd;
+                    if (cmd == "y") {
+                        restart = true;
+                        std::cout << "Restarting" << std::endl;
+                        break;
+                    } else {
+                        std::cout << "Quitting" << std::endl;
+                        return;
+                    }
                 }
                 else {
                     game_map.print_map();

@@ -4,7 +4,6 @@
 void map::set_player(std::shared_ptr<player_character> character){
     player = character;
     actions.emplace_back("Player character has spawned.");
-    //std::cout << "player set" << std::endl;
 }
 
 void map::set_map(){
@@ -14,12 +13,8 @@ void map::set_map(){
         chamber_id_player = rand() % 5 + 1;
         chamber_id_stair = rand() % 5 + 1;
     }
-    //std::cout << "player chamber id generated " << chamber_id_player << std::endl;
-    //std::cout << "stair chamber id generated " << chamber_id_stair << std::endl;
     generate_player(chamber_id_player);
-    //std::cout << "player generated" << std::endl;
     generate_stair(chamber_id_stair);
-    //std::cout << "stair generated" << std::endl;
     generate_posion();
     generate_gold();
     generate_enemy();
@@ -222,14 +217,7 @@ void map::read_empty_map(std::string& filename) {
     std::ifstream map_file{filename};
     std::string line;
     int row = 0;
-    num_enemy = 0;
-    num_potion = 0;
-    num_gold = 0;
-    memset(map_cell, 0, sizeof(map_cell));
-    memset(origin_map_cell, 0, sizeof(origin_map_cell));
-    enemies.clear();
-    golds.clear();
-    potions.clear();
+    clear_map();
     while (getline(map_file, line)) {
         for (int i = 0; i < NUM_COL; ++i) {
             map_cell[i][row].set_cell_type(line[i]);
@@ -251,32 +239,10 @@ void map::read_map_file(std::string& filename, int floor) {
     std::string line;
     int row = 0;
     int line_num = 0;
-    int start_line = 0;
-    int end_line = 0;
-    num_enemy = 0;
-    num_potion = 0;
-    num_gold = 0;
-    memset(map_cell, 0, sizeof(map_cell));
-    memset(origin_map_cell, 0, sizeof(origin_map_cell));
-    enemies.clear();
-    golds.clear();
-    potions.clear();
-    if (floor == 1) {
-        start_line = 0;
-        end_line = 25;
-    } else if (floor == 2) {
-        start_line = 26;
-        end_line = 50;
-    } else if (floor == 3) {
-        start_line = 51;
-        end_line = 75;
-    } else if (floor == 4) {
-        start_line = 76;
-        end_line = 100;
-    } else {
-        start_line = 101;
-        end_line = 125;
-    }
+    int start_line = floor * NUM_ROW + 1;
+    int end_line = (floor + 1) * NUM_ROW;
+
+    clear_map();
 
     while (getline(map_file, line)) {
         line_num++;
@@ -473,6 +439,7 @@ void map::read_map_file(std::string& filename, int floor) {
 }
 
 void map::print_map() {
+
     for (int i = 0; i < NUM_ROW; ++i) {
         for (int j = 0; j < NUM_COL; ++j) {
             char cell_type = map_cell[j][i].get_cell_type();
@@ -602,7 +569,7 @@ void map::enemy_attack() {
                 int damage = enemies[i]->attack(player);
                 actions.emplace_back(enemies[i]->get_race() + " deals " + std::to_string(damage) + " damage to PC. ");
                 if (player->get_hp() <= 0) {
-                    set_gameover();
+                    gameover = true;
                     return;
                 }
             }
@@ -747,10 +714,6 @@ bool map::is_gameover() {
     return gameover;
 }
 
-void map::set_gameover() {
-    gameover = true;
-}
-
 bool map::get_floor_change() {
     return floor_change;
 }
@@ -841,4 +804,22 @@ void map::game_over() {
     } else {
         std::cout << "Your final score is: " << player->get_gold() << std::endl;
     }
+}
+
+void map::initialize() {
+    gameover = false;
+    floor_change = false;
+    actions.clear();
+    clear_map();
+}
+
+void map::clear_map() {
+    num_enemy = 0;
+    num_potion = 0;
+    num_gold = 0;
+    memset(map_cell, 0, sizeof(map_cell));
+    memset(origin_map_cell, 0, sizeof(origin_map_cell));
+    enemies.clear();
+    golds.clear();
+    potions.clear();
 }
