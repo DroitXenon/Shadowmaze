@@ -119,7 +119,8 @@ void map::generate_gold() {
                             enemies.emplace_back(new_dragon);
                             break;
                         } else {
-                            direction = rand() % 8;
+                            direction_id = rand() % 8;
+                            direction = direction_map[direction_id];
                             dragon_pos = direction_pos(direction, p);
                         }
                     }
