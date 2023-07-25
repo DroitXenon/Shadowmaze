@@ -24,10 +24,6 @@
 #include "pos.h"
 #include "cell.h"
 
-
-const int NUM_COL = 79;
-const int NUM_ROW = 25;
-
 #define ESC "\033["
 #define LIGHT_BLUE_BKG "106"
 #define RED_TXT "31"
@@ -37,6 +33,8 @@ const int NUM_ROW = 25;
 #define PURPLE_TXT "35"
 #define RESET "\033[m"
 
+const int NUM_COL = 79;
+const int NUM_ROW = 25;
 
 class map {
     std::shared_ptr<player_character> player;
@@ -44,7 +42,7 @@ class map {
     std::vector<std::shared_ptr<potion>> potions;
     std::vector<std::shared_ptr<gold>> golds;
   
-    int num_posion = 0;
+    int num_potion = 0;
     int num_gold = 0;
     int num_enemy = 0;
     int floor = 1;
@@ -87,7 +85,6 @@ class map {
     pos direction_pos(std::string direction, pos current_pos);
     bool is_gameover();
     void set_gameover();
-    void check_state();
     bool get_floor_change();
     int get_floor();
     void drop_gold(std::shared_ptr<enemy_character> enemy);

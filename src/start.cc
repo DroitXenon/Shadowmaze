@@ -17,7 +17,6 @@
 #define PURPLE_TXT "35"
 #define RESET "\033[m"
 
-
 void start(std::string map_file, bool with_map, unsigned int seed_int, bool with_seed) {
     srand(seed_int);
     std::string cmd;
@@ -71,7 +70,7 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
         if (restart) {
             continue;
         }
-
+        
         if (with_map) {
             game_map.read_map_file(map_file, 1);
         } else {
@@ -99,7 +98,6 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
                     game_map.move_enemy();
                     game_map.find_around();
                     game_map.enemy_attack();
-                    game_map.check_state();
                     if (game_map.is_gameover()) {
                         game_map.game_over();
                         return;
@@ -111,7 +109,6 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
                 game_map.use_potion(cmd);
                 game_map.move_enemy();
                 game_map.enemy_attack();
-                game_map.check_state();
                 if (game_map.is_gameover()) {
                     game_map.game_over();
                     return;
@@ -124,7 +121,6 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
                 std::cin >> cmd;
                 game_map.player_attack(cmd);
                 game_map.enemy_attack();
-                game_map.check_state();
                 if (game_map.is_gameover()) {
                     std::cout << "Game Over" << std::endl;
                     return;
@@ -146,5 +142,3 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
         }
     }
 }
-
-

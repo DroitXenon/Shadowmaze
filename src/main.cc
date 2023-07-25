@@ -1,6 +1,7 @@
 #include <sstream>
 #include "start.h"
 
+// start game and deal with command line arguments
 int main(int argc, char *argv[]) {
     if (argc == 1) {
         start();
