@@ -17,17 +17,19 @@
 #define PURPLE_TXT "35"
 #define RESET "\033[m"
 
+// Control the game flow
 void start(std::string map_file, bool with_map, unsigned int seed_int, bool with_seed) {
     srand(seed_int);
     std::string cmd;
     map game_map;
     bool restart = true;
-    std::cout << "Your seed is " << seed_int << std::endl; // print seed
+    std::cout << "Your seed is " << seed_int << std::endl;
     
     while (restart) {
         restart = false;
-        std::cout << "Welcome to cc 3k, please enter your race" << std:: endl; // welcome
-        //   cout << ESC << LIGHT_BLUE_BKG << ";" << PURPLE_TXT <<"m"<< "Hello, world!" << RESET;
+        // Welcome message
+        std::cout << "Welcome to cc 3k, please enter your race" << std:: endl;
+        // Choose player race
         while (true) {
             std::cin >> cmd;
             if (cmd == "s") {
@@ -71,6 +73,7 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
             continue;
         }
         
+        // Read map data
         if (with_map) {
             game_map.read_map_file(map_file, 1);
         } else {
@@ -79,6 +82,7 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
         }
         game_map.print_map();
 
+        // Deal with command
         while (true) {
             std::cout << "Please enter your command" << std::endl;
             std::cin >> cmd;
@@ -122,7 +126,7 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
                 game_map.player_attack(cmd);
                 game_map.enemy_attack();
                 if (game_map.is_gameover()) {
-                    std::cout << "Game Over" << std::endl;
+                    game_map_game_over();
                     return;
                 }
                 else {
@@ -133,7 +137,6 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
                 std::cout << "Restarting" << std::endl;
                 break;
             } else if (cmd == "q") {
-                //std::cout << "Quitting" << std::endl;
                 game_map.game_over();
                 return;
             } else {

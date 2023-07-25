@@ -28,7 +28,6 @@ void map::set_map(){
 void map::generate_player(int chamber_id) {
     pos p;
     p.randomize_pos(chamber_id);
-    //std::cout << map_cell[p.get_x()][p.get_y()].get_cell_type() << std::endl;
     while (true) {
         if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
             player->set_pos(p);
@@ -572,9 +571,7 @@ void map::move_enemy() {
                 //std::cout << "enemy found" << std::endl;
                 while (!enemies[enemy_id]->is_moved()) {
                     int random_direction = rand() % 8;
-                    //std::cout << random_direction << std::endl;
                     std::string direction = direction_map[random_direction];
-                    //std::cout << direction << std::endl;
                     int new_x = direction_pos(direction, enemies[enemy_id]->get_pos()).get_x();
                     int new_y = direction_pos(direction, enemies[enemy_id]->get_pos()).get_y();
                     if (map_cell[new_x][new_y].get_cell_type() == '.') {
@@ -817,7 +814,6 @@ void map::find_around() {
             } else {
                 actions.emplace_back("There is a gold in " + direction_map[i] + ". ");
             }
-            //std::cout << "gold id: " << gold_id << std::endl;
         } else if (map_cell[direction_x][direction_y].get_cell_type() == 'P') {
             int potion_id = which_potion(direction_x, direction_y);
             if (!potions[potion_id]->is_revealed()) {
