@@ -4,6 +4,8 @@ EXEC = cc3k
 SRCS = $(wildcard *.cc) $(wildcard enemy/*.cc) $(wildcard gold/*.cc) $(wildcard player/*.cc)
 OBJS = $(SRCS:.cc=.o)
 
+.PHONY: all clean
+
 $(EXEC): $(OBJS)
 	$(CXX) $(CXXFLAGS) $(OBJS) -o $(EXEC)
 

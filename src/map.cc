@@ -234,7 +234,7 @@ void map::generate_gold() {
                             map_cell[dragon_pos.get_x()][dragon_pos.get_y()].set_cell_name("enemy");
                             map_cell[dragon_pos.get_x()][dragon_pos.get_y()].set_step(false);
                             auto new_dragon = std::make_shared<dragon>();
-                            new_dragon->set_dragon_hoard_id(num_gold - 1);
+                            new_dragon->set_dragon_hoard_id(num_gold);
                             new_dragon->set_pos(dragon_pos);
                             enemies.emplace_back(new_dragon);
                             break;
@@ -1006,8 +1006,9 @@ void map::drop_gold(std::shared_ptr<enemy_character> enemy) {
         num_gold++;
         actions.emplace_back(enemy->get_race() + " drops 1 merchant hoard. ");
     } else if (enemy->get_race() == "Dragon") {
-        golds[enemy->get_dragon_hoard_id()]->set_pickable(true);
+        golds[enemy->get_dragon_hoard_id() + 1]->set_pickable(true);
         actions.emplace_back(enemy->get_race() + " dead, you can get dragon hoard now. ");
+        std::cout << "dragon hoard id" << enemy->get_dragon_hoard_id() << std::endl;
     } else {
         int possibility = rand() % 2;
         if (possibility) {
@@ -1025,6 +1026,8 @@ void map::find_around() {
         int direction_x = direction_pos(direction_map[i], player->get_pos()).get_x();
         int direction_y = direction_pos(direction_map[i], player->get_pos()).get_y();
         if (map_cell[direction_x][direction_y].get_cell_type() == 'G') {
+            int gold_id = which_gold(direction_x, direction_y);
+            std::cout << "gold id: " << gold_id << std::endl;
             actions.emplace_back("There is a gold in " + direction_map[i] + ". ");
         } else if (map_cell[direction_x][direction_y].get_cell_type() == 'P') {
             int potion_id = which_potion(direction_x, direction_y);
