@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -std=c++20 -Wall -Werror=vla -g 
 EXEC = cc3k
-SRCS = $(wildcard *.cc) $(wildcard enemy/*.cc) $(wildcard gold/*.cc) $(wildcard player/*.cc)
+SRCS = $(wildcard *.cc) $(wildcard enemy/*.cc) $(wildcard player/*.cc)
 OBJS = $(SRCS:.cc=.o)
 
 .PHONY: all clean
