@@ -3,7 +3,7 @@
 #include <string>
 
 class cell {
-    char cell_type;
+    char cell_type = '.';
     bool can_step = true;
  public:
     //cell(char cell_type, std::string cell_name);
