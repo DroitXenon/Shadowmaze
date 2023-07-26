@@ -4,19 +4,12 @@
 //     cell_type{cell_type},
 //     cell_name{cell_name} {}
 
-std::string cell::get_cell_name() const {
-    return cell_name;
-}
 char cell::get_cell_type() const {
     return cell_type;
 }
 
 bool cell::get_step() const {
     return can_step;
-}
-
-void cell::set_cell_name(std::string cell_name) {
-    this->cell_name = cell_name;
 }
 
 void cell::set_cell_type(char cell_type) {

@@ -24,19 +24,16 @@
 #include "pos.h"
 #include "cell.h"
 
-
-const int NUM_COL = 79;
-const int NUM_ROW = 25;
-
 #define ESC "\033["
-#define LIGHT_BLUE_BKG "106"
 #define RED_TXT "31"
 #define GREEN_TXT "32"
 #define YELLOW_TXT "33"
 #define BLUE_TXT "34"
-#define PURPLE_TXT "35"
 #define RESET "\033[m"
 
+const int NUM_COL = 79;
+const int NUM_ROW = 25;
+const int MAX_FLOOR = 5;
 
 class map {
     std::shared_ptr<player_character> player;
@@ -44,14 +41,14 @@ class map {
     std::vector<std::shared_ptr<potion>> potions;
     std::vector<std::shared_ptr<gold>> golds;
   
-    int num_posion = 0;
-    int num_gold = 0;
-    int num_enemy = 0;
-    int floor = 1;
-    bool floor_change = false;
     cell map_cell[NUM_COL][NUM_ROW];
     cell origin_map_cell[NUM_COL][NUM_ROW];
     std::vector<std::string> actions;
+    int num_potion = 0;
+    int num_gold = 0;
+    int num_enemy = 0;
+    int floor = 0;
+    bool floor_change = false;
     bool gameover = false;
     std::map<int, std::string> direction_map { 
         {0,"so"}, 
@@ -67,6 +64,8 @@ class map {
  public:
     void set_player(std::shared_ptr<player_character> pc);
     void set_map();
+    void clear_map();
+    void initialize();
     void generate_player(int chamber_id);
     void generate_stair(int chamber_id);
     void generate_posion();
@@ -85,17 +84,13 @@ class map {
     int which_potion(int x, int y);
     int which_gold(int x, int y);
     pos direction_pos(std::string direction, pos current_pos);
-    bool is_gameover();
-    void set_gameover();
-    void check_state();
     bool get_floor_change();
     int get_floor();
     void drop_gold(std::shared_ptr<enemy_character> enemy);
     void find_around();
+    bool is_gameover();
     void game_over();
+    
 };
-
-
-
 
 #endif
