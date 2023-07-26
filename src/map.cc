@@ -538,8 +538,7 @@ void map::move_enemy() {
             int enemy_id = which_enemy(j, i);
             if (enemy_id != -1 && !enemies[enemy_id]->is_moved() && enemies[enemy_id]->get_race() != "Dragon") { //if found enemy
                 //std::cout << "enemy found" << std::endl;
-                int x_;
-                int y_;
+                
                 while (!enemies[enemy_id]->is_moved()) {
                     int random_direction = rand() % 8;
                     std::string direction = direction_map[random_direction];
@@ -553,12 +552,9 @@ void map::move_enemy() {
                         enemies[enemy_id]->set_moved(true);
                         map_cell[new_x][new_y].set_cell_type(enemies[enemy_id]->get_symbol());
                         map_cell[new_x][new_y].set_step(false); 
-                        x_ = new_x;
-                        y_ = new_y;
+                        
                     }
                 }
-                std::cout << "enemy id " << enemy_id << " enemy pos" << j << i << " " << "enemy race" << enemies[enemy_id]->get_race() << "new x y" << x_ << y_ << std::endl;
-                
             }
         }
     }
