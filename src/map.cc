@@ -163,7 +163,7 @@ void map::generate_enemy() {
                 }
             } else if (enemy_type < 12) {
                 if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
-                    map_cell[p.get_x()][p.get_y()].set_cell_type('L');
+                    map_cell[p.get_x()][p.get_y()].set_cell_type('E');
                     map_cell[p.get_x()][p.get_y()].set_step(false);
                     auto enemy = std::make_shared<elf>();
                     enemy->set_pos(p);
@@ -196,7 +196,7 @@ void map::generate_enemy() {
                 }
             } else {
                 if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
-                    map_cell[p.get_x()][p.get_y()].set_cell_type('M');
+                    map_cell[p.get_x()][p.get_y()].set_cell_type('L');
                     map_cell[p.get_x()][p.get_y()].set_step(false);
                     auto enemy = std::make_shared<halfling>();
                     enemy->set_pos(p);
