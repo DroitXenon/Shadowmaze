@@ -112,6 +112,7 @@ void map::generate_gold() {
                             new_dragon->set_dragon_hoard_id(num_gold);
                             new_dragon->set_pos(dragon_pos);
                             enemies.emplace_back(new_dragon);
+                            num_enemy++;
                             break;
                         } else {
                             direction_id = rand() % 8;
@@ -505,9 +506,9 @@ void map::move_player(std::string direction) {
 
 void map::player_attack(std::string direction) {
     int enemy_id = which_enemy(direction_pos(direction, player->get_pos()).get_x(), direction_pos(direction, player->get_pos()).get_y());
-    if (enemy_id != -1 && !enemies[enemy_id]->get_dead()) {
+    if (enemy_id != -1) {
         int damage = player->attack(enemies[enemy_id]);
-        actions.emplace_back("PC deals " + std::to_string(damage) + " damage to H (");
+        actions.emplace_back("PC deals " + std::to_string(damage) + " damage (");
         if (enemies[enemy_id]->get_race() == "Merchant") {
             enemies[enemy_id]->set_hostile(true);
             std::cout << "merchant become hostile" << std::endl;
@@ -535,8 +536,9 @@ void map::move_enemy() {
     for (int i = 0; i < NUM_ROW; ++i) {  
         for (int j = 0; j < NUM_COL; ++j) {
             int enemy_id = which_enemy(j, i);
-            if (enemy_id != -1 && !enemies[enemy_id]->is_moved() && !enemies[enemy_id]->get_dead() && enemies[enemy_id]->get_race() != "Dragon") { //if found enemy
+            if (enemy_id != -1 && !enemies[enemy_id]->is_moved() && enemies[enemy_id]->get_race() != "Dragon") { //if found enemy
                 //std::cout << "enemy found" << std::endl;
+                
                 while (!enemies[enemy_id]->is_moved()) {
                     int random_direction = rand() % 8;
                     std::string direction = direction_map[random_direction];
@@ -550,8 +552,7 @@ void map::move_enemy() {
                         enemies[enemy_id]->set_moved(true);
                         map_cell[new_x][new_y].set_cell_type(enemies[enemy_id]->get_symbol());
                         map_cell[new_x][new_y].set_step(false); 
-                    } else {
-                        random_direction = rand() % 8;
+                        
                     }
                 }
             }
@@ -564,13 +565,18 @@ void map::move_enemy() {
 
 void map::enemy_attack() {
     for (int i = 0; i < num_enemy; ++i) {
-        if (!enemies[i]->get_dead() && is_adjacent(enemies[i]->get_pos(), player->get_pos())) {
+        if ( is_adjacent(enemies[i]->get_pos(), player->get_pos())) {
             if (enemies[i]->is_hostile()) {
-                int damage = enemies[i]->attack(player);
-                actions.emplace_back(enemies[i]->get_race() + " deals " + std::to_string(damage) + " damage to PC. ");
-                if (player->get_hp() <= 0) {
-                    gameover = true;
-                    return;
+                int attack_chance = rand() % 2;
+                if (attack_chance) {
+                    int damage = enemies[i]->attack(player);
+                    actions.emplace_back(enemies[i]->get_race() + " deals " + std::to_string(damage) + " damage to PC. ");
+                    if (player->get_hp() <= 0) {
+                        gameover = true;
+                        return;
+                    }
+                } else {
+                    actions.emplace_back(enemies[i]->get_race() + " miss! ");
                 }
             }
             if (enemies[i]->get_race() == "Dragon") {

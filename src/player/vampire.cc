@@ -11,9 +11,9 @@ int vampire::attack(std::shared_ptr<enemy_character> enemy) {
         damage = 0;
     } else {
         if (enemy->get_race() != "Dwarf") {
-            set_hp(get_hp() - 5);
-        } else {
             set_hp(get_hp() + 5);
+        } else {
+            set_hp(get_hp() - 5);
         }
     }
     enemy->set_hp(enemy->get_hp() - damage);
