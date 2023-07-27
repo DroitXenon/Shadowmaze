@@ -81,6 +81,7 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
             game_map.read_empty_map(map_file);
             game_map.set_map();
         }
+        game_map.find_around();
         game_map.print_map();
 
         // Deal with command
@@ -92,6 +93,16 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
                 if (game_map.get_floor_change()) {
                     if (game_map.get_floor() == MAX_FLOOR) {
                         game_map.game_over();
+                        std::cout << "Do you want to restart? (y/n)" << std::endl;
+                        std::cin >> cmd;
+                        if (cmd == "y") {
+                            restart = true;
+                            std::cout << "Restarting" << std::endl;
+                            break;
+                        } else {
+                            std::cout << "Quitting" << std::endl;
+                            return;
+                        }
                         return;
                     } else if (with_map) {
                         game_map.read_map_file(map_file, game_map.get_floor());
