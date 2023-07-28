@@ -113,6 +113,7 @@ void map::generate_gold() {
                             new_dragon->set_pos(dragon_pos);
                             enemies.emplace_back(new_dragon);
                             num_enemy++;
+                            //std::cout << "dragon hoard id" << num_gold << " " << new_dragon->get_dragon_hoard_id() << std::endl;
                             break;
                         } else {
                             direction_id = rand() % 8;
@@ -420,6 +421,7 @@ void map::read_map_file(std::string& filename, int floor) {
                     origin_map_cell[i][row].set_cell_type('.');
                     origin_map_cell[i][row].set_step(true);
                     auto enemy = std::make_shared<dragon>();
+                    enemy->set_dragon_hoard_id(num_gold);
                     enemy->set_pos(pos{i, row, floor});
                     enemies.emplace_back(enemy);
                     num_enemy++;
@@ -750,6 +752,7 @@ void map::drop_gold(std::shared_ptr<enemy_character> enemy) {
         num_gold++;
         actions.emplace_back(enemy->get_race() + " drops 1 merchant hoard. ");
     } else if (enemy->get_race() == "Dragon") {
+        std:: cout << "dragon hoard id" << enemy->get_dragon_hoard_id() << std::endl;
         golds[enemy->get_dragon_hoard_id() + 1]->set_pickable(true);
         actions.emplace_back(enemy->get_race() + " dead, you can get dragon hoard now. ");
         std::cout << "dragon hoard id" << enemy->get_dragon_hoard_id() << std::endl;
@@ -771,6 +774,7 @@ void map::find_around() {
         int direction_y = direction_pos(direction_map[i], player->get_pos()).get_y();
         if (map_cell[direction_x][direction_y].get_cell_type() == 'G') {
             int gold_id = which_gold(direction_x, direction_y);
+            //std::cout << "gold id" << gold_id << std::endl;
             if (golds[gold_id]->get_value() == 6) {
                 actions.emplace_back("There is a dragon hoard in " + direction_map[i] + ". ");
                 for (int i = 0; i < num_enemy; i++) {
