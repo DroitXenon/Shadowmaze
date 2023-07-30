@@ -1,7 +1,7 @@
 #include "merchant.h"
 
 merchant::merchant():
-    enemy_character{30, 70, 5, "Merchant", 'M', false} {}
+    enemy_character{30, 70, 5, "Merchant", 'M', false, -1} {}
 
 int merchant::attack(std::shared_ptr<player_character> player) {
     int damage = (int) ceil((100.0 / (100 + player->get_def())) * get_atk());

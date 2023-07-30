@@ -76,7 +76,7 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
         
         // Read map data
         if (with_map) {
-            game_map.read_map_file(map_file, 1);
+            game_map.read_map_file(map_file, 0);
         } else {
             game_map.read_empty_map(map_file);
             game_map.set_map();

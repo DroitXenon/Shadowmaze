@@ -1,8 +1,9 @@
 #include "enemy_character.h"
 
-enemy_character::enemy_character(int hp, int atk, int def, std::string race, char symbol, bool hostile):
+enemy_character::enemy_character(int hp, int atk, int def, std::string race, char symbol, bool hostile, int dragon_hoard_id):
     character{hp, atk, def, race, symbol},
-    hostile{hostile} {}
+    hostile{hostile},
+    dragon_hoard_id{dragon_hoard_id} {}
 
 std::vector<int> enemy_character::get_drop_item() const {
     return drop_item;

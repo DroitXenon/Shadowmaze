@@ -1,7 +1,7 @@
 #include "orc.h"
 
 orc::orc():
-    enemy_character{140, 20, 20, "Orc", 'O', true} {}
+    enemy_character{140, 20, 20, "Orc", 'O', true, -1} {}
 
 int orc::attack(std::shared_ptr<player_character> player) {
     int damage = (int) ceil((100.0 / (100 + player->get_def())) * get_atk());
