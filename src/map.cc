@@ -775,7 +775,7 @@ void map::drop_gold(std::shared_ptr<enemy_character> enemy) {
         actions.emplace_back(enemy->get_race() + " drops 1 merchant hoard. ");
     } else if (enemy->get_race() == "Dragon") {
         std:: cout << "dragon hoard id" << enemy->get_dragon_hoard_id() << std::endl;
-        golds[enemy->get_dragon_hoard_id() + 1]->set_pickable(true);
+        golds[enemy->get_dragon_hoard_id()]->set_pickable(true);
         actions.emplace_back(enemy->get_race() + " dead, you can get dragon hoard now. ");
         std::cout << "dragon hoard id" << enemy->get_dragon_hoard_id() << std::endl;
     } else {
