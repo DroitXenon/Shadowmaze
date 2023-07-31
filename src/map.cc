@@ -490,7 +490,7 @@ void map::print_map() {
     std::cout << "Def: " << player->get_def() << std::endl;
     std::cout << "Action: ";
     for (auto action : actions) {
-        std::cout << action << " and ";
+        std::cout << action; //<< " and ";
     }
     std::cout << std::endl;
     actions.clear();
@@ -515,6 +515,7 @@ void map::move_player(std::string direction) {
                 golds.erase(golds.begin() + gold_id);
                 num_gold--;
             } else {
+                std::cout << "gold id: " << gold_id << std::endl;
                 actions.emplace_back("Dragon still alive. Dragon hoard can not be picked up. ");
                 return;
             }
@@ -809,9 +810,9 @@ void map::find_around() {
                 actions.emplace_back("There is a dragon hoard in " + direction_map[i] + ". ");
                 for (int i = 0; i < num_enemy; i++) {
                     //std::cout << "dragon become hostile" << std::endl;
-                    //std::cout << "dragon hoard id" << enemies[i]->get_dragon_hoard_id() << std::endl;
-                    //std::cout << "gold id" << gold_id << std::endl;
-                    //std::cout << enemies[i]->get_pos().get_x() << std::endl;
+                    std::cout << "dragon hoard id" << enemies[i]->get_dragon_hoard_id() << std::endl;
+                    std::cout << "gold id" << gold_id << std::endl;
+                    std::cout << enemies[i]->get_pos().get_x() << std::endl;
                     if (enemies[i]->get_dragon_hoard_id() == gold_id && enemies[i]->get_race() == "Dragon") {
                         //std::cout << "dragon hoard id" << enemies[i]->get_dragon_hoard_id() << std::endl;
                         //std::cout << "gold id" << gold_id << std::endl;
@@ -884,4 +885,8 @@ void map::check_state() {
     } else if (player->get_race() != "Vampire" &&  player->get_hp() > player->get_max_hp()) {
         player->set_hp(player->get_max_hp());
     }
+}
+
+void map::add_action(std::string action) {
+    actions.emplace_back(action);
 }

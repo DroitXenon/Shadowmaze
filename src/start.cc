@@ -28,23 +28,18 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
         if (cmd == "s") {
             auto pc = std::make_shared<shade>();
             game_map.set_player(pc);
-            std::cout << "You chose shade" << std::endl;
         } else if (cmd == "d") {
             auto pc = std::make_shared<drow>();
             game_map.set_player(pc);
-            std::cout << "You chose drow" << std::endl;
         } else if (cmd == "v") {
             auto pc = std::make_shared<vampire>();
             game_map.set_player(pc);
-            std::cout << "You chose vampire" << std::endl;
         } else if (cmd == "t") {
             auto pc = std::make_shared<troll>();
             game_map.set_player(pc);
-            std::cout << "You chose troll" << std::endl;
         } else if (cmd == "g") {
             auto pc = std::make_shared<goblin>();
             game_map.set_player(pc);
-            std::cout << "You chose goblin" << std::endl;              
         } else if (cmd == "q") {
             std::cout << "Quitting..." << std::endl;
             return;

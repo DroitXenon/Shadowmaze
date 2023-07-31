@@ -60,6 +60,9 @@ class map {
         {"WA",4}, 
         {"WD",5} 
         };
+    std::map<char, std::string> character_map { 
+        
+        };
     std::map<int, std::string> direction_map { 
         {0,"so"}, 
         {1,"no"}, 
@@ -101,6 +104,7 @@ class map {
     bool is_gameover();
     void game_over();
     void check_state();
+    void add_action(std::string action);
     
 };
 
