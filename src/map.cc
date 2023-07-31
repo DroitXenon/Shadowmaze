@@ -482,7 +482,8 @@ void map::print_map() {
         }
         std::cout << std::endl;
     }
-    std::cout << "Race: " << player->get_race() << " Gold: " << player->get_gold() << std::endl;
+    std::cout << "Race: " << player->get_race() << " Gold: " << player->get_gold() 
+              << "                                                   " << "Floor " << floor + 1 << std::endl;
     std::cout << "HP: " << player->get_hp() << std::endl;
     std::cout << "Atk: " << player->get_atk() << std::endl;
     std::cout << "Def: " << player->get_def() << std::endl;
@@ -858,4 +859,9 @@ void map::clear_map() {
     enemies.clear();
     golds.clear();
     potions.clear();
+    if (floor != 0) {
+        player->set_atk(player->get_original_atk());
+        player->set_def(player->get_original_def());
+        actions.emplace_back("PC loses all buffs. ");
+    }
 }
