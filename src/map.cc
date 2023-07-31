@@ -596,10 +596,10 @@ void map::enemy_attack() {
                 if (attack_chance) {
                     int damage = enemies[i]->attack(player);
                     actions.emplace_back(enemies[i]->get_race() + " deals " + std::to_string(damage) + " damage to PC. ");
-                    if (player->get_hp() <= 0) {
-                        gameover = true;
-                        return;
-                    }
+                    // if (player->get_hp() <= 0) {
+                    //     gameover = true;
+                    //     return;
+                    // }
                 } else {
                     actions.emplace_back(enemies[i]->get_race() + " miss! ");
                 }
@@ -671,12 +671,12 @@ void map::use_potion(std::string &direction) {
         potions.erase(potions.begin() + potion_id);
         potions.shrink_to_fit();
         num_potion--;
-        if (player->get_hp() <= 0) {
-            gameover = true;
-        } else if (player->get_hp() > player->get_max_hp()) {
-            player->set_hp(player->get_max_hp());
-            actions.emplace_back("PC HP is full. ");
-        }
+        // if (player->get_hp() <= 0) {
+        //     gameover = true;
+        // } else if (player->get_hp() > player->get_max_hp()) {
+        //     player->set_hp(player->get_max_hp());
+        //     actions.emplace_back("PC HP is full. ");
+        // }
     } else {
         actions.emplace_back("No potion in this direction. You wasted a turn.");
     }
@@ -836,7 +836,7 @@ void map::find_around() {
 void map::game_over() {
     if (player->get_hp() <= 0) {
         std::cout << "Game Over" << std::endl;
-    } else if (floor == 6) {
+    } else if (floor == MAX_FLOOR) {
         std::cout << "You win!" << std::endl;
     } else {
         std::cout << "You quit the game." << std::endl;
@@ -875,10 +875,10 @@ void map::clear_map() {
     potions.clear();
 }
 
-// void map::check_state() {
-//     if (player->get_hp() <= 0) {
-//         gameover = true;
-//     } else if (player->get_hp() > player->get_max_hp()) {
-//         player->set_hp(player->get_max_hp());
-//     }
-// }
+void map::check_state() {
+    if (player->get_hp() <= 0) {
+        gameover = true;
+    } else if (player->get_race() != "Vampire" &&  player->get_hp() > player->get_max_hp()) {
+        player->set_hp(player->get_max_hp());
+    }
+}

@@ -24,12 +24,14 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
     map game_map;
     bool restart = true;
     std::cout << "Your seed is " << seed_int << std::endl;
+    // Welcome message
+    std::cout << "Welcome to Shadowmaze!" << std::endl;
     
     while (restart) {
+        // Initialize map after each restart
         game_map.initialize();
         restart = false;
-        // Welcome message
-        std::cout << "Welcome to cc 3k, please enter your race" << std:: endl;
+        std::cout << "Please enter your race" << std::endl;
         // Choose player race
         while (true) {
             std::cin >> cmd;
@@ -73,7 +75,6 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
         if (restart) {
             continue;
         }
-
         // Read map data
         if (with_map) {
             game_map.read_map_file(map_file, 0);
@@ -112,53 +113,14 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
                     }
                 } else {
                     game_map.move_enemy();
-                    if (game_map.is_gameover()) {
-                        game_map.game_over();
-                        std::cout << "Do you want to restart? (y/n)" << std::endl;
-                        std::cin >> cmd;
-                        if (cmd == "y") {
-                            restart = true;
-                            std::cout << "Restarting" << std::endl;
-                            break;
-                        } else {
-                            std::cout << "Quitting" << std::endl;
-                            return;
-                        }
-                    }
                 }
             } else if (cmd == "u") {
                 std::cin >> cmd;
                 game_map.use_potion(cmd);
                 game_map.move_enemy();
-                if (game_map.is_gameover()) {
-                    game_map.game_over();
-                    std::cout << "Do you want to restart? (y/n)" << std::endl;
-                    std::cin >> cmd;
-                    if (cmd == "y") {
-                        restart = true;
-                        std::cout << "Restarting" << std::endl;
-                        break;
-                    } else {
-                        std::cout << "Quitting" << std::endl;
-                        return;
-                    }
-                }
             } else if (cmd == "a") {
                 std::cin >> cmd;
                 game_map.player_attack(cmd);
-                if (game_map.is_gameover()) {
-                    game_map.game_over();
-                    std::cout << "Do you want to restart? (y/n)" << std::endl;
-                    std::cin >> cmd;
-                    if (cmd == "y") {
-                        restart = true;
-                        std::cout << "Restarting" << std::endl;
-                        break;
-                    } else {
-                        std::cout << "Quitting" << std::endl;
-                        return;
-                    }
-                }
             } else if (cmd == "r") {
                 restart = true;
                 std::cout << "Restarting" << std::endl;
@@ -170,6 +132,20 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
                 std::cerr << "Not Valid Input, please enter your command" << std::endl;
             }
             game_map.enemy_attack();
+            game_map.check_state();
+            if (game_map.is_gameover()) {
+                game_map.game_over();
+                std::cout << "Do you want to restart? (y/n)" << std::endl;
+                std::cin >> cmd;
+                if (cmd == "y") {
+                    restart = true;
+                    std::cout << "Restarting" << std::endl;
+                    break;
+                } else {
+                    std::cout << "Quitting" << std::endl;
+                    return;
+                }
+            }
             game_map.find_around();
             game_map.print_map();
         }

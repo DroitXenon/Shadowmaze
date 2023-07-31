@@ -99,7 +99,7 @@ class map {
     void find_around();
     bool is_gameover();
     void game_over();
-    //void check_state();
+    void check_state();
     
 };
 
