@@ -73,6 +73,7 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
             // Player Move
             if (cmd == "no" || cmd == "so" || cmd == "ea" || cmd == "we" || cmd == "ne" || cmd == "nw" || cmd == "se" || cmd == "sw") {
                 game_map.move_player(cmd);
+                // If player move to a stair, change floor
                 if (game_map.get_floor_change()) {
                     if (game_map.get_floor() == MAX_FLOOR) {
                         game_map.game_over();

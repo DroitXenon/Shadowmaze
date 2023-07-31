@@ -545,19 +545,19 @@ void map::player_attack(std::string direction) {
             map_cell[enemies[enemy_id]->get_pos().get_x()][enemies[enemy_id]->get_pos().get_y()].set_cell_type('.');
             map_cell[enemies[enemy_id]->get_pos().get_x()][enemies[enemy_id]->get_pos().get_y()].set_step(true);
             drop_gold(enemies[enemy_id]);
-            
             enemies.erase(enemies.begin() + enemy_id);
             enemies.shrink_to_fit();
             num_enemy--;
         } else {
             actions.emplace_back(std::to_string(enemies[enemy_id]->get_hp()) + "HP).");
+            enemies[enemy_id]->set_active(false);
+            move_enemy();
+            enemy_attack();
+            enemies[enemy_id]->set_active(true);
         }
-        enemies[enemy_id]->set_active(false);
-        move_enemy();
     } else {
         actions.emplace_back("No enemy in this direction. You wasted a turn.");
     }
-    enemies[enemy_id]->set_active(true);
 }
 
 
