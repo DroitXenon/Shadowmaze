@@ -62,4 +62,3 @@ void character::set_pos(pos position)
 }
 
 character::~character() {}
-

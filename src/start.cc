@@ -1,21 +1,4 @@
 #include "start.h"
-#include "character.h"
-#include "player/shade.h"
-#include "player/drow.h"
-#include "player/vampire.h"
-#include "player/troll.h"
-#include "player/goblin.h"
-#include "pos.h"
-#include "map.h"
-
-#define ESC "\033["
-#define LIGHT_BLUE_BKG "106"
-#define RED_TXT "31"
-#define GREEN_TXT "32"
-#define YELLOW_TXT "33"
-#define BLUE_TXT "34"
-#define PURPLE_TXT "35"
-#define RESET "\033[m"
 
 // Control the game flow
 void start(std::string map_file, bool with_map, unsigned int seed_int, bool with_seed) {
@@ -23,15 +6,22 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
     std::string cmd;
     map game_map;
     bool restart = true;
-    std::cout << "Your seed is " << seed_int << std::endl;
+    std::cout << "Seed: " << seed_int << std::endl;
     // Welcome message
-    std::cout << "Welcome to Shadowmaze!" << std::endl;
-    
+    std::ifstream f {"welcome.txt"}; 
+	while (getline(f, cmd)) {
+		std::cout << cmd << std::endl;
+	}
     while (restart) {
         // Initialize map after each restart
         game_map.initialize();
         restart = false;
         std::cout << "Please enter your race" << std::endl;
+        std::cout << "s: Shade" << std::endl;
+        std::cout << "d: Drow" << std::endl;
+        std::cout << "v: Vampire" << std::endl;
+        std::cout << "t: Troll" << std::endl;
+        std::cout << "g: Goblin" << std::endl;
         // Choose player race
         while (true) {
             std::cin >> cmd;
