@@ -32,7 +32,7 @@ void map::generate_player(int chamber_id) {
             p.randomize_pos(chamber_id);
         }
     }
-    std::cout << "player pos generated" << " " << p.get_x() << " " << p.get_y() << std::endl;
+    //std::cout << "player pos generated" << " " << p.get_x() << " " << p.get_y() << std::endl;
 }
 
 void map::generate_stair(int chamber_id) {
@@ -46,7 +46,7 @@ void map::generate_stair(int chamber_id) {
             p.randomize_pos(chamber_id);
         }
     }
-    std::cout << "stair pos generated" << " " << p.get_x() << " " << p.get_y() << std::endl;
+    //std::cout << "stair pos generated" << " " << p.get_x() << " " << p.get_y() << std::endl;
 }
 
 void map::generate_posion() {
@@ -81,7 +81,7 @@ void map::generate_posion() {
         }
         ++num_potion;
     }
-    std::cout << "potion generated" << std::endl;
+    //std::cout << "potion generated" << std::endl;
 }
 
 void map::generate_gold() {
@@ -133,7 +133,7 @@ void map::generate_gold() {
         }
         ++num_gold;
     }
-    std::cout << "gold generated" << std::endl;
+    //std::cout << "gold generated" << std::endl;
 }
 
 
@@ -215,7 +215,7 @@ void map::generate_enemy() {
         }
         ++num_enemy;
     }
-    std::cout << "enemy generated" << std::endl;
+    //std::cout << "enemy generated" << std::endl;
 }
 
 void map::read_empty_map(std::string& filename) {
@@ -246,7 +246,7 @@ void map::read_map_file(std::string& filename, int floor) {
     int line_num = 0;
     int start_line = floor * NUM_ROW + 1;
     int end_line = (floor + 1) * NUM_ROW;
-    std::cout << start_line << " " << end_line << std::endl;
+    //std::cout << start_line << " " << end_line << std::endl;
 
     clear_map();
 
@@ -490,7 +490,7 @@ void map::print_map() {
     std::cout << "Def: " << player->get_def() << std::endl;
     std::cout << "Action: ";
     for (auto action : actions) {
-        std::cout << action;
+        std::cout << action << " and ";
     }
     std::cout << std::endl;
     actions.clear();
@@ -537,7 +537,7 @@ void map::player_attack(std::string direction) {
         actions.emplace_back("PC deals " + std::to_string(damage) + " damage (");
         if (enemies[enemy_id]->get_race() == "Merchant") {
             enemies[enemy_id]->set_hostile(true);
-            std::cout << "merchant become hostile" << std::endl;
+            std::cout << "Merchant is hostile" << std::endl;
         } 
         if (enemies[enemy_id]->get_hp() <= 0) {
             actions.emplace_back("Dead).");
@@ -782,7 +782,7 @@ void map::drop_gold(std::shared_ptr<enemy_character> enemy) {
         num_gold++;
         actions.emplace_back(enemy->get_race() + " drops 1 merchant hoard. ");
     } else if (enemy->get_race() == "Dragon") {
-        std:: cout << "dragon hoard id" << enemy->get_dragon_hoard_id() << std::endl;
+        //std:: cout << "dragon hoard id" << enemy->get_dragon_hoard_id() << std::endl;
         golds[enemy->get_dragon_hoard_id()]->set_pickable(true);
         actions.emplace_back(enemy->get_race() + " dead, you can get dragon hoard now. ");
         //std::cout << "dragon hoard id" << enemy->get_dragon_hoard_id() << std::endl;
@@ -809,9 +809,9 @@ void map::find_around() {
                 actions.emplace_back("There is a dragon hoard in " + direction_map[i] + ". ");
                 for (int i = 0; i < num_enemy; i++) {
                     //std::cout << "dragon become hostile" << std::endl;
-                    std::cout << "dragon hoard id" << enemies[i]->get_dragon_hoard_id() << std::endl;
-                    std::cout << "gold id" << gold_id << std::endl;
-                    std::cout << enemies[i]->get_pos().get_x() << std::endl;
+                    //std::cout << "dragon hoard id" << enemies[i]->get_dragon_hoard_id() << std::endl;
+                    //std::cout << "gold id" << gold_id << std::endl;
+                    //std::cout << enemies[i]->get_pos().get_x() << std::endl;
                     if (enemies[i]->get_dragon_hoard_id() == gold_id && enemies[i]->get_race() == "Dragon") {
                         //std::cout << "dragon hoard id" << enemies[i]->get_dragon_hoard_id() << std::endl;
                         //std::cout << "gold id" << gold_id << std::endl;
@@ -842,9 +842,9 @@ void map::game_over() {
     } else if (floor == MAX_FLOOR) {
         std::cout << "You win!" << std::endl;
     } else {
-        std::cout << "You quit the game." << std::endl;
+        std::cout << "You quit Shadowmaze!" << std::endl;
     }
-    if (player->get_race() == "Shades") {
+    if (player->get_race() == "Shade") {
         std::cout << "Your final score is: " << player->get_gold() * 1.5 << std::endl;
     } else {
         std::cout << "Your final score is: " << player->get_gold() << std::endl;
