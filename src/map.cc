@@ -552,9 +552,12 @@ void map::player_attack(std::string direction) {
         } else {
             actions.emplace_back(std::to_string(enemies[enemy_id]->get_hp()) + "HP).");
         }
+        enemies[enemy_id]->set_active(false);
+        move_enemy();
     } else {
         actions.emplace_back("No enemy in this direction. You wasted a turn.");
     }
+    enemies[enemy_id]->set_active(true);
 }
 
 
@@ -562,7 +565,7 @@ void map::move_enemy() {
     for (int i = 0; i < NUM_ROW; ++i) {  
         for (int j = 0; j < NUM_COL; ++j) {
             int enemy_id = which_enemy(j, i);
-            if (enemy_id != -1 && !enemies[enemy_id]->is_moved() && enemies[enemy_id]->get_race() != "Dragon") { //if found enemy
+            if (enemy_id != -1 && !enemies[enemy_id]->is_moved() && enemies[enemy_id]->is_active() && enemies[enemy_id]->get_race() != "Dragon") { //if found enemy
                 //std::cout << "enemy found" << std::endl;
                 
                 while (!enemies[enemy_id]->is_moved()) {
