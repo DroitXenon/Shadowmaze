@@ -590,7 +590,7 @@ void map::move_enemy() {
 
 void map::enemy_attack() {
     for (int i = 0; i < num_enemy; ++i) {
-        if ( is_adjacent(enemies[i]->get_pos(), player->get_pos())) {
+        if ( is_adjacent(enemies[i]->get_pos(), player->get_pos()) ) {
             if (enemies[i]->is_hostile()) {
                 int attack_chance = rand() % 2;
                 if (attack_chance) {
@@ -663,16 +663,20 @@ void map::use_potion(std::string &direction) {
             actions.emplace_back("PC uses WD. ");
             actions.emplace_back("PC loses 5 Def. ");
         }
-        for (int i = 0; i < num_potion; i++) {
-            if (potions[i]->get_name() == potions[potion_id]->get_name()) {
-                potions[i]->set_revealed(true);
-            }
-        }
+        
+        int potion_state_id = potion_map[potions[potion_id]->get_name()];
+        potion_state[potion_state_id] = true;      
         map_cell[potions[potion_id]->get_pos().get_x()][potions[potion_id]->get_pos().get_y()].set_cell_type('.');
         map_cell[potions[potion_id]->get_pos().get_x()][potions[potion_id]->get_pos().get_y()].set_step(true);
         potions.erase(potions.begin() + potion_id);
         potions.shrink_to_fit();
         num_potion--;
+        if (player->get_hp() <= 0) {
+            gameover = true;
+        } else if (player->get_hp() > player->get_max_hp()) {
+            player->set_hp(player->get_max_hp());
+            actions.emplace_back("PC HP is full. ");
+        }
     } else {
         actions.emplace_back("No potion in this direction. You wasted a turn.");
     }
@@ -817,7 +821,8 @@ void map::find_around() {
             }
         } else if (map_cell[direction_x][direction_y].get_cell_type() == 'P') {
             int potion_id = which_potion(direction_x, direction_y);
-            if (!potions[potion_id]->is_revealed()) {
+            int potion_state_id = potion_map[potions[potion_id]->get_name()];
+            if (!potion_state[potion_state_id]) {
                 actions.emplace_back("There is an unknown potion in " + direction_map[i] + ". ");
             } else {
                 actions.emplace_back("There is a " + potions[potion_id]->get_name() + " potion in " + direction_map[i] + ". ");
@@ -843,6 +848,8 @@ void map::game_over() {
     }
 }
 
+
+
 void map::initialize() {
     gameover = false;
     floor_change = false;
@@ -850,18 +857,26 @@ void map::initialize() {
     clear_map();
 }
 
-void map::clear_map() {
-    num_enemy = 0;
-    num_potion = 0;
-    num_gold = 0;
+void map::clear_map() { 
     memset(map_cell, 0, sizeof(map_cell));
     memset(origin_map_cell, 0, sizeof(origin_map_cell));
-    enemies.clear();
-    golds.clear();
-    potions.clear();
     if (floor != 0) {
         player->set_atk(player->get_original_atk());
         player->set_def(player->get_original_def());
         actions.emplace_back("PC loses all buffs. ");
     }
+    num_enemy = 0;
+    num_potion = 0;
+    num_gold = 0;
+    enemies.clear();
+    golds.clear();
+    potions.clear();
 }
+
+// void map::check_state() {
+    // if (player->get_hp() <= 0) {
+    //     gameover = true;
+    // } else if (player->get_hp() > player->get_max_hp()) {
+    //     player->set_hp(player->get_max_hp());
+    // }
+// }

@@ -50,6 +50,15 @@ class map {
     int floor = 0;
     bool floor_change = false;
     bool gameover = false;
+    bool potion_state[6] = {false, false, false, false, false, false};
+    std::map<std::string, int> potion_map { 
+        {"RH",0}, 
+        {"BA",1}, 
+        {"BD",2}, 
+        {"PH",3}, 
+        {"WA",4}, 
+        {"WD",5} 
+        };
     std::map<int, std::string> direction_map { 
         {0,"so"}, 
         {1,"no"}, 
@@ -90,6 +99,7 @@ class map {
     void find_around();
     bool is_gameover();
     void game_over();
+    //void check_state();
     
 };
 

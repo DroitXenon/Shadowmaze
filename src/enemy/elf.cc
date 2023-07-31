@@ -5,7 +5,7 @@ elf::elf():
 
 int elf::attack(std::shared_ptr<player_character> player) {
     int damage = (int) ceil((100.0 / (100 + player->get_def())) * get_atk());
-    if (player->get_race() != "drow") {
+    if (player->get_race() != "Drow") {
             damage = 2 * damage;
     }
     player->set_hp(player->get_hp() - damage);
