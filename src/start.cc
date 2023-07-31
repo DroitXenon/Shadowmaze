@@ -73,7 +73,7 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
         if (restart) {
             continue;
         }
-        
+
         // Read map data
         if (with_map) {
             game_map.read_map_file(map_file, 0);
@@ -112,8 +112,6 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
                     }
                 } else {
                     game_map.move_enemy();
-                    game_map.find_around();
-                    game_map.enemy_attack();
                     if (game_map.is_gameover()) {
                         game_map.game_over();
                         std::cout << "Do you want to restart? (y/n)" << std::endl;
@@ -128,12 +126,10 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
                         }
                     }
                 }
-                game_map.print_map();
             } else if (cmd == "u") {
                 std::cin >> cmd;
                 game_map.use_potion(cmd);
                 game_map.move_enemy();
-                game_map.enemy_attack();
                 if (game_map.is_gameover()) {
                     game_map.game_over();
                     std::cout << "Do you want to restart? (y/n)" << std::endl;
@@ -146,15 +142,10 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
                         std::cout << "Quitting" << std::endl;
                         return;
                     }
-                }
-                else {
-                    game_map.find_around();
-                    game_map.print_map();
                 }
             } else if (cmd == "a") {
                 std::cin >> cmd;
                 game_map.player_attack(cmd);
-                game_map.enemy_attack();
                 if (game_map.is_gameover()) {
                     game_map.game_over();
                     std::cout << "Do you want to restart? (y/n)" << std::endl;
@@ -167,9 +158,6 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
                         std::cout << "Quitting" << std::endl;
                         return;
                     }
-                }
-                else {
-                    game_map.print_map();
                 }
             } else if (cmd == "r") {
                 restart = true;
@@ -181,6 +169,9 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
             } else {
                 std::cerr << "Not Valid Input, please enter your command" << std::endl;
             }
+            game_map.enemy_attack();
+            game_map.find_around();
+            game_map.print_map();
         }
     }
 }

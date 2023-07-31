@@ -876,9 +876,9 @@ void map::clear_map() {
 }
 
 // void map::check_state() {
-    // if (player->get_hp() <= 0) {
-    //     gameover = true;
-    // } else if (player->get_hp() > player->get_max_hp()) {
-    //     player->set_hp(player->get_max_hp());
-    // }
+//     if (player->get_hp() <= 0) {
+//         gameover = true;
+//     } else if (player->get_hp() > player->get_max_hp()) {
+//         player->set_hp(player->get_max_hp());
+//     }
 // }
