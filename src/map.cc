@@ -512,7 +512,7 @@ void map::move_player(std::string direction) {
                  //std::cout << "gold id: " << gold_id << std::endl;
                 player->set_gold(player->get_gold() + golds[gold_id]->get_value());
                 actions.emplace_back("gold picked up, value:" + std::to_string(golds[gold_id]->get_value()) + ". ");
-                golds.erase(golds.begin() + gold_id);
+                //golds.erase(golds.begin() + gold_id);
                 num_gold--;
             } else {
                 std::cout << "gold id: " << gold_id << std::endl;
