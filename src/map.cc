@@ -853,8 +853,10 @@ void map::game_over() {
 void map::initialize() {
     gameover = false;
     floor_change = false;
+    floor = 0;
     actions.clear();
     clear_map();
+    
 }
 
 void map::clear_map() { 
