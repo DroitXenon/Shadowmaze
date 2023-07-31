@@ -590,7 +590,7 @@ void map::move_enemy() {
 
 void map::enemy_attack() {
     for (int i = 0; i < num_enemy; ++i) {
-        if ( is_adjacent(enemies[i]->get_pos(), player->get_pos()) ) {
+        if ( is_adjacent(enemies[i]->get_pos(), player->get_pos()) || (enemies[i]->get_dragon_hoard_id() == -1 ? false :is_adjacent(golds[enemies[i]->get_dragon_hoard_id()]->get_pos(), player->get_pos())) ) {
             if (enemies[i]->is_hostile()) {
                 int attack_chance = rand() % 2;
                 if (attack_chance) {
