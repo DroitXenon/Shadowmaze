@@ -541,7 +541,6 @@ void map::player_attack(std::string direction) {
         } 
         if (enemies[enemy_id]->get_hp() <= 0) {
             actions.emplace_back("Dead).");
-            //std::cout << "enemy dead" << std::endl;
             map_cell[enemies[enemy_id]->get_pos().get_x()][enemies[enemy_id]->get_pos().get_y()].set_cell_type('.');
             map_cell[enemies[enemy_id]->get_pos().get_x()][enemies[enemy_id]->get_pos().get_y()].set_step(true);
             drop_gold(enemies[enemy_id]);
