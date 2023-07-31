@@ -103,6 +103,7 @@ void map::generate_gold() {
                     new_gold->set_value(1);
                 } else {
                     new_gold->set_value(6);
+                    new_gold->set_pickable(false);
                     int direction_id = rand() % 8;
                     std::string direction = direction_map[direction_id];
                     pos dragon_pos = direction_pos(direction, p);
@@ -782,7 +783,7 @@ void map::drop_gold(std::shared_ptr<enemy_character> enemy) {
         std:: cout << "dragon hoard id" << enemy->get_dragon_hoard_id() << std::endl;
         golds[enemy->get_dragon_hoard_id()]->set_pickable(true);
         actions.emplace_back(enemy->get_race() + " dead, you can get dragon hoard now. ");
-        std::cout << "dragon hoard id" << enemy->get_dragon_hoard_id() << std::endl;
+        //std::cout << "dragon hoard id" << enemy->get_dragon_hoard_id() << std::endl;
     } else {
         int possibility = rand() % 2;
         if (possibility) {

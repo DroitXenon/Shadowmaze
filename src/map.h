@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <map>
+#include <string.h>
 #include "player/player_character.h"
 #include "enemy/enemy_character.h"
 #include "enemy/human.h"
