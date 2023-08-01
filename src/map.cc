@@ -575,7 +575,7 @@ void map::move_enemy() {
     for (int i = 0; i < NUM_ROW; ++i) {  
         for (int j = 0; j < NUM_COL; ++j) {
             int enemy_id = which_enemy(j, i);
-            if (enemy_id != -1 && !enemies[enemy_id]->is_moved() && enemies[enemy_id]->is_active() && enemies[enemy_id]->get_race() != "Dragon") { //if found enemy
+            if (enemy_id != -1 && !enemies[enemy_id]->is_moved() && enemies[enemy_id]->is_active() && enemies[enemy_id]->get_race() != "Dragon" && !enemies[enemy_id]->is_disable()) { //if found enemy
                 //std::cout << "enemy found" << std::endl;
                 
                 while (!enemies[enemy_id]->is_moved()) {
@@ -604,7 +604,7 @@ void map::move_enemy() {
 
 void map::enemy_attack() {
     for (int i = 0; i < num_enemy; ++i) {
-        if ( is_adjacent(enemies[i]->get_pos(), player->get_pos()) || (enemies[i]->get_dragon_hoard_id() == -1 ? false :is_adjacent(golds[enemies[i]->get_dragon_hoard_id()]->get_pos(), player->get_pos())) ) {
+        if (!enemies[i]->is_disable() && (is_adjacent(enemies[i]->get_pos(), player->get_pos()) || (enemies[i]->get_dragon_hoard_id() == -1 ? false :is_adjacent(golds[enemies[i]->get_dragon_hoard_id()]->get_pos(), player->get_pos())))) {
             if (enemies[i]->is_hostile()) {
                 int attack_chance = rand() % 2;
                 if (attack_chance) {
@@ -900,3 +900,12 @@ void map::check_state() {
 void map::add_action(std::string action) {
     actions.emplace_back(action);
 }
+
+void map::disable_enemy() {
+    for (int i = 0; i < num_enemy; i++) {
+        enemies[i]->set_disable(!enemies[i]->is_disable());
+    }
+    std::string msg = enemies[0]->is_disable() ? "disable" : "activate";
+    add_action("All the enemies are " + msg + ".");
+}
+

@@ -113,7 +113,7 @@ class map {
     void game_over();
     void check_state();
     void add_action(std::string action);
-    
+    void disable_enemy();
 };
 
 #endif

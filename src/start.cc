@@ -111,6 +111,8 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
             } else if (cmd == "q") {
                 game_map.game_over();
                 return;
+            } else if (cmd == "f") {
+                game_map.disable_enemy();
             } else {
                 std::cerr << "Not Valid Input, please enter your command" << std::endl;
             }
