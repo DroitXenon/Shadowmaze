@@ -1,5 +1,15 @@
 #include "start.h"
 
+// Command Manual
+void manual() {
+    std::cout << ESC << ";" << CYAN_TXT << "m" << "[dir]: " << RESET << "Moves player to the direction" << std::endl;
+    std::cout << ESC << ";" << CYAN_TXT << "m" << "u [dir]: " << RESET << "Uses the potion in the direction" << std::endl;
+    std::cout << ESC << ";" << CYAN_TXT << "m" << "a [dir]: " << RESET << "Attack the enemy in the direction" << std::endl;
+    std::cout << ESC << ";" << CYAN_TXT << "m" << "f: " << RESET << "Stop enemies from moving" << std::endl;
+    std::cout << ESC << ";" << CYAN_TXT << "m" << "r: " << RESET << "Restart the game" << std::endl;
+    std::cout << ESC << ";" << CYAN_TXT << "m" << "q: " << RESET << "Admit defeat and quit" << std::endl;
+}
+
 // Control the game flow
 void start(std::string map_file, bool with_map, unsigned int seed_int, bool with_seed) {
     srand(seed_int);
@@ -44,9 +54,11 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
             std::cout << "Quitting..." << std::endl;
             return;
         } else if (cmd == "r") {
+            restart = true;
             std::cout << "Restarting..." << std::endl;
             continue;
         } else {
+            restart = true;
             std::cerr << "Not Valid Input" << std::endl;
             continue;
         }
@@ -60,10 +72,13 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
         }
         game_map.find_around();
         game_map.print_map();
-
+        std::cout << std::endl;
+        std::cout << "Manual:" << std::endl;
+        manual();
         // Deal with command
         while (true) {
-            std::cout << "Please enter your command" << std::endl;
+            std::cout << "-------------------------------------------------------------------------------" << std::endl;
+            std::cout << "Please enter your command (Press m to show manual again)" << std::endl;
             std::cin >> cmd;
             // Player Move
             if (cmd == "no" || cmd == "so" || cmd == "ea" || cmd == "we" || cmd == "ne" || cmd == "nw" || cmd == "se" || cmd == "sw") {
@@ -102,6 +117,9 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
             } else if (cmd == "a") {
                 std::cin >> cmd;
                 game_map.player_attack(cmd);
+            // Stop Enemy
+            } else if (cmd == "f") {
+                game_map.disable_enemy();
             // Restart
             } else if (cmd == "r") {
                 restart = true;
@@ -111,10 +129,12 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
             } else if (cmd == "q") {
                 game_map.game_over();
                 return;
-            } else if (cmd == "f") {
-                game_map.disable_enemy();
+            } else if (cmd == "m") {
+                manual();
+                continue;
             } else {
-                std::cerr << "Not Valid Input, please enter your command" << std::endl;
+                std::cerr << "Not Valid Input" << std::endl;
+                continue;
             }
             game_map.enemy_attack();
             game_map.check_state();

@@ -5,10 +5,10 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <string.h>
 #include <cstdlib>
 #include <ctime>
 #include <map>
-#include <string.h>
 #include "player/player_character.h"
 #include "enemy/enemy_character.h"
 #include "enemy/human.h"
@@ -30,6 +30,8 @@
 #define GREEN_TXT "32"
 #define YELLOW_TXT "33"
 #define BLUE_TXT "34"
+#define PURPLE_TXT "35"
+#define CYAN_TXT "36"
 #define RESET "\033[m"
 
 const int NUM_COL = 79;
@@ -53,6 +55,9 @@ class map {
     bool floor_change = false;
     bool gameover = false;
     bool potion_state[6] = {false, false, false, false, false, false};
+    bool disable_enemy_move = false;
+    bool merchant_state = false;
+    bool gold_hoard_state = false;
     std::map<std::string, int> potion_map { 
         {"RH",0}, 
         {"BA",1}, 
