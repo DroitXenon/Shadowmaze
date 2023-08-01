@@ -510,34 +510,47 @@ void map::move_player(std::string direction) {
     int new_x = direction_pos(direction, player->get_pos()).get_x();
     int new_y = direction_pos(direction, player->get_pos()).get_y();
     if (map_cell[new_x][new_y].get_cell_type() == '\\') {
-        actions.emplace_back("PC moves " + direction + ". ");
-        actions.emplace_back("PC goes to next floor. ");
+        add_action("PC moves " + direction_name_map[direction] + "and goes to next floor.");
         floor++;
         floor_change = true;
         return;
     } else if (map_cell[new_x][new_y].get_step()) {
+        //bool flag = false;
         if (map_cell[new_x][new_y].get_cell_type() == 'G') {
             int gold_id = which_gold(new_x, new_y);
             if (golds[gold_id]->is_pickable()) {
                  //std::cout << "gold id: " << gold_id << std::endl;
                 player->set_gold(player->get_gold() + golds[gold_id]->get_value());
-                actions.emplace_back("gold picked up, value:" + std::to_string(golds[gold_id]->get_value()) + ". ");
+                add_action("Gold picked up, value: " + std::to_string(golds[gold_id]->get_value()) + ".");
                 //golds.erase(golds.begin() + gold_id);
                 num_gold--;
             } else {
                 //std::cout << "gold id: " << gold_id << std::endl;
-                actions.emplace_back("Dragon still alive. Dragon hoard can not be picked up. ");
-                return;
+                add_action("Dragon is still alive. Player walks on dragon hoard.");
+                //flag = true;
+                //gold_hoard_state = true;
             }
         }
+        
+        // if (gold_hoard_state) {
+        //     map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('G');
+        //     map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_step(true);
+        //     gold_hoard_state = false;
+        // } else {
+        //     map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
+        //     map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_step(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_step());
+        // }
+
         map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
         map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_step(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_step());
+
         pos p{new_x, new_y, player->get_pos().get_floor()};
         player->set_pos(p);
         map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
-        actions.emplace_back("PC moves " + direction + ".");
+        add_action("PC moves " + direction_name_map[direction] + ".");
+        // if (flag) gold_hoard_state = true;
     } else {
-        actions.emplace_back("PC cannot moves " + direction + ".");
+        add_action("PC cannot moves " + direction_name_map[direction] + ".");
     }
 }
 
@@ -545,7 +558,7 @@ void map::player_attack(std::string direction) {
     int enemy_id = which_enemy(direction_pos(direction, player->get_pos()).get_x(), direction_pos(direction, player->get_pos()).get_y());
     if (enemy_id != -1) {
         int damage = player->attack(enemies[enemy_id]);
-        actions.emplace_back("PC deals " + std::to_string(damage) + " damage (");
+        add_action("PC deals " + std::to_string(damage) + " damage to " + enemies[enemy_id]->get_race() + " [");
         if (enemies[enemy_id]->get_race() == "Merchant") {
             for (int i = 0; i < num_enemy; ++i) {
                 if(enemies[enemy_id]->get_race() == "Merchant") {
@@ -556,7 +569,7 @@ void map::player_attack(std::string direction) {
             add_action("Merchant becomes hostile.");
         } 
         if (enemies[enemy_id]->get_hp() <= 0) {
-            actions.emplace_back("Dead).");
+            add_action("Dead ].");
             map_cell[enemies[enemy_id]->get_pos().get_x()][enemies[enemy_id]->get_pos().get_y()].set_cell_type('.');
             map_cell[enemies[enemy_id]->get_pos().get_x()][enemies[enemy_id]->get_pos().get_y()].set_step(true);
             drop_gold(enemies[enemy_id]);
@@ -564,14 +577,13 @@ void map::player_attack(std::string direction) {
             enemies.shrink_to_fit();
             num_enemy--;
         } else {
-            add_action(std::to_string(enemies[enemy_id]->get_hp()) + "HP).");
+            add_action(std::to_string(enemies[enemy_id]->get_hp()) + "HP ].");
             enemies[enemy_id]->set_active(false);
             move_enemy();
-            enemy_attack();
             enemies[enemy_id]->set_active(true);
         }
     } else {
-        actions.emplace_back("No enemy in this direction. You wasted a turn.");
+        add_action("No enemy in this direction. You wasted a turn.");
     }
 }
 
@@ -614,13 +626,13 @@ void map::enemy_attack() {
                 int attack_chance = rand() % 2;
                 if (attack_chance) {
                     int damage = enemies[i]->attack(player);
-                    actions.emplace_back(enemies[i]->get_race() + " deals " + std::to_string(damage) + " damage to PC. ");
+                    add_action(enemies[i]->get_race() + " deals " + std::to_string(damage) + " damage to PC. ");
                     // if (player->get_hp() <= 0) {
                     //     gameover = true;
                     //     return;
                     // }
                 } else {
-                    actions.emplace_back(enemies[i]->get_race() + " miss! ");
+                    add_action(enemies[i]->get_race() + " miss! ");
                 }
             }
             if (enemies[i]->get_race() == "Dragon") {
@@ -639,48 +651,42 @@ void map::use_potion(std::string &direction) {
             } else {
                 player->set_hp(player->get_hp() + 10);
             }
-            actions.emplace_back("PC uses RH.");
-            actions.emplace_back("PC gains 10 HP.");
+            add_action("PC uses RH and gains 10 HP.");
         } else if (potions[potion_id]->get_name() == "BA") {
             if (player->get_race() == "Drow") {
                 player->set_atk(player->get_atk() + 7.5);
             } else {
                 player->set_atk(player->get_atk() + 5);
             }
-            actions.emplace_back("PC uses BA.");
-            actions.emplace_back("PC gains 5 Atk.");
+            add_action("PC uses BA and gains 5 Atk.");
         } else if (potions[potion_id]->get_name() == "BD") {
             if (player->get_race() == "Drow") {
                 player->set_def(player->get_def() + 7.5);
             } else {
                 player->set_def(player->get_def() + 5);
             }
-            actions.emplace_back("PC uses BD.");
-            actions.emplace_back("PC gains 5 Def.");
+            add_action("PC uses BD and gains 5 Def.");
         } else if (potions[potion_id]->get_name() == "PH") {
             if (player->get_race() == "Drow") {
                 player->set_hp(player->get_hp() - 15);
             } else {
                 player->set_hp(player->get_hp() - 10);
             }
-            actions.emplace_back("PC uses PH. ");
-            actions.emplace_back("PC loses 10 HP. ");
+            add_action("PC uses PH and loses 10 HP.");
         } else if (potions[potion_id]->get_name() == "WA") {
             if (player->get_race() == "Drow") {
                 player->set_atk(player->get_atk() - 7.5);
             } else {
                 player->set_atk(player->get_atk() - 5);
             }
-            actions.emplace_back("PC uses WA.");
-            actions.emplace_back("PC loses 5 Atk.");
+            add_action("PC uses WA and loses 5 Atk.");
         } else if (potions[potion_id]->get_name() == "WD") {
             if (player->get_race() == "Drow") {
                 player->set_def(player->get_def() - 7.5);
             } else {
                 player->set_def(player->get_def() - 5);
             }
-            actions.emplace_back("PC uses WD. ");
-            actions.emplace_back("PC loses 5 Def. ");
+            add_action("PC uses WD and loses 5 Def. ");
         }
         
         int potion_state_id = potion_map[potions[potion_id]->get_name()];
@@ -697,7 +703,7 @@ void map::use_potion(std::string &direction) {
         //     actions.emplace_back("PC HP is full. ");
         // }
     } else {
-        actions.emplace_back("No potion in this direction. You wasted a turn.");
+        add_action("No potion in this direction. You wasted a turn.");
     }
 }
 
@@ -787,7 +793,7 @@ void map::drop_gold(std::shared_ptr<enemy_character> enemy) {
         new_gold->set_value(4);
         golds.emplace_back(new_gold);
         num_gold++;
-        actions.emplace_back(enemy->get_race() + " drops 2 normal pile of gold.");
+        add_action(enemy->get_race() + " drops 2 normal pile of gold.");
     } else if (enemy->get_race() == "Merchant") {
         map_cell[enemy->get_pos().get_x()][enemy->get_pos().get_y()].set_cell_type('G');
         map_cell[enemy->get_pos().get_x()][enemy->get_pos().get_y()].set_step(true);
@@ -796,20 +802,20 @@ void map::drop_gold(std::shared_ptr<enemy_character> enemy) {
         new_gold->set_value(4);
         golds.emplace_back(new_gold);
         num_gold++;
-        actions.emplace_back(enemy->get_race() + " drops 1 merchant hoard. ");
+        add_action(enemy->get_race() + " drops 1 merchant hoard.");
     } else if (enemy->get_race() == "Dragon") {
         //std:: cout << "dragon hoard id" << enemy->get_dragon_hoard_id() << std::endl;
         golds[enemy->get_dragon_hoard_id()]->set_pickable(true);
-        actions.emplace_back(enemy->get_race() + " dead, you can get dragon hoard now.");
+        add_action(enemy->get_race() + " dead, you can get dragon hoard now.");
         //std::cout << "dragon hoard id" << enemy->get_dragon_hoard_id() << std::endl;
     } else {
         int possibility = rand() % 2;
         if (possibility) {
             player->set_gold(player->get_gold() + 1);
-            actions.emplace_back(enemy->get_race() + " drops 1 small pile of gold(added to wallet).");
+            add_action(enemy->get_race() + " drops 1 small pile of gold(added to wallet).");
         } else {
             player->set_gold(player->get_gold() + 2);
-            actions.emplace_back(enemy->get_race() + " drops 1 normal pile of gold(added to wallet).");
+            add_action(enemy->get_race() + " drops 1 normal pile of gold(added to wallet).");
         }
     }
 }
@@ -832,7 +838,7 @@ void map::find_around() {
                         //std::cout << "dragon hoard id" << enemies[i]->get_dragon_hoard_id() << std::endl;
                         //std::cout << "gold id" << gold_id << std::endl;
                         enemies[i]->set_hostile(true);
-                        actions.emplace_back("Dragon become hostile. ");
+                        actions.emplace_back("Dragon become hostile!");
                     }
                 }
             } else {

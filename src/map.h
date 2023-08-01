@@ -55,6 +55,7 @@ class map {
     bool potion_state[6] = {false, false, false, false, false, false};
     bool disable_enemy_move = false;
     bool merchant_state = false;
+    bool gold_hoard_state = false;
     std::map<std::string, int> potion_map { 
         {"RH",0}, 
         {"BA",1}, 

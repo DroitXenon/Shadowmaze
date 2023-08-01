@@ -132,9 +132,8 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
                 manual();
                 break;
             } else {
-                restart = true;
                 std::cerr << "Not Valid Input" << std::endl;
-                break;
+                continue;
             }
             game_map.enemy_attack();
             game_map.check_state();
