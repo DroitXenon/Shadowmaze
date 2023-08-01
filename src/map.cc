@@ -536,8 +536,8 @@ void map::player_attack(std::string direction) {
         add_action("PC deals " + std::to_string(damage) + " damage to " + enemies[enemy_id]->get_race() + " [");
         if (enemies[enemy_id]->get_race() == "Merchant" & !merchant_state) {
             for (int i = 0; i < num_enemy; ++i) {
-                if(enemies[enemy_id]->get_race() == "Merchant") {
-                    enemies[enemy_id]->set_hostile(true);
+                if(enemies[i]->get_race() == "Merchant") {
+                    enemies[i]->set_hostile(true);
                 }
             }
             merchant_state = true;
