@@ -525,7 +525,7 @@ void map::move_player(std::string direction) {
                 //golds.erase(golds.begin() + gold_id);
                 num_gold--;
             } else {
-                std::cout << "gold id: " << gold_id << std::endl;
+                //std::cout << "gold id: " << gold_id << std::endl;
                 actions.emplace_back("Dragon still alive. Dragon hoard can not be picked up. ");
                 return;
             }
@@ -859,6 +859,7 @@ void map::game_over() {
         std::cout << "You win!" << std::endl;
     } else {
         std::cout << "You quit Shadowmaze!" << std::endl;
+        return;
     }
     if (player->get_race() == "Shade") {
         std::cout << "Your final score is: " << player->get_gold() * 1.5 << std::endl;
