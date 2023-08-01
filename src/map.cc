@@ -598,7 +598,7 @@ void map::enemy_attack() {
                 int attack_chance = rand() % 2;
                 if (attack_chance) {
                     int damage = enemies[i]->attack(player);
-                    add_action(enemies[i]->get_race() + " deals " + std::to_string(damage) + " damage to PC. ");
+                    add_action(enemies[i]->get_race() + " deals " + std::to_string(damage) + " damage to PC.");
                     // if (player->get_hp() <= 0) {
                     //     gameover = true;
                     //     return;
