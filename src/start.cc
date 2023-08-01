@@ -72,6 +72,8 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
         }
         game_map.find_around();
         game_map.print_map();
+        std::cout << std::endl;
+        std::cout << "Manual:" << std::endl;
         manual();
         // Deal with command
         while (true) {

@@ -467,17 +467,19 @@ void map::print_map() {
         }
         std::cout << std::endl;
     }
-    std::cout << "Race: " << player->get_race() << " Gold: " << player->get_gold() 
-              << "                                                   " << "Floor " << floor + 1 << std::endl;
-    std::cout << "HP: " << player->get_hp() << std::endl;
-    std::cout << "Atk: " << player->get_atk() << std::endl;
-    std::cout << "Def: " << player->get_def() << std::endl;
-    std::cout << "Action: ";
+    std::cout << ESC << ";" << CYAN_TXT << "m" << "Race: " << RESET << player->get_race();
+    std::cout << ESC << ";" << CYAN_TXT << "m" << " Gold: " << RESET << player->get_gold() 
+              << "                                                   ";
+    std::cout << ESC << ";" << CYAN_TXT << "m" << "Floor: " << RESET << floor + 1 << std:: endl; 
+    std::cout << ESC << ";" << CYAN_TXT << "m" << "HP: " << RESET << player->get_hp() << std::endl;
+    std::cout << ESC << ";" << CYAN_TXT << "m" << "Atk: " << RESET << player->get_atk() << std::endl;
+    std::cout << ESC << ";" << CYAN_TXT << "m" << "Def: " << RESET << player->get_def() << std::endl;
+    std::cout << ESC << ";" << CYAN_TXT << "m" << "Action: " << RESET;
     for (auto action : actions) {
         std::cout << action << " ";
     }
     std::cout << std::endl;
-    std::cout << "Radar: ";
+    std::cout << ESC << ";" << CYAN_TXT << "m" << "Radar: " << RESET;
     if (!radar.empty()) {
         for (auto element: radar) {
             std::cout << element << std::endl;
@@ -504,7 +506,6 @@ void map::move_player(std::string direction) {
             if (golds[gold_id]->is_pickable()) {
                 player->set_gold(player->get_gold() + golds[gold_id]->get_value());
                 add_action("Gold picked up, value: " + std::to_string(golds[gold_id]->get_value()) + ".");
-                num_gold--;
             } else {
                 add_action("Dragon is still alive. Player walks on dragon hoard.");
                 flag = true;
@@ -533,7 +534,7 @@ void map::player_attack(std::string direction) {
     if (enemy_id != -1) {
         int damage = player->attack(enemies[enemy_id]);
         add_action("PC deals " + std::to_string(damage) + " damage to " + enemies[enemy_id]->get_race() + " [");
-        if (enemies[enemy_id]->get_race() == "Merchant") {
+        if (enemies[enemy_id]->get_race() == "Merchant" & !merchant_state) {
             for (int i = 0; i < num_enemy; ++i) {
                 if(enemies[enemy_id]->get_race() == "Merchant") {
                     enemies[enemy_id]->set_hostile(true);

@@ -30,6 +30,8 @@
 #define GREEN_TXT "32"
 #define YELLOW_TXT "33"
 #define BLUE_TXT "34"
+#define PURPLE_TXT "35"
+#define CYAN_TXT "36"
 #define RESET "\033[m"
 
 const int NUM_COL = 79;
