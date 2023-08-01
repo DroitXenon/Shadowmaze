@@ -10,6 +10,8 @@ class enemy_character;
 class player_character: public character {
     int max_hp;
     int gold;
+    int original_atk;
+    int original_def;
  public:
     player_character(int hp, int atk, int def, std::string race, char symbol, int max_hp);
     int get_max_hp() const;
@@ -18,7 +20,8 @@ class player_character: public character {
     // virtual void use() = 0;
     virtual int attack(std::shared_ptr<enemy_character> enemy) = 0;
     // virtual void attacked() = 0;
-    
+    int get_original_atk() const;
+    int get_original_def() const;
 };
 
 #endif

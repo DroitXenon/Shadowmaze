@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <map>
+#include <string.h>
 #include "player/player_character.h"
 #include "enemy/enemy_character.h"
 #include "enemy/human.h"
@@ -44,12 +45,22 @@ class map {
     cell map_cell[NUM_COL][NUM_ROW];
     cell origin_map_cell[NUM_COL][NUM_ROW];
     std::vector<std::string> actions;
+    std::vector<std::string> radar;
     int num_potion = 0;
     int num_gold = 0;
     int num_enemy = 0;
     int floor = 0;
     bool floor_change = false;
     bool gameover = false;
+    bool potion_state[6] = {false, false, false, false, false, false};
+    std::map<std::string, int> potion_map { 
+        {"RH",0}, 
+        {"BA",1}, 
+        {"BD",2}, 
+        {"PH",3}, 
+        {"WA",4}, 
+        {"WD",5} 
+        };
     std::map<int, std::string> direction_map { 
         {0,"so"}, 
         {1,"no"}, 
@@ -59,6 +70,16 @@ class map {
         {5,"nw"}, 
         {6,"se"}, 
         {7,"sw"} 
+        };
+    std::map<std::string, std::string> direction_name_map { 
+        {"so","South"}, 
+        {"no","North"}, 
+        {"ea","East"}, 
+        {"we","West"}, 
+        {"ne","North East"}, 
+        {"nw","North West"}, 
+        {"se","South East"}, 
+        {"sw","South West"} 
         };
 
  public:
@@ -90,7 +111,9 @@ class map {
     void find_around();
     bool is_gameover();
     void game_over();
-    
+    void check_state();
+    void add_action(std::string action);
+    void disable_enemy();
 };
 
 #endif

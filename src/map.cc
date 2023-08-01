@@ -3,7 +3,7 @@
 
 void map::set_player(std::shared_ptr<player_character> character){
     player = character;
-    actions.emplace_back("Player character has spawned.");
+    add_action("Player character has spawned.");
 }
 
 void map::set_map(){
@@ -32,7 +32,7 @@ void map::generate_player(int chamber_id) {
             p.randomize_pos(chamber_id);
         }
     }
-    std::cout << "player pos generated" << " " << p.get_x() << " " << p.get_y() << std::endl;
+    //std::cout << "player pos generated" << " " << p.get_x() << " " << p.get_y() << std::endl;
 }
 
 void map::generate_stair(int chamber_id) {
@@ -46,7 +46,7 @@ void map::generate_stair(int chamber_id) {
             p.randomize_pos(chamber_id);
         }
     }
-    std::cout << "stair pos generated" << " " << p.get_x() << " " << p.get_y() << std::endl;
+    //std::cout << "stair pos generated" << " " << p.get_x() << " " << p.get_y() << std::endl;
 }
 
 void map::generate_posion() {
@@ -81,13 +81,15 @@ void map::generate_posion() {
         }
         ++num_potion;
     }
-    std::cout << "potion generated" << std::endl;
+    //std::cout << "potion generated" << std::endl;
 }
 
 void map::generate_gold() {
     while (num_gold < 10) {
+        //std::cout << "num_gold " << num_gold << std::endl;
         pos p;
         p.randomize_pos();
+        //std::cout << "pos generated" << p.get_x() << " " << p.get_y() << std::endl;
         while (true) {
             if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
                 map_cell[p.get_x()][p.get_y()].set_cell_type('G');
@@ -101,6 +103,7 @@ void map::generate_gold() {
                     new_gold->set_value(1);
                 } else {
                     new_gold->set_value(6);
+                    new_gold->set_pickable(false);
                     int direction_id = rand() % 8;
                     std::string direction = direction_map[direction_id];
                     pos dragon_pos = direction_pos(direction, p);
@@ -113,6 +116,7 @@ void map::generate_gold() {
                             new_dragon->set_pos(dragon_pos);
                             enemies.emplace_back(new_dragon);
                             num_enemy++;
+                            //std::cout << "dragon hoard id" << num_gold << " " << new_dragon->get_dragon_hoard_id() << std::endl;
                             break;
                         } else {
                             direction_id = rand() % 8;
@@ -129,7 +133,7 @@ void map::generate_gold() {
         }
         ++num_gold;
     }
-    std::cout << "gold generated" << std::endl;
+    //std::cout << "gold generated" << std::endl;
 }
 
 
@@ -211,7 +215,7 @@ void map::generate_enemy() {
         }
         ++num_enemy;
     }
-    std::cout << "enemy generated" << std::endl;
+    //std::cout << "enemy generated" << std::endl;
 }
 
 void map::read_empty_map(std::string& filename) {
@@ -242,6 +246,7 @@ void map::read_map_file(std::string& filename, int floor) {
     int line_num = 0;
     int start_line = floor * NUM_ROW + 1;
     int end_line = (floor + 1) * NUM_ROW;
+    //std::cout << start_line << " " << end_line << std::endl;
 
     clear_map();
 
@@ -421,6 +426,26 @@ void map::read_map_file(std::string& filename, int floor) {
                     origin_map_cell[i][row].set_step(true);
                     auto enemy = std::make_shared<dragon>();
                     enemy->set_pos(pos{i, row, floor});
+                    enemy->set_dragon_hoard_id(num_gold);
+                    for (int i = 0; i < 8; i++) {
+                        std::string direction = direction_map[i];
+                        pos gold_pos = direction_pos(direction, enemy->get_pos());
+                        int gold_id = which_gold(gold_pos.get_x(), gold_pos.get_y());
+                        if (gold_id != -1 && golds[gold_id]->get_value() == 6) {
+                            enemy->set_dragon_hoard_id(gold_id);
+                        }
+                    }
+                    // we no ne nw 
+                    // 1 3 4 5
+                    // for (int x = (i == 0) ? 0 : i - 1 ; x <= (i == NUM_ROW - 1)? i : i + 1; ++x) {
+                    //     for (int y = (row == 0)? 0:row - 1; y <= (row == NUM_COL - 1)? row: row + 1; ++y) {
+                    //         int gold_id = which_gold(x, y);
+                    //         if (golds[gold_id]->get_value() == 6) {
+                    //             enemy->set_dragon_hoard_id(gold_id);
+                    //         }
+                    //     }
+                    // }
+
                     enemies.emplace_back(enemy);
                     num_enemy++;
                 } else if (line[i] == 'L') {
@@ -458,16 +483,26 @@ void map::print_map() {
         }
         std::cout << std::endl;
     }
-    std::cout << "Race: " << player->get_race() << " Gold: " << player->get_gold() << std::endl;
+    std::cout << "Race: " << player->get_race() << " Gold: " << player->get_gold() 
+              << "                                                   " << "Floor " << floor + 1 << std::endl;
     std::cout << "HP: " << player->get_hp() << std::endl;
     std::cout << "Atk: " << player->get_atk() << std::endl;
     std::cout << "Def: " << player->get_def() << std::endl;
     std::cout << "Action: ";
     for (auto action : actions) {
-        std::cout << action;
+        std::cout << action; //<< " and ";
     }
     std::cout << std::endl;
+    std::cout << "Radar: ";
+    if (!radar.empty()) {
+        for (auto element: radar) {
+            std::cout << element << std::endl;
+        }
+    } else {
+        std::cout << "There is nothing in the 1 block radius." << std::endl;
+    }
     actions.clear();
+    radar.clear();
 }
 
 void map::move_player(std::string direction) {
@@ -486,9 +521,10 @@ void map::move_player(std::string direction) {
                  //std::cout << "gold id: " << gold_id << std::endl;
                 player->set_gold(player->get_gold() + golds[gold_id]->get_value());
                 actions.emplace_back("gold picked up, value:" + std::to_string(golds[gold_id]->get_value()) + ". ");
-                golds.erase(golds.begin() + gold_id);
+                //golds.erase(golds.begin() + gold_id);
                 num_gold--;
             } else {
+                std::cout << "gold id: " << gold_id << std::endl;
                 actions.emplace_back("Dragon still alive. Dragon hoard can not be picked up. ");
                 return;
             }
@@ -511,20 +547,23 @@ void map::player_attack(std::string direction) {
         actions.emplace_back("PC deals " + std::to_string(damage) + " damage (");
         if (enemies[enemy_id]->get_race() == "Merchant") {
             enemies[enemy_id]->set_hostile(true);
-            std::cout << "merchant become hostile" << std::endl;
+            add_action("Merchant becomes hostile. ");
+            //std::cout << "Merchant is hostile" << std::endl;
         } 
         if (enemies[enemy_id]->get_hp() <= 0) {
             actions.emplace_back("Dead).");
-            //std::cout << "enemy dead" << std::endl;
             map_cell[enemies[enemy_id]->get_pos().get_x()][enemies[enemy_id]->get_pos().get_y()].set_cell_type('.');
             map_cell[enemies[enemy_id]->get_pos().get_x()][enemies[enemy_id]->get_pos().get_y()].set_step(true);
             drop_gold(enemies[enemy_id]);
-            
             enemies.erase(enemies.begin() + enemy_id);
             enemies.shrink_to_fit();
             num_enemy--;
         } else {
             actions.emplace_back(std::to_string(enemies[enemy_id]->get_hp()) + "HP).");
+            enemies[enemy_id]->set_active(false);
+            move_enemy();
+            enemy_attack();
+            enemies[enemy_id]->set_active(true);
         }
     } else {
         actions.emplace_back("No enemy in this direction. You wasted a turn.");
@@ -536,7 +575,7 @@ void map::move_enemy() {
     for (int i = 0; i < NUM_ROW; ++i) {  
         for (int j = 0; j < NUM_COL; ++j) {
             int enemy_id = which_enemy(j, i);
-            if (enemy_id != -1 && !enemies[enemy_id]->is_moved() && enemies[enemy_id]->get_race() != "Dragon") { //if found enemy
+            if (enemy_id != -1 && !enemies[enemy_id]->is_moved() && enemies[enemy_id]->is_active() && enemies[enemy_id]->get_race() != "Dragon" && !enemies[enemy_id]->is_disable()) { //if found enemy
                 //std::cout << "enemy found" << std::endl;
                 
                 while (!enemies[enemy_id]->is_moved()) {
@@ -565,16 +604,16 @@ void map::move_enemy() {
 
 void map::enemy_attack() {
     for (int i = 0; i < num_enemy; ++i) {
-        if ( is_adjacent(enemies[i]->get_pos(), player->get_pos())) {
+        if (!enemies[i]->is_disable() && (is_adjacent(enemies[i]->get_pos(), player->get_pos()) || (enemies[i]->get_dragon_hoard_id() == -1 ? false :is_adjacent(golds[enemies[i]->get_dragon_hoard_id()]->get_pos(), player->get_pos())))) {
             if (enemies[i]->is_hostile()) {
                 int attack_chance = rand() % 2;
                 if (attack_chance) {
                     int damage = enemies[i]->attack(player);
                     actions.emplace_back(enemies[i]->get_race() + " deals " + std::to_string(damage) + " damage to PC. ");
-                    if (player->get_hp() <= 0) {
-                        gameover = true;
-                        return;
-                    }
+                    // if (player->get_hp() <= 0) {
+                    //     gameover = true;
+                    //     return;
+                    // }
                 } else {
                     actions.emplace_back(enemies[i]->get_race() + " miss! ");
                 }
@@ -638,16 +677,20 @@ void map::use_potion(std::string &direction) {
             actions.emplace_back("PC uses WD. ");
             actions.emplace_back("PC loses 5 Def. ");
         }
-        for (int i = 0; i < num_potion; i++) {
-            if (potions[i]->get_name() == potions[potion_id]->get_name()) {
-                potions[i]->set_revealed(true);
-            }
-        }
+        
+        int potion_state_id = potion_map[potions[potion_id]->get_name()];
+        potion_state[potion_state_id] = true;      
         map_cell[potions[potion_id]->get_pos().get_x()][potions[potion_id]->get_pos().get_y()].set_cell_type('.');
         map_cell[potions[potion_id]->get_pos().get_x()][potions[potion_id]->get_pos().get_y()].set_step(true);
         potions.erase(potions.begin() + potion_id);
         potions.shrink_to_fit();
         num_potion--;
+        // if (player->get_hp() <= 0) {
+        //     gameover = true;
+        // } else if (player->get_hp() > player->get_max_hp()) {
+        //     player->set_hp(player->get_max_hp());
+        //     actions.emplace_back("PC HP is full. ");
+        // }
     } else {
         actions.emplace_back("No potion in this direction. You wasted a turn.");
     }
@@ -750,9 +793,10 @@ void map::drop_gold(std::shared_ptr<enemy_character> enemy) {
         num_gold++;
         actions.emplace_back(enemy->get_race() + " drops 1 merchant hoard. ");
     } else if (enemy->get_race() == "Dragon") {
-        golds[enemy->get_dragon_hoard_id() + 1]->set_pickable(true);
+        //std:: cout << "dragon hoard id" << enemy->get_dragon_hoard_id() << std::endl;
+        golds[enemy->get_dragon_hoard_id()]->set_pickable(true);
         actions.emplace_back(enemy->get_race() + " dead, you can get dragon hoard now. ");
-        std::cout << "dragon hoard id" << enemy->get_dragon_hoard_id() << std::endl;
+        //std::cout << "dragon hoard id" << enemy->get_dragon_hoard_id() << std::endl;
     } else {
         int possibility = rand() % 2;
         if (possibility) {
@@ -771,28 +815,34 @@ void map::find_around() {
         int direction_y = direction_pos(direction_map[i], player->get_pos()).get_y();
         if (map_cell[direction_x][direction_y].get_cell_type() == 'G') {
             int gold_id = which_gold(direction_x, direction_y);
+            //std::cout << "gold id" << gold_id << std::endl;
             if (golds[gold_id]->get_value() == 6) {
-                actions.emplace_back("There is a dragon hoard in " + direction_map[i] + ". ");
+                radar.emplace_back("There is a dragon hoard in " + direction_map[i] + ". ");
                 for (int i = 0; i < num_enemy; i++) {
-                    if (enemies[i]->get_dragon_hoard_id() + 1 == gold_id && enemies[i]->get_race() == "Dragon" && is_adjacent(enemies[i]->get_pos(), player->get_pos())) {
-                        std::cout << "dragon hoard id" << enemies[i]->get_dragon_hoard_id() << std::endl;
-                        std::cout << "gold id" << gold_id << std::endl;
+                    //std::cout << "dragon become hostile" << std::endl;
+                    //std::cout << "dragon hoard id" << enemies[i]->get_dragon_hoard_id() << std::endl;
+                    //std::cout << "gold id" << gold_id << std::endl;
+                    //std::cout << enemies[i]->get_pos().get_x() << std::endl;
+                    if (enemies[i]->get_dragon_hoard_id() == gold_id && enemies[i]->get_race() == "Dragon") {
+                        //std::cout << "dragon hoard id" << enemies[i]->get_dragon_hoard_id() << std::endl;
+                        //std::cout << "gold id" << gold_id << std::endl;
                         enemies[i]->set_hostile(true);
-                        actions.emplace_back("Dragon is angry now. ");
+                        actions.emplace_back("Dragon become hostile. ");
                     }
                 }
             } else {
-                actions.emplace_back("There is a gold in " + direction_map[i] + ". ");
+                radar.emplace_back("There is a gold in " + direction_name_map[direction_map[i]] + ". ");
             }
         } else if (map_cell[direction_x][direction_y].get_cell_type() == 'P') {
             int potion_id = which_potion(direction_x, direction_y);
-            if (!potions[potion_id]->is_revealed()) {
-                actions.emplace_back("There is an unknown potion in " + direction_map[i] + ". ");
+            int potion_state_id = potion_map[potions[potion_id]->get_name()];
+            if (!potion_state[potion_state_id]) {
+                radar.emplace_back("There is an unknown potion in " + direction_name_map[direction_map[i]] + ". ");
             } else {
-                actions.emplace_back("There is a " + potions[potion_id]->get_name() + " potion in " + direction_map[i] + ". ");
+                radar.emplace_back("There is a " + potions[potion_id]->get_name() + " potion in " + direction_name_map[direction_map[i]] + ". ");
             }
         } else if (map_cell[direction_x][direction_y].get_cell_type() == 'E' || map_cell[direction_x][direction_y].get_cell_type() == 'H' || map_cell[direction_x][direction_y].get_cell_type() == 'W' || map_cell[direction_x][direction_y].get_cell_type() == 'O' || map_cell[direction_x][direction_y].get_cell_type() == 'M' || map_cell[direction_x][direction_y].get_cell_type() == 'D' || map_cell[direction_x][direction_y].get_cell_type() == 'L') {
-            actions.emplace_back("There is an enemy in " + direction_map[i] + ". ");
+            radar.emplace_back("There is an enemy in " + direction_name_map[direction_map[i]] + ". ");
         }
     }
 }
@@ -800,32 +850,62 @@ void map::find_around() {
 void map::game_over() {
     if (player->get_hp() <= 0) {
         std::cout << "Game Over" << std::endl;
-    } else if (floor == 6) {
+    } else if (floor == MAX_FLOOR) {
         std::cout << "You win!" << std::endl;
     } else {
-        std::cout << "You quit the game." << std::endl;
+        std::cout << "You quit Shadowmaze!" << std::endl;
     }
-    if (player->get_race() == "Shades") {
+    if (player->get_race() == "Shade") {
         std::cout << "Your final score is: " << player->get_gold() * 1.5 << std::endl;
     } else {
         std::cout << "Your final score is: " << player->get_gold() << std::endl;
     }
 }
 
+
+
 void map::initialize() {
     gameover = false;
     floor_change = false;
+    floor = 0;
     actions.clear();
     clear_map();
+    
 }
 
-void map::clear_map() {
+void map::clear_map() { 
+    memset(map_cell, 0, sizeof(map_cell));
+    memset(origin_map_cell, 0, sizeof(origin_map_cell));
+    if (floor != 0) {
+        player->set_atk(player->get_original_atk());
+        player->set_def(player->get_original_def());
+        actions.emplace_back("PC loses all buffs. ");
+    }
     num_enemy = 0;
     num_potion = 0;
     num_gold = 0;
-    memset(map_cell, 0, sizeof(map_cell));
-    memset(origin_map_cell, 0, sizeof(origin_map_cell));
     enemies.clear();
     golds.clear();
     potions.clear();
 }
+
+void map::check_state() {
+    if (player->get_hp() <= 0) {
+        gameover = true;
+    } else if (player->get_race() != "Vampire" &&  player->get_hp() > player->get_max_hp()) {
+        player->set_hp(player->get_max_hp());
+    }
+}
+
+void map::add_action(std::string action) {
+    actions.emplace_back(action);
+}
+
+void map::disable_enemy() {
+    for (int i = 0; i < num_enemy; i++) {
+        enemies[i]->set_disable(!enemies[i]->is_disable());
+    }
+    std::string msg = enemies[0]->is_disable() ? "disable" : "activate";
+    add_action("All the enemies are " + msg + ".");
+}
+

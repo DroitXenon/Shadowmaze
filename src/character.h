@@ -1,6 +1,8 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 #include <iostream>
+#include <memory>
+#include <cmath>
 #include "pos.h"
 //#include "map.h"
 

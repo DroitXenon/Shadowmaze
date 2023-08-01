@@ -1,7 +1,7 @@
 #include "human.h"
 
 human::human():
-    enemy_character{140, 20, 20, "Human", 'H', true} {
+    enemy_character{140, 20, 20, "Human", 'H', true, -1} {
     }
 
 int human::attack(std::shared_ptr<player_character> player) {
