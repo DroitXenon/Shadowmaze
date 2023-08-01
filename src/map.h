@@ -45,6 +45,7 @@ class map {
     cell map_cell[NUM_COL][NUM_ROW];
     cell origin_map_cell[NUM_COL][NUM_ROW];
     std::vector<std::string> actions;
+    std::vector<std::string> radar;
     int num_potion = 0;
     int num_gold = 0;
     int num_enemy = 0;
@@ -60,9 +61,6 @@ class map {
         {"WA",4}, 
         {"WD",5} 
         };
-    std::map<char, std::string> character_map { 
-        
-        };
     std::map<int, std::string> direction_map { 
         {0,"so"}, 
         {1,"no"}, 
@@ -72,6 +70,16 @@ class map {
         {5,"nw"}, 
         {6,"se"}, 
         {7,"sw"} 
+        };
+    std::map<std::string, std::string> direction_name_map { 
+        {"so","South"}, 
+        {"no","North"}, 
+        {"ea","East"}, 
+        {"we","West"}, 
+        {"ne","North East"}, 
+        {"nw","North West"}, 
+        {"se","South East"}, 
+        {"sw","South West"} 
         };
 
  public:

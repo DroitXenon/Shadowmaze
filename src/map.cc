@@ -3,7 +3,7 @@
 
 void map::set_player(std::shared_ptr<player_character> character){
     player = character;
-    actions.emplace_back("Player character has spawned.");
+    add_action("Player character has spawned.");
 }
 
 void map::set_map(){
@@ -493,7 +493,16 @@ void map::print_map() {
         std::cout << action; //<< " and ";
     }
     std::cout << std::endl;
+    std::cout << "Radar: ";
+    if (!radar.empty()) {
+        for (auto element: radar) {
+            std::cout << element << std::endl;
+        }
+    } else {
+        std::cout << "There is nothing in the 1 block radius." << std::endl;
+    }
     actions.clear();
+    radar.clear();
 }
 
 void map::move_player(std::string direction) {
@@ -538,7 +547,8 @@ void map::player_attack(std::string direction) {
         actions.emplace_back("PC deals " + std::to_string(damage) + " damage (");
         if (enemies[enemy_id]->get_race() == "Merchant") {
             enemies[enemy_id]->set_hostile(true);
-            std::cout << "Merchant is hostile" << std::endl;
+            add_action("Merchant becomes hostile. ");
+            //std::cout << "Merchant is hostile" << std::endl;
         } 
         if (enemies[enemy_id]->get_hp() <= 0) {
             actions.emplace_back("Dead).");
@@ -807,12 +817,12 @@ void map::find_around() {
             int gold_id = which_gold(direction_x, direction_y);
             //std::cout << "gold id" << gold_id << std::endl;
             if (golds[gold_id]->get_value() == 6) {
-                actions.emplace_back("There is a dragon hoard in " + direction_map[i] + ". ");
+                radar.emplace_back("There is a dragon hoard in " + direction_map[i] + ". ");
                 for (int i = 0; i < num_enemy; i++) {
                     //std::cout << "dragon become hostile" << std::endl;
-                    std::cout << "dragon hoard id" << enemies[i]->get_dragon_hoard_id() << std::endl;
-                    std::cout << "gold id" << gold_id << std::endl;
-                    std::cout << enemies[i]->get_pos().get_x() << std::endl;
+                    //std::cout << "dragon hoard id" << enemies[i]->get_dragon_hoard_id() << std::endl;
+                    //std::cout << "gold id" << gold_id << std::endl;
+                    //std::cout << enemies[i]->get_pos().get_x() << std::endl;
                     if (enemies[i]->get_dragon_hoard_id() == gold_id && enemies[i]->get_race() == "Dragon") {
                         //std::cout << "dragon hoard id" << enemies[i]->get_dragon_hoard_id() << std::endl;
                         //std::cout << "gold id" << gold_id << std::endl;
@@ -821,18 +831,18 @@ void map::find_around() {
                     }
                 }
             } else {
-                actions.emplace_back("There is a gold in " + direction_map[i] + ". ");
+                radar.emplace_back("There is a gold in " + direction_name_map[direction_map[i]] + ". ");
             }
         } else if (map_cell[direction_x][direction_y].get_cell_type() == 'P') {
             int potion_id = which_potion(direction_x, direction_y);
             int potion_state_id = potion_map[potions[potion_id]->get_name()];
             if (!potion_state[potion_state_id]) {
-                actions.emplace_back("There is an unknown potion in " + direction_map[i] + ". ");
+                radar.emplace_back("There is an unknown potion in " + direction_name_map[direction_map[i]] + ". ");
             } else {
-                actions.emplace_back("There is a " + potions[potion_id]->get_name() + " potion in " + direction_map[i] + ". ");
+                radar.emplace_back("There is a " + potions[potion_id]->get_name() + " potion in " + direction_name_map[direction_map[i]] + ". ");
             }
         } else if (map_cell[direction_x][direction_y].get_cell_type() == 'E' || map_cell[direction_x][direction_y].get_cell_type() == 'H' || map_cell[direction_x][direction_y].get_cell_type() == 'W' || map_cell[direction_x][direction_y].get_cell_type() == 'O' || map_cell[direction_x][direction_y].get_cell_type() == 'M' || map_cell[direction_x][direction_y].get_cell_type() == 'D' || map_cell[direction_x][direction_y].get_cell_type() == 'L') {
-            actions.emplace_back("There is an enemy in " + direction_map[i] + ". ");
+            radar.emplace_back("There is an enemy in " + direction_name_map[direction_map[i]] + ". ");
         }
     }
 }
