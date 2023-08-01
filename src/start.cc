@@ -44,9 +44,11 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
             std::cout << "Quitting..." << std::endl;
             return;
         } else if (cmd == "r") {
+            restart = true;
             std::cout << "Restarting..." << std::endl;
             continue;
         } else {
+            restart = true;
             std::cerr << "Not Valid Input" << std::endl;
             continue;
         }

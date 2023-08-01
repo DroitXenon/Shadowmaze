@@ -17,9 +17,6 @@ bool enemy_character::is_hostile() const {
     return hostile;
 }
 
-bool enemy_character::is_disable() const {
-    return disable;
-}
 // void enemy_character::set_drop_item(std::vector<int> item_index) {
 //     this->drop_item = drop_item;
 // }
@@ -32,9 +29,6 @@ void enemy_character::set_hostile(bool hostile) {
     this->hostile = hostile;
 }
 
-void enemy_character::set_disable(bool disable) {
-    this->disable = disable;
-}
 
 void enemy_character::set_moved(bool moved) {
     this->moved = moved;
