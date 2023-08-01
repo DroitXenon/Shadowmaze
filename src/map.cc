@@ -85,10 +85,8 @@ void map::generate_posion() {
 
 void map::generate_gold() {
     while (num_gold < 10) {
-        //std::cout << "num_gold " << num_gold << std::endl;
         pos p;
         p.randomize_pos();
-        //std::cout << "pos generated" << p.get_x() << " " << p.get_y() << std::endl;
         while (true) {
             if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
                 map_cell[p.get_x()][p.get_y()].set_cell_type('G');
@@ -115,7 +113,6 @@ void map::generate_gold() {
                             new_dragon->set_pos(dragon_pos);
                             enemies.emplace_back(new_dragon);
                             num_enemy++;
-                            //std::cout << "dragon hoard id" << num_gold << " " << new_dragon->get_dragon_hoard_id() << std::endl;
                             break;
                         } else {
                             direction_id = rand() % 8;
@@ -246,10 +243,7 @@ void map::read_map_file(std::string& filename, int floor) {
     int line_num = 0;
     int start_line = floor * NUM_ROW + 1;
     int end_line = (floor + 1) * NUM_ROW;
-    //std::cout << start_line << " " << end_line << std::endl;
-
     clear_map();
-
     while (getline(map_file, line)) {
         line_num++;
         if (line_num >= start_line && line_num <= end_line) {
@@ -436,17 +430,6 @@ void map::read_map_file(std::string& filename, int floor) {
                             enemy->set_dragon_hoard_id(gold_id);
                         }
                     }
-                    // we no ne nw 
-                    // 1 3 4 5
-                    // for (int x = (i == 0) ? 0 : i - 1 ; x <= (i == NUM_ROW - 1)? i : i + 1; ++x) {
-                    //     for (int y = (row == 0)? 0:row - 1; y <= (row == NUM_COL - 1)? row: row + 1; ++y) {
-                    //         int gold_id = which_gold(x, y);
-                    //         if (golds[gold_id]->get_value() == 6) {
-                    //             enemy->set_dragon_hoard_id(gold_id);
-                    //         }
-                    //     }
-                    // }
-
                     enemies.emplace_back(enemy);
                     num_enemy++;
                 } else if (line[i] == 'L') {
@@ -525,10 +508,8 @@ void map::move_player(std::string direction) {
             } else {
                 add_action("Dragon is still alive. Player walks on dragon hoard.");
                 flag = true;
-                //gold_hoard_state = true;
             }
         }
-        
         if (gold_hoard_state) {
             map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('G');
             map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_step(true);
@@ -537,10 +518,6 @@ void map::move_player(std::string direction) {
             map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
             map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_step(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_step());
         }
-
-        //map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
-        //map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_step(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_step());
-
         pos p{new_x, new_y, player->get_pos().get_floor()};
         player->set_pos(p);
         map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
@@ -589,9 +566,7 @@ void map::move_enemy() {
     for (int i = 0; i < NUM_ROW; ++i) {  
         for (int j = 0; j < NUM_COL; ++j) {
             int enemy_id = which_enemy(j, i);
-            if (enemy_id != -1 && !enemies[enemy_id]->is_moved() && enemies[enemy_id]->is_active() && enemies[enemy_id]->get_race() != "Dragon" && !disable_enemy_move) { //if found enemy
-                //std::cout << "enemy found" << std::endl;
-                
+            if (enemy_id != -1 && !enemies[enemy_id]->is_moved() && enemies[enemy_id]->is_active() && enemies[enemy_id]->get_race() != "Dragon" && !disable_enemy_move) { //if found enemy                
                 while (!enemies[enemy_id]->is_moved()) {
                     int random_direction = rand() % 8;
                     std::string direction = direction_map[random_direction];
@@ -693,12 +668,6 @@ void map::use_potion(std::string &direction) {
         potions.erase(potions.begin() + potion_id);
         potions.shrink_to_fit();
         num_potion--;
-        // if (player->get_hp() <= 0) {
-        //     gameover = true;
-        // } else if (player->get_hp() > player->get_max_hp()) {
-        //     player->set_hp(player->get_max_hp());
-        //     actions.emplace_back("PC HP is full. ");
-        // }
     } else {
         add_action("No potion in this direction. You wasted a turn.");
     }
@@ -801,10 +770,8 @@ void map::drop_gold(std::shared_ptr<enemy_character> enemy) {
         num_gold++;
         add_action(enemy->get_race() + " drops 1 merchant hoard.");
     } else if (enemy->get_race() == "Dragon") {
-        //std:: cout << "dragon hoard id" << enemy->get_dragon_hoard_id() << std::endl;
         golds[enemy->get_dragon_hoard_id()]->set_pickable(true);
         add_action(enemy->get_race() + " dead, you can get dragon hoard now.");
-        //std::cout << "dragon hoard id" << enemy->get_dragon_hoard_id() << std::endl;
     } else {
         int possibility = rand() % 2;
         if (possibility) {
@@ -823,17 +790,10 @@ void map::find_around() {
         int direction_y = direction_pos(direction_map[i], player->get_pos()).get_y();
         if (map_cell[direction_x][direction_y].get_cell_type() == 'G') {
             int gold_id = which_gold(direction_x, direction_y);
-            //std::cout << "gold id" << gold_id << std::endl;
             if (golds[gold_id]->get_value() == 6) {
                 radar.emplace_back("There is a dragon hoard in " + direction_map[i] + ". ");
                 for (int i = 0; i < num_enemy; i++) {
-                    //std::cout << "dragon become hostile" << std::endl;
-                    //std::cout << "dragon hoard id" << enemies[i]->get_dragon_hoard_id() << std::endl;
-                    //std::cout << "gold id" << gold_id << std::endl;
-                    //std::cout << enemies[i]->get_pos().get_x() << std::endl;
                     if (enemies[i]->get_dragon_hoard_id() == gold_id && enemies[i]->get_race() == "Dragon" && !enemies[i]->is_hostile()) {
-                        //std::cout << "dragon hoard id" << enemies[i]->get_dragon_hoard_id() << std::endl;
-                        //std::cout << "gold id" << gold_id << std::endl;
                         enemies[i]->set_hostile(true);
                         actions.emplace_back("Dragon become hostile!");
                     }
