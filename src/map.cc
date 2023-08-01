@@ -791,7 +791,7 @@ void map::find_around() {
         if (map_cell[direction_x][direction_y].get_cell_type() == 'G') {
             int gold_id = which_gold(direction_x, direction_y);
             if (golds[gold_id]->get_value() == 6) {
-                radar.emplace_back("There is a dragon hoard in " + direction_map[i] + ". ");
+                radar.emplace_back("There is a dragon hoard in " + direction_name_map[direction_map[i]] + ". ");
                 for (int i = 0; i < num_enemy; i++) {
                     if (enemies[i]->get_dragon_hoard_id() == gold_id && enemies[i]->get_race() == "Dragon" && !enemies[i]->is_hostile()) {
                         enemies[i]->set_hostile(true);
