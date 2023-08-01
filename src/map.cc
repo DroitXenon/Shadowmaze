@@ -515,40 +515,37 @@ void map::move_player(std::string direction) {
         floor_change = true;
         return;
     } else if (map_cell[new_x][new_y].get_step()) {
-        //bool flag = false;
+        bool flag = false;
         if (map_cell[new_x][new_y].get_cell_type() == 'G') {
             int gold_id = which_gold(new_x, new_y);
             if (golds[gold_id]->is_pickable()) {
-                 //std::cout << "gold id: " << gold_id << std::endl;
                 player->set_gold(player->get_gold() + golds[gold_id]->get_value());
                 add_action("Gold picked up, value: " + std::to_string(golds[gold_id]->get_value()) + ".");
-                //golds.erase(golds.begin() + gold_id);
                 num_gold--;
             } else {
-                //std::cout << "gold id: " << gold_id << std::endl;
                 add_action("Dragon is still alive. Player walks on dragon hoard.");
-                //flag = true;
+                flag = true;
                 //gold_hoard_state = true;
             }
         }
         
-        // if (gold_hoard_state) {
-        //     map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('G');
-        //     map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_step(true);
-        //     gold_hoard_state = false;
-        // } else {
-        //     map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
-        //     map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_step(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_step());
-        // }
+        if (gold_hoard_state) {
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('G');
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_step(true);
+            gold_hoard_state = false;
+        } else {
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_step(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_step());
+        }
 
-        map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
-        map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_step(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_step());
+        //map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
+        //map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_step(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_step());
 
         pos p{new_x, new_y, player->get_pos().get_floor()};
         player->set_pos(p);
         map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
         add_action("PC moves " + direction_name_map[direction] + ".");
-        // if (flag) gold_hoard_state = true;
+        if (flag) gold_hoard_state = true;
     } else {
         add_action("PC cannot moves " + direction_name_map[direction] + ".");
     }
@@ -853,7 +850,7 @@ void map::find_around() {
                 radar.emplace_back("There is a " + potions[potion_id]->get_name() + " potion in " + direction_name_map[direction_map[i]] + ".");
             }
         } else if (map_cell[direction_x][direction_y].get_cell_type() == 'E' || map_cell[direction_x][direction_y].get_cell_type() == 'H' || map_cell[direction_x][direction_y].get_cell_type() == 'W' || map_cell[direction_x][direction_y].get_cell_type() == 'O' || map_cell[direction_x][direction_y].get_cell_type() == 'M' || map_cell[direction_x][direction_y].get_cell_type() == 'D' || map_cell[direction_x][direction_y].get_cell_type() == 'L') {
-            radar.emplace_back("There is an enemy in " + direction_name_map[direction_map[i]] + ".");
+            radar.emplace_back("There is a(n) " + enemies[which_enemy(direction_x ,direction_y)]->get_race() + " in " + direction_name_map[direction_map[i]] + ".");
         }
     }
 }

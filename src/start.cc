@@ -128,9 +128,8 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
                 game_map.game_over();
                 return;
             } else if (cmd == "m") {
-                restart = true;
                 manual();
-                break;
+                continue;
             } else {
                 std::cerr << "Not Valid Input" << std::endl;
                 continue;
