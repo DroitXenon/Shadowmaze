@@ -22,6 +22,16 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
 	while (getline(f, cmd)) {
 		std::cout << cmd << std::endl;
 	}
+    // Toggle DLC
+    std::cout << "Do you want to enable DLC? ";
+    std::cout << ESC << ";" << CYAN_TXT << "m" << "(y/n)" << RESET << std::endl;
+    std::cin >> cmd;
+    if (cmd == "y") {
+        game_map.set_dlc(true);
+    } else {
+        game_map.set_dlc(false);
+    }
+
     while (restart) {
         // Initialize map after each restart
         game_map.initialize();
@@ -60,6 +70,7 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
         } else {
             restart = true;
             std::cerr << "Not Valid Input" << std::endl;
+            game_map.play_sound("error.mp3");
             continue;
         }
         
@@ -105,6 +116,7 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
                         game_map.read_empty_map(map_file);
                         game_map.set_map();
                     }
+                    game_map.play_sound("floorup.mp3");
                 } else {
                     game_map.move_enemy();
                 }
@@ -134,6 +146,7 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
                 continue;
             } else {
                 std::cerr << "Not Valid Input" << std::endl;
+                game_map.play_sound("error.mp3");
                 continue;
             }
             game_map.enemy_attack();

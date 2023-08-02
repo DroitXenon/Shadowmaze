@@ -8,6 +8,8 @@
 #include <string.h>
 #include <cstdlib>
 #include <ctime>
+#include <cstdlib>
+#include <thread>
 #include <map>
 #include "player/player_character.h"
 #include "enemy/enemy_character.h"
@@ -58,6 +60,8 @@ class map {
     bool disable_enemy_move = false;
     bool merchant_state = false;
     bool gold_hoard_state = false;
+    bool dlc = false;
+    int enemy_killed = 0;
     std::map<std::string, int> potion_map { 
         {"RH",0}, 
         {"BA",1}, 
@@ -113,12 +117,17 @@ class map {
     bool get_floor_change();
     int get_floor();
     void drop_gold(std::shared_ptr<enemy_character> enemy);
-    void find_around();
     bool is_gameover();
     void game_over();
     void check_state();
     void add_action(std::string action);
     void disable_enemy();
+
+    // DLC Functions
+    void set_dlc(bool toggle);
+    void find_around();
+    void play_sound(std::string filename);
+    void show_trophy();
 };
 
 #endif

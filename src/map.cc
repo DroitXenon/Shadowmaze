@@ -536,8 +536,8 @@ void map::player_attack(std::string direction) {
         add_action("PC deals " + std::to_string(damage) + " damage to " + enemies[enemy_id]->get_race() + " [");
         if (enemies[enemy_id]->get_race() == "Merchant" & !merchant_state) {
             for (int i = 0; i < num_enemy; ++i) {
-                if(enemies[enemy_id]->get_race() == "Merchant") {
-                    enemies[enemy_id]->set_hostile(true);
+                if(enemies[i]->get_race() == "Merchant") {
+                    enemies[i]->set_hostile(true);
                 }
             }
             merchant_state = true;
@@ -551,6 +551,7 @@ void map::player_attack(std::string direction) {
             enemies.erase(enemies.begin() + enemy_id);
             enemies.shrink_to_fit();
             num_enemy--;
+            enemy_killed++;
         } else {
             add_action(std::to_string(enemies[enemy_id]->get_hp()) + "HP ].");
             enemies[enemy_id]->set_active(false);
@@ -600,10 +601,8 @@ void map::enemy_attack() {
                 if (attack_chance) {
                     int damage = enemies[i]->attack(player);
                     add_action(enemies[i]->get_race() + " deals " + std::to_string(damage) + " damage to PC.");
-                    // if (player->get_hp() <= 0) {
-                    //     gameover = true;
-                    //     return;
-                    // }
+                    play_sound("damage.mp3");
+
                 } else {
                     add_action(enemies[i]->get_race() + " miss! ");
                 }
@@ -669,6 +668,7 @@ void map::use_potion(std::string &direction) {
         potions.erase(potions.begin() + potion_id);
         potions.shrink_to_fit();
         num_potion--;
+        play_sound("potion.mp3");
     } else {
         add_action("No potion in this direction. You wasted a turn.");
     }
@@ -821,12 +821,13 @@ void map::game_over() {
         std::cout << "Game Over" << std::endl;
     } else if (floor == MAX_FLOOR) {
         std::cout << "You win!" << std::endl;
+        show_trophy();
     } else {
         std::cout << "You quit Shadowmaze!" << std::endl;
         return;
     }
     if (player->get_race() == "Shade") {
-        std::cout << "Your final score is: " << player->get_gold() * 1.5 << std::endl;
+        std::cout << "Your final score is: " << (int)(player->get_gold() * 1.5) << std::endl;
     } else {
         std::cout << "Your final score is: " << player->get_gold() << std::endl;
     }
@@ -835,6 +836,7 @@ void map::game_over() {
 
 
 void map::initialize() {
+    play_sound("startup.mp3");
     gameover = false;
     floor_change = false;
     floor = 0;
@@ -877,4 +879,41 @@ void map::disable_enemy() {
     add_action("All the enemies are " + msg + ".");
 }
 
+void map::set_dlc(bool toggle) {
+    dlc = toggle;
+}
 
+
+void map::play_sound(std::string filename) {
+    if (dlc) {
+        std::string command = "afplay " + filename; //Windows "start" Linux "aplay"
+        std::thread sound_thread([command]() {
+            system(command.c_str());
+        });
+        sound_thread.detach(); // Detach the thread to let it run in the background
+    }
+}
+
+void map::show_trophy() {
+    if (dlc) {
+        play_sound("victory.mp3");
+        std::cout << "Trophies:" << std::endl;
+        if (player->get_hp() == player->get_max_hp()) {
+            std::cout << ESC << ";" << YELLOW_TXT << "m" << " HP Defender (Full HP)" << RESET << std::endl;
+        } else if (player->get_hp() >= player->get_max_hp() * 0.5) {
+            std::cout << ESC << ";" << YELLOW_TXT << "m" << " HP Protector (Over Half HP)" << RESET << std::endl;
+        } else {
+            std::cout << " HP Waster (Less Than Half HP)" << std::endl;
+        }
+        if (player->get_gold() >= 10) {
+            std::cout << ESC << ";" << YELLOW_TXT << "m" << " Gold Hoarder (Golds Value More Than 10)" << RESET << std::endl;
+        } else {
+            std::cout << " Poor Kids (Golds Value Less Than 10)" << std::endl;
+        }
+        if (enemy_killed >= 15) {
+            std::cout << ESC << ";" << YELLOW_TXT << "m" << " Demon Slayer (Kill More Than 15 Enemies)" << RESET << std::endl;
+        } else if (enemy_killed == 0) {
+        std::cout << " Coward! (Kill 0 Enemy!?)" << std::endl;
+        }
+    }
+}
