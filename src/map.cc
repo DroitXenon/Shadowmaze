@@ -6,6 +6,7 @@ void map::set_player(std::shared_ptr<player_character> character){
 }
 
 void map::set_map(){
+    // make sure player and stair are in different chambers
     int chamber_id_player = rand() % 5 + 1;
     int chamber_id_stair = rand() % 5 + 1;
     while (chamber_id_stair == chamber_id_player) {
@@ -59,6 +60,7 @@ void map::generate_posion() {
                 auto new_potion = std::make_shared<potion>();
                 new_potion->set_pos(p);
                 int potion_type = rand() % 6;
+                // Different proporbality for each potion
                 if (potion_type == 0) {
                     new_potion->set_name("RH");
                 } else if (potion_type == 1) {
@@ -94,6 +96,7 @@ void map::generate_gold() {
                 auto new_gold = std::make_shared<gold>();
                 new_gold->set_pos(p);
                 int gold_type = rand() % 8;
+                // Different proporbality for each gold
                 if (gold_type < 5) {
                     new_gold->set_value(2);
                 } else if (gold_type < 7) {
@@ -140,6 +143,7 @@ void map::generate_enemy() {
         p.randomize_pos();
         while (true) {
             int enemy_type = rand() % 18;
+            // Different proporbality for each enemy
             if (enemy_type < 4) {
                 if (map_cell[p.get_x()][p.get_y()].get_cell_type() == '.') {
                     map_cell[p.get_x()][p.get_y()].set_cell_type('H');
@@ -449,7 +453,6 @@ void map::read_map_file(std::string& filename, int floor) {
 }
 
 void map::print_map() {
-
     for (int i = 0; i < NUM_ROW; ++i) {
         for (int j = 0; j < NUM_COL; ++j) {
             char cell_type = map_cell[j][i].get_cell_type();
@@ -494,6 +497,7 @@ void map::print_map() {
 void map::move_player(std::string direction) {
     int new_x = direction_pos(direction, player->get_pos()).get_x();
     int new_y = direction_pos(direction, player->get_pos()).get_y();
+    // If Next cell is empty
     if (map_cell[new_x][new_y].get_cell_type() == '\\') {
         add_action("PC moves " + direction_name_map[direction] + "and goes to next floor.");
         floor++;
@@ -512,6 +516,7 @@ void map::move_player(std::string direction) {
             }
         }
         if (gold_hoard_state) {
+            // If leave unpicalbe dragon hoard, change it back to gold hoard
             map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('G');
             map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_step(true);
             gold_hoard_state = false;
@@ -534,6 +539,7 @@ void map::player_attack(std::string direction) {
     if (enemy_id != -1) {
         int damage = player->attack(enemies[enemy_id]);
         add_action("PC deals " + std::to_string(damage) + " damage to " + enemies[enemy_id]->get_race() + " [");
+        // Merchant becomes hostile
         if (enemies[enemy_id]->get_race() == "Merchant" & !merchant_state) {
             for (int i = 0; i < num_enemy; ++i) {
                 if(enemies[i]->get_race() == "Merchant") {
@@ -554,6 +560,7 @@ void map::player_attack(std::string direction) {
             enemy_killed++;
         } else {
             add_action(std::to_string(enemies[enemy_id]->get_hp()) + "HP ].");
+            // Enemies move except the one that you are attacking
             enemies[enemy_id]->set_active(false);
             move_enemy();
             enemies[enemy_id]->set_active(true);
@@ -565,9 +572,11 @@ void map::player_attack(std::string direction) {
 
 
 void map::move_enemy() {
+    // Line by line fashion!!!
     for (int i = 0; i < NUM_ROW; ++i) {  
         for (int j = 0; j < NUM_COL; ++j) {
             int enemy_id = which_enemy(j, i);
+            // is_moved is used to prevent one enemy move twice in one turn
             if (enemy_id != -1 && !enemies[enemy_id]->is_moved() && enemies[enemy_id]->is_active() && enemies[enemy_id]->get_race() != "Dragon" && !disable_enemy_move) { //if found enemy                
                 while (!enemies[enemy_id]->is_moved()) {
                     int random_direction = rand() % 8;
@@ -709,6 +718,7 @@ int map::which_gold(int x, int y) {
     return -1;
 }
 
+// Just a helper function to get the position of the next cell
 pos map::direction_pos(std::string direction, pos current_pos) {
     if (direction == "so") {
         pos p{current_pos.get_x(), current_pos.get_y() + 1, current_pos.get_floor()};
@@ -751,7 +761,6 @@ int map::get_floor() {
 }
 
 void map::drop_gold(std::shared_ptr<enemy_character> enemy) {
-    //std::cout << "drop gold entered" << std::endl;
     if (enemy->get_race() == "Human") {
         map_cell[enemy->get_pos().get_x()][enemy->get_pos().get_y()].set_cell_type('G');
         map_cell[enemy->get_pos().get_x()][enemy->get_pos().get_y()].set_step(true);
@@ -785,6 +794,81 @@ void map::drop_gold(std::shared_ptr<enemy_character> enemy) {
     }
 }
 
+
+void map::game_over() {
+    if (player->get_hp() <= 0) {
+        std::cout << "Game Over" << std::endl;
+    } else if (floor == MAX_FLOOR) {
+        std::cout << "You win!" << std::endl;
+        show_trophy();
+    } else {
+        std::cout << "You quit Shadowmaze!" << std::endl;
+        return;
+    }
+    if (player->get_race() == "Shade") {
+        std::cout << "Your final score is: " << (int)(player->get_gold() * 1.5) << std::endl;
+    } else {
+        std::cout << "Your final score is: " << player->get_gold() << std::endl;
+    }
+}
+
+// Initialize the game after each restart
+void map::initialize() {
+    play_sound("startup.mp3");
+    gameover = false;
+    floor_change = false;
+    floor = 0;
+    actions.clear();
+    clear_map();
+    
+}
+
+// make sure the map is empty
+void map::clear_map() { 
+    memset(map_cell, 0, sizeof(map_cell));
+    memset(origin_map_cell, 0, sizeof(origin_map_cell));
+    if (floor != 0) {
+        player->set_atk(player->get_original_atk());
+        player->set_def(player->get_original_def());
+        actions.emplace_back("PC loses all buffs.");
+    }
+    num_enemy = 0;
+    num_potion = 0;
+    num_gold = 0;
+    enemies.clear();
+    golds.clear();
+    potions.clear();
+}
+
+// check if player is dead or hp is full
+void map::check_state() {
+    if (player->get_hp() <= 0) {
+        gameover = true;
+    } else if (player->get_race() != "Vampire" &&  player->get_hp() > player->get_max_hp()) {
+        player->set_hp(player->get_max_hp());
+    }
+}
+
+void map::add_action(std::string action) {
+    actions.emplace_back(action);
+}
+
+// Enemy Freeze
+void map::disable_enemy() {
+    disable_enemy_move = !disable_enemy_move;
+    std::string msg = disable_enemy_move? "disable" : "active";
+    add_action("All the enemies are " + msg + ".");
+}
+
+void map::set_dlc(bool toggle) {
+    dlc = toggle;
+}
+
+bool map::get_dlc() {
+    return dlc;
+}
+
+// DLC: Radar
 void map::find_around() {
     for (int i = 0; i < 8; i++) {
         int direction_x = direction_pos(direction_map[i], player->get_pos()).get_x();
@@ -816,77 +900,7 @@ void map::find_around() {
     }
 }
 
-void map::game_over() {
-    if (player->get_hp() <= 0) {
-        std::cout << "Game Over" << std::endl;
-    } else if (floor == MAX_FLOOR) {
-        std::cout << "You win!" << std::endl;
-        show_trophy();
-    } else {
-        std::cout << "You quit Shadowmaze!" << std::endl;
-        return;
-    }
-    if (player->get_race() == "Shade") {
-        std::cout << "Your final score is: " << (int)(player->get_gold() * 1.5) << std::endl;
-    } else {
-        std::cout << "Your final score is: " << player->get_gold() << std::endl;
-    }
-}
-
-
-
-void map::initialize() {
-    play_sound("startup.mp3");
-    gameover = false;
-    floor_change = false;
-    floor = 0;
-    actions.clear();
-    clear_map();
-    
-}
-
-void map::clear_map() { 
-    memset(map_cell, 0, sizeof(map_cell));
-    memset(origin_map_cell, 0, sizeof(origin_map_cell));
-    if (floor != 0) {
-        player->set_atk(player->get_original_atk());
-        player->set_def(player->get_original_def());
-        actions.emplace_back("PC loses all buffs.");
-    }
-    num_enemy = 0;
-    num_potion = 0;
-    num_gold = 0;
-    enemies.clear();
-    golds.clear();
-    potions.clear();
-}
-
-void map::check_state() {
-    if (player->get_hp() <= 0) {
-        gameover = true;
-    } else if (player->get_race() != "Vampire" &&  player->get_hp() > player->get_max_hp()) {
-        player->set_hp(player->get_max_hp());
-    }
-}
-
-void map::add_action(std::string action) {
-    actions.emplace_back(action);
-}
-
-void map::disable_enemy() {
-    disable_enemy_move = !disable_enemy_move;
-    std::string msg = disable_enemy_move? "disable" : "active";
-    add_action("All the enemies are " + msg + ".");
-}
-
-void map::set_dlc(bool toggle) {
-    dlc = toggle;
-}
-
-bool map::get_dlc() {
-    return dlc;
-}
-
+// DLC: Sound
 void map::play_sound(std::string filename) {
     if (dlc) {
         std::string command = "afplay " + filename; //Windows "start" Linux "aplay"
@@ -897,6 +911,7 @@ void map::play_sound(std::string filename) {
     }
 }
 
+// DLC: Trophy
 void map::show_trophy() {
     if (dlc) {
         play_sound("victory.mp3");
@@ -921,6 +936,7 @@ void map::show_trophy() {
     }
 }
 
+// DLC: Teleport
 void map::teleport(int x, int y) {
     if (dlc) {
         if (map_cell[x][y].get_cell_type() == '\\') {
@@ -939,6 +955,7 @@ void map::teleport(int x, int y) {
     }
 }
 
+// DLC: Key Mode
 // void map::keymode() {
 //     std::thread keyThread([this](){
 //         // Initialize curses and setup the terminal

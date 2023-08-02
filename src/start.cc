@@ -15,7 +15,6 @@ void manual(bool dlc) {
 
 // Control the game flow
 void start(std::string map_file, bool with_map, unsigned int seed_int, bool with_seed) {
-
     srand(seed_int);
     std::string cmd;
     map game_map;
