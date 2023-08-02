@@ -8,9 +8,10 @@
 #include <string.h>
 #include <cstdlib>
 #include <ctime>
+#include <map>
+#include <ncurses.h>
 #include <cstdlib>
 #include <thread>
-#include <map>
 #include "player/player_character.h"
 #include "enemy/enemy_character.h"
 #include "enemy/human.h"
@@ -125,9 +126,12 @@ class map {
 
     // DLC Functions
     void set_dlc(bool toggle);
+    bool get_dlc();
     void find_around();
     void play_sound(std::string filename);
     void show_trophy();
+    void teleport(int x, int y);
+    void keymode();
 };
 
 #endif

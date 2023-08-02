@@ -1,17 +1,21 @@
 #include "start.h"
 
 // Command Manual
-void manual() {
+void manual(bool dlc) {
     std::cout << ESC << ";" << CYAN_TXT << "m" << "[dir]: " << RESET << "Moves player to the direction" << std::endl;
     std::cout << ESC << ";" << CYAN_TXT << "m" << "u [dir]: " << RESET << "Uses the potion in the direction" << std::endl;
     std::cout << ESC << ";" << CYAN_TXT << "m" << "a [dir]: " << RESET << "Attack the enemy in the direction" << std::endl;
     std::cout << ESC << ";" << CYAN_TXT << "m" << "f: " << RESET << "Stop enemies from moving" << std::endl;
     std::cout << ESC << ";" << CYAN_TXT << "m" << "r: " << RESET << "Restart the game" << std::endl;
     std::cout << ESC << ";" << CYAN_TXT << "m" << "q: " << RESET << "Admit defeat and quit" << std::endl;
+    if (dlc) {
+        std::cout << ESC << ";" << CYAN_TXT << "m" << "t [x] [y]: " << RESET << "Teleport PC to position (x,y) if possible, cost 15 golds" << std::endl;
+    }
 }
 
 // Control the game flow
 void start(std::string map_file, bool with_map, unsigned int seed_int, bool with_seed) {
+
     srand(seed_int);
     std::string cmd;
     map game_map;
@@ -85,7 +89,7 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
         game_map.print_map();
         std::cout << std::endl;
         std::cout << "Manual:" << std::endl;
-        manual();
+        manual(game_map.get_dlc());
         // Deal with command
         while (true) {
             std::cout << "-------------------------------------------------------------------------------" << std::endl;
@@ -142,8 +146,16 @@ void start(std::string map_file, bool with_map, unsigned int seed_int, bool with
                 game_map.game_over();
                 return;
             } else if (cmd == "m") {
-                manual();
+                manual(game_map.get_dlc());
                 continue;
+            } else if (cmd == "t" && game_map.get_dlc()) {
+                int x, y;
+                std::cin >> x >> y;
+                game_map.teleport(x, y);
+                game_map.move_enemy();
+            //} else if (cmd == "k" && game_map.get_dlc()) {
+            //     game_map.keymode();
+            // }
             } else {
                 std::cerr << "Not Valid Input" << std::endl;
                 game_map.play_sound("error.mp3");

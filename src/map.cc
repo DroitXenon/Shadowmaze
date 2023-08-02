@@ -883,6 +883,9 @@ void map::set_dlc(bool toggle) {
     dlc = toggle;
 }
 
+bool map::get_dlc() {
+    return dlc;
+}
 
 void map::play_sound(std::string filename) {
     if (dlc) {
@@ -908,7 +911,7 @@ void map::show_trophy() {
         if (player->get_gold() >= 10) {
             std::cout << ESC << ";" << YELLOW_TXT << "m" << " Gold Hoarder (Golds Value More Than 10)" << RESET << std::endl;
         } else {
-            std::cout << " Poor Kids (Golds Value Less Than 10)" << std::endl;
+            std::cout << " Poor Kid (Golds Value Less Than 10)" << std::endl;
         }
         if (enemy_killed >= 15) {
             std::cout << ESC << ";" << YELLOW_TXT << "m" << " Demon Slayer (Kill More Than 15 Enemies)" << RESET << std::endl;
@@ -917,3 +920,58 @@ void map::show_trophy() {
         }
     }
 }
+
+void map::teleport(int x, int y) {
+    if (dlc) {
+        if (map_cell[x][y].get_cell_type() == '\\') {
+           add_action("You can't teleport to gate!!!");
+        } else if (map_cell[x][y].get_cell_type() == '.' && player->get_gold() >= 15) {    
+            player->set_gold(player->get_gold() - 15);  
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_cell_type());
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_step(origin_map_cell[player->get_pos().get_x()][player->get_pos().get_y()].get_step());
+            pos p{x, y, player->get_pos().get_floor()};
+            player->set_pos(p);
+            map_cell[player->get_pos().get_x()][player->get_pos().get_y()].set_cell_type('@');
+            add_action("PC teleports to " + std::to_string(x) + " " + std::to_string(y) + ".");
+        } else {
+            add_action("You can't teleport to here.");
+        }
+    }
+}
+
+// void map::keymode() {
+//     std::thread keyThread([this](){
+//         // Initialize curses and setup the terminal
+//         initscr();
+//         keypad(stdscr, true);
+//         noecho();
+//         int ch;
+//         bool running = true;
+//         while (running) {
+//             // Read input from the user
+//             ch = getch();
+//             noecho();
+//             switch (ch) {
+//                 case 'w':
+//                     move_player("no");
+//                     break;
+//                 case 's':
+//                     move_player("so");
+//                     break;
+//                 case 'a':
+//                     move_player("we");
+//                     break;
+//                 case 'd':
+//                     move_player("ea");
+//                     break;
+//                 case 'k':
+//                     // Exit the loop if 'q' or 'Q' is pressed
+//                     running = false;
+//                     break;
+//             }
+//         }
+//         // End curses mode
+//         endwin();
+//     });
+//     keyThread.detach();
+// }

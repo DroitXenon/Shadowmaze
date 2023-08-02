@@ -14,7 +14,7 @@ int goblin::attack(std::shared_ptr<enemy_character> enemy) {
     }
     enemy->set_hp(enemy->get_hp() - damage);
     if (enemy->get_hp() <= 0) {
-        set_hp(get_hp() + 5);
+        set_gold(get_gold() + 5);
     }
     return damage;   
 }
