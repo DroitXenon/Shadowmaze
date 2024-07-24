@@ -3,7 +3,7 @@
 <img src="ele/Shadowmaze-logos.jpeg" alt="logo" width="400"/>
 
 ### Project Summary
-ChamberCrawler3000 (CC3k) is a simplified rogue-like game where players explore a dungeon, battle enemies, collect treasure, and progress through five floors. The game features floors with five chambers connected by passages. Players can choose to be different races with unique abilities. Their goal is to defeat various types of enemies through turn-based attacks to collect gold and reach the end of the dungeon. The game incorporates items such as potions which provide various effects on player characters. The design uses various patterns to implement and command line arguments to control the creation of characters, the procedural dungeon generation, and embracing interactive environment elements.
+Shadowmaze is a simplified rogue-like game where players explore a dungeon, battle enemies, collect treasure, and progress through five floors. The game features floors with five chambers connected by passages. Players can choose to be different races with unique abilities. Their goal is to defeat various types of enemies through turn-based attacks to collect gold and reach the end of the dungeon. The game incorporates items such as potions which provide various effects on player characters. The design uses various patterns to implement and command line arguments to control the creation of characters, the procedural dungeon generation, and embracing interactive environment elements.
 
 ### Project Breakdown
 ![breakdown](ele/Shadowmaze-breakdown.png)
